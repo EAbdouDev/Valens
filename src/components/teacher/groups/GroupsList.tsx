@@ -51,7 +51,24 @@ const GroupsList: FC = () => {
         </div>
       )}
       {groups.length === 0 && !isLoading ? (
-        <p>No groups found</p>
+        <div className="flex flex-col justify-center items-center flex-grow w-full h-full mt-20 space-y-4">
+          <h1 className="text-xl font-medium ">You don't have any group yet</h1>
+          <p className="opacity-90 mb-4">Start creating your first group</p>
+          <Link
+            href={"/t/groups/new"}
+            className=" flex justify-center items-center gap-2 px-4 py-2 rounded-lg bg-black text-white"
+          >
+            {" "}
+            <Plus /> Create new group
+          </Link>
+
+          <Link
+            href={"/guides/groups"}
+            className="text-sm underline text-blue-600 pt-4"
+          >
+            Learn more about groups
+          </Link>
+        </div>
       ) : (
         <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-6 w-full h-full mt-4">
           {!isLoading && groups.length !== 0 && (

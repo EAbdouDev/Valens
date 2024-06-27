@@ -8,8 +8,15 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import { useAuth } from "@/components/auth/auth-provider";
-import { Loader2, X } from "lucide-react";
+import { ArrowLeft, Loader2, X } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface User {
   id: string;
@@ -103,7 +110,25 @@ const NewGroup: FC<NewGroupProps> = ({}) => {
 
   return (
     <div>
-      <h1 className="text-2xl font-medium mb-10">Create New Group</h1>
+      <div className="flex justify-start items-center gap-4 w-full mb-10">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <Link
+                href={"/t/groups"}
+                className="flex justify-center items-center opacity-70 hover:opacity-100 transition-all ease-in-out"
+              >
+                <ArrowLeft />
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Back to groups</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
+        <h1 className="text-2xl font-medium ">Create New Group</h1>
+      </div>
       <form onSubmit={handleSubmit} className="flex flex-col space-y-6">
         <div className="">
           <TextField
