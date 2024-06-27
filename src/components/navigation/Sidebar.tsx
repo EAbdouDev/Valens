@@ -17,13 +17,13 @@ const Sidebar: FC<SidebarProps> = ({}) => {
             width={30}
             height={30}
           />
-          <h1 className="text-2xl font-bold">Valnes AI</h1>
+          <h1 className="text-xl font-bold">Valnes AI</h1>
         </div>
-        <PanelLeftClose className="opacity-60 cursor-pointer hover:opacity-100 transition-all ease-in-out" />
+        <PanelLeftClose className="opacity-60 cursor-pointer hover:opacity-100 transition-all ease-in-out w-5 h-5" />
       </div>
 
       <div className="flex-grow"></div>
-      <div className="mb-4 border-t p-2">
+      <div className=" border-t p-2">
         <UserMenu />
       </div>
     </div>

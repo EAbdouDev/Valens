@@ -5,9 +5,11 @@ import {
   initializeApp as adminInitializeApp,
 } from "firebase-admin/app";
 import { Firestore, getFirestore } from "firebase-admin/firestore";
+import { Auth, getAuth } from "firebase-admin/auth";
 
 const currentApps = getApps();
 let firestore: Firestore | undefined = undefined;
+let auth: Auth | undefined = undefined;
 
 const serviceAccountVar = {
   type: process.env.FIREBASE_TYPE!,
@@ -37,8 +39,10 @@ if (currentApps.length === 0) {
   });
 
   firestore = getFirestore(app);
+  auth = getAuth(app);
 } else {
   firestore = getFirestore(currentApps[0]);
+  auth = getAuth(currentApps[0]);
 }
 
-export { firestore };
+export { firestore, auth };

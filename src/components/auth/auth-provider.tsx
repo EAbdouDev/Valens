@@ -9,6 +9,17 @@ import {
   useState,
 } from "react";
 import { auth } from "../../../firebase/client";
+import Cookies from "js-cookie";
+
+export function getAuthToken(): string | undefined {
+  return Cookies.get("firebaseIdToken");
+}
+export function setAuthToken(token: string): string | undefined {
+  return Cookies.set("firebaseIdToken", token, { secure: true });
+}
+export function removeAuthToken(): void {
+  return Cookies.remove("firebaseIdToken");
+}
 
 type AuthContextType = {
   currentUser: User | null;
@@ -36,9 +47,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsAdmin(false);
         setIsStudent(false);
         setIsTeacher(false);
+        removeAuthToken();
       }
       if (user) {
+        const token = await user.getIdToken();
         setCurrentUser(user);
+        setAuthToken(token);
         const tokenValues = await user.getIdTokenResult();
         setIsAdmin(tokenValues.claims.role === "admin");
 
