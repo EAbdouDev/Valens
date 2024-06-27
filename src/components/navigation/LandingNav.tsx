@@ -38,11 +38,19 @@ const LandingNav: FC<LandingNavProps> = ({}) => {
         <h1 className="text-xl font-bold">Valens AI</h1>
       </div>
       {!auth?.currentUser && (
-        <button onClick={loginGoogle}>Sign in with Google</button>
+        <button
+          onClick={loginGoogle}
+          className="px-4 py-2 rounded-lg bg-black text-white"
+        >
+          Sign in with Google
+        </button>
       )}
       {auth?.currentUser && (
-        <Link href={`/t/dashboard`} className="border px-4 py-2 rounded-lg">
-          Dashboard
+        <Link
+          href={`/t/dashboard`}
+          className=" px-4 py-2 rounded-lg bg-black text-white"
+        >
+          Continue to Dashboard
         </Link>
       )}
     </div>

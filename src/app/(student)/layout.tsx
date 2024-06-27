@@ -14,26 +14,19 @@ const layout: FC<LayoutProps> = async ({ children }) => {
   const authToken = cookieStore.get("firebaseIdToken")?.value;
 
   if (!authToken || !auth) {
-    console.error("No auth token or auth instance found.");
     redirect("/");
-    return null; // Prevent further code execution
   }
 
   let user: DecodedIdToken | null = null;
 
   try {
     user = await auth.verifyIdToken(authToken);
-    console.log("Verified ID token:", user);
   } catch (error) {
-    console.error("Error verifying ID token:", error);
     redirect("/");
-    return null; // Prevent further code execution
   }
 
   if (!user) {
-    console.error("User not found after verifying ID token.");
     redirect("/");
-    return null; // Prevent further code execution
   }
 
   let userInfo = null;
@@ -46,28 +39,17 @@ const layout: FC<LayoutProps> = async ({ children }) => {
       userInfo = await userInfoResponse.json();
       console.log("User info fetched:", userInfo);
     } else {
-      console.error(
-        "Failed to fetch user info:",
-        await userInfoResponse.text()
-      );
       redirect("/");
-      return null; // Prevent further code execution
     }
   } catch (error) {
-    console.error("Error fetching user info:", error);
     redirect("/");
-    return null; // Prevent further code execution
   }
 
   const isStudent = userInfo?.isStudent;
 
   if (!isStudent) {
-    console.log("User is not a student:", userInfo);
     redirect("/");
-    return null; // Prevent further code execution
   }
-
-  console.log("User is a student, rendering layout.");
 
   return (
     <div className="min-h-screen flex flex-col h-screen">

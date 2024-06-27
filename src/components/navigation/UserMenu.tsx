@@ -9,11 +9,13 @@ import {
 import Link from "next/link";
 import { UserIcon } from "@hugeicons/react-pro";
 import { User } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface UserMenuProps {}
 
 const UserMenu: FC<UserMenuProps> = ({}) => {
   const auth = useAuth();
+  const router = useRouter();
 
   return (
     <Popover>
@@ -45,6 +47,17 @@ const UserMenu: FC<UserMenuProps> = ({}) => {
               <User className="opacity-70 w-5 h-5" />
               Profile
             </Link>
+          </li>
+
+          <li>
+            <button
+              onClick={() => {
+                auth?.logout();
+                router.push("/");
+              }}
+            >
+              Signout
+            </button>
           </li>
         </ul>
       </PopoverContent>

@@ -10,6 +10,7 @@ import {
 } from "react";
 import { auth } from "../../../firebase/client";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export function getAuthToken(): string | undefined {
   return Cookies.get("firebaseIdToken");
@@ -37,7 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [isTeacher, setIsTeacher] = useState<boolean>(false);
   const [isStudent, setIsStudent] = useState<boolean>(false);
-
+  const router = useRouter();
   useEffect(() => {
     if (!auth) return;
 
@@ -54,20 +55,43 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setCurrentUser(user);
         setAuthToken(token);
         const tokenValues = await user.getIdTokenResult();
-        setIsAdmin(tokenValues.claims.role === "admin");
+
+        if (tokenValues.claims.role === "admin") {
+          setIsAdmin(true);
+        }
 
         const userResponse = await fetch(`/api/users/${user.uid}`);
 
         if (userResponse.ok) {
           const userJson = await userResponse.json();
-          if (userJson?.isTeacher) setIsTeacher(true);
-          if (userJson?.isStudent) setIsStudent(true);
+          if (userJson?.isTeacher) {
+            setIsTeacher(true);
+          }
+          if (userJson?.isStudent) {
+            setIsStudent(true);
+          }
         } else {
           console.error("could not get user info");
         }
       }
     });
   }, []);
+
+  useEffect(() => {
+    if (isStudent) {
+      router.push("/s/dashboard");
+    }
+  }, [isStudent]);
+  useEffect(() => {
+    if (isTeacher) {
+      router.push("/t/dashboard");
+    }
+  }, [isTeacher]);
+  useEffect(() => {
+    if (isAdmin) {
+      router.push("/a/dashboard");
+    }
+  }, [isAdmin]);
 
   function loginGoogle(): Promise<void> {
     return new Promise((resolve, reject) => {
