@@ -1,7 +1,7 @@
-import { initializeApp } from "firebase-admin/app";
-import { firestore } from "firebase-admin";
-import { auth, config } from "firebase-functions";
-import { getAuth } from "firebase-admin/auth";
+import {initializeApp} from "firebase-admin/app";
+import {firestore} from "firebase-admin";
+import {auth, config} from "firebase-functions";
+import {getAuth} from "firebase-admin/auth";
 
 initializeApp(config().firebase);
 
