@@ -2,6 +2,7 @@ import { ArrowLeftDoubleIcon } from "@hugeicons/react-pro";
 import Image from "next/image";
 import { FC, ReactNode } from "react";
 import { PanelLeftClose } from "lucide-react";
+import Sidebar from "@/components/navigation/Sidebar";
 
 interface layoutProps {
   children: ReactNode;
@@ -21,19 +22,8 @@ const layout: FC<layoutProps> = ({ children }) => {
           <footer className="p-4 border-t">Footer</footer>
         </div>
 
-        <nav className="order-first sm:w-64 overflow-y-auto border-r px-4 py-6">
-          <div className="flex justify-between items-center w-full">
-            <div className=" flex justify-start items-center gap-2 ">
-              <Image
-                src={"/logo/logo_icon_dark_mode-01.svg"}
-                alt="logo_dark_icon"
-                width={30}
-                height={30}
-              />
-              <h1 className="text-2xl font-bold">Valnes AI</h1>
-            </div>
-            <PanelLeftClose className="opacity-60 cursor-pointer hover:opacity-100 transition-all ease-in-out" />
-          </div>
+        <nav className="order-first sm:w-64 overflow-y-auto border-r ">
+          <Sidebar />
         </nav>
       </div>
       {/* <!-- end main container --> */}

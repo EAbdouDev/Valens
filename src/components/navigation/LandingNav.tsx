@@ -2,6 +2,8 @@
 
 import { FC } from "react";
 import { useAuth } from "../auth/auth-provider";
+import Link from "next/link";
+import Image from "next/image";
 
 interface LandingNavProps {}
 
@@ -25,27 +27,24 @@ const LandingNav: FC<LandingNavProps> = ({}) => {
       });
   };
   return (
-    <div>
+    <div className="flex justify-between items-center w-full px-6 py-4 border-b">
+      <div className="Branding flex justify-start items-center gap-2">
+        <Image
+          src={"/logo/logo_icon_dark_mode-01.svg"}
+          alt="logo_dark_icon"
+          width={35}
+          height={35}
+        />
+        <h1 className="text-xl font-bold">Valens AI</h1>
+      </div>
       {!auth?.currentUser && (
         <button onClick={loginGoogle}>Sign in with Google</button>
       )}
-      {auth?.currentUser && <button onClick={logout}>Logout</button>}
       {auth?.currentUser && (
-        <div>
-          <p>{auth.currentUser.displayName}</p>
-          <p>{auth.currentUser.email}</p>
-        </div>
+        <Link href={`/t/dashboard`} className="border px-4 py-2 rounded-lg">
+          Dashboard
+        </Link>
       )}
-
-      {auth?.currentUser &&
-        !auth.isAdmin &&
-        !auth.isTeacher &&
-        auth.isStudent && <p>Student User</p>}
-      {auth?.currentUser && auth.isAdmin && <p>Admin User</p>}
-      {auth?.currentUser &&
-        !auth.isAdmin &&
-        auth.isTeacher &&
-        !auth.isStudent && <p>Teacher User</p>}
     </div>
   );
 };
