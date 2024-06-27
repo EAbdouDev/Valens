@@ -12,8 +12,8 @@ const LandingNav: FC<LandingNavProps> = ({}) => {
     auth
       ?.loginGoogle()
       .then(() => console.log("logged in!"))
-      .catch(() => {
-        console.log("Error login with google, landingNav");
+      .catch((error) => {
+        console.log("Error login with google, landingNav", error);
       });
   };
   const logout = () => {
