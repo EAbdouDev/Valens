@@ -1,0 +1,89 @@
+[debug] [2024-06-27T10:59:10.849Z] ----------------------------------------------------------------------
+[debug] [2024-06-27T10:59:10.852Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\eslam\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start
+[debug] [2024-06-27T10:59:10.852Z] CLI Version:   13.12.0
+[debug] [2024-06-27T10:59:10.852Z] Platform:      win32
+[debug] [2024-06-27T10:59:10.853Z] Node Version:  v20.10.0
+[debug] [2024-06-27T10:59:10.853Z] Time:          Thu Jun 27 2024 14:59:10 GMT+0400 (Georgia Standard Time)
+[debug] [2024-06-27T10:59:10.853Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-06-27T10:59:10.960Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-06-27T10:59:10.960Z] > authorizing via signed-in user (eslamabdoudev@gmail.com)
+[debug] [2024-06-27T10:59:11.085Z] java version "11.0.23" 2024-04-16 LTS
+
+[debug] [2024-06-27T10:59:11.086Z] Java(TM) SE Runtime Environment 18.9 (build 11.0.23+7-LTS-222)
+Java HotSpot(TM) 64-Bit Server VM 18.9 (build 11.0.23+7-LTS-222, mixed mode)
+
+[debug] [2024-06-27T10:59:11.109Z] Parsed Java major version: 11
+[info] i  emulators: Starting emulators: auth, functions, firestore, storage {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, functions, firestore, storage"}}
+[debug] [2024-06-27T10:59:11.122Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2024-06-27T10:59:11.122Z] [auth] Authentication Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2024-06-27T10:59:11.122Z] [firestore] Firestore Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2024-06-27T10:59:11.123Z] [firestore.websocket] websocket server for firestore only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2024-06-27T10:59:11.123Z] [storage] Storage Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2024-06-27T10:59:11.123Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"auth":[{"address":"127.0.0.1","family":"IPv4","port":9099}],"firestore":[{"address":"127.0.0.1","family":"IPv4","port":8081}],"firestore.websocket":[{"address":"127.0.0.1","family":"IPv4","port":9150}],"storage":[{"address":"127.0.0.1","family":"IPv4","port":9199}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2024-06-27T10:59:11.128Z] [hub] writing locator at C:\Users\eslam\AppData\Local\Temp\hub-valensai.json
+[debug] [2024-06-27T10:59:11.139Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2024-06-27T10:59:11.139Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2024-06-27T10:59:11.139Z] late-assigned ports for functions and eventarc emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"auth":[{"address":"127.0.0.1","family":"IPv4","port":9099}],"firestore":[{"address":"127.0.0.1","family":"IPv4","port":8081}],"firestore.websocket":[{"address":"127.0.0.1","family":"IPv4","port":9150}],"storage":[{"address":"127.0.0.1","family":"IPv4","port":9199}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[warn] !  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: database, hosting, pubsub, dataconnect {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mdatabase, hosting, pubsub, dataconnect\u001b[22m"}}
+[debug] [2024-06-27T10:59:11.143Z] defaultcredentials: writing to file C:\Users\eslam\AppData\Roaming\firebase\eslamabdoudev_gmail_com_application_default_credentials.json
+[debug] [2024-06-27T10:59:11.146Z] Setting GAC to C:\Users\eslam\AppData\Roaming\firebase\eslamabdoudev_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\eslam\\AppData\\Roaming\\firebase\\eslamabdoudev_gmail_com_application_default_credentials.json"}}
+[debug] [2024-06-27T10:59:11.148Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/valensai/adminSdkConfig [none]
+[debug] [2024-06-27T10:59:11.927Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/valensai/adminSdkConfig 200
+[debug] [2024-06-27T10:59:11.928Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/valensai/adminSdkConfig {"projectId":"valensai","storageBucket":"valensai.appspot.com","locationId":"europe-west"}
+[debug] [2024-06-27T10:59:11.958Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2024-06-27T10:59:11.959Z] Ignoring unsupported arg: single_project_mode_error {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: single_project_mode_error"}}
+[debug] [2024-06-27T10:59:11.959Z] Starting Firestore Emulator with command {"binary":"java","args":["-Dgoogle.cloud_firestore.debug_log_level=FINE","-Duser.language=en","-jar","C:\\Users\\eslam\\.cache\\firebase\\emulators\\cloud-firestore-emulator-v1.19.7.jar","--host","127.0.0.1","--port",8081,"--websocket_port",9150,"--project_id","valensai","--rules","E:\\Valnes AI\\codebase\\firestore.rules","--single_project_mode",true,"--functions_emulator","127.0.0.1:5001"],"optionalArgs":["port","webchannel_port","host","rules","websocket_port","functions_emulator","seed_from_export","project_id","single_project_mode"],"joinArgs":false,"shell":false} {"metadata":{"emulator":{"name":"firestore"},"message":"Starting Firestore Emulator with command {\"binary\":\"java\",\"args\":[\"-Dgoogle.cloud_firestore.debug_log_level=FINE\",\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\eslam\\\\.cache\\\\firebase\\\\emulators\\\\cloud-firestore-emulator-v1.19.7.jar\",\"--host\",\"127.0.0.1\",\"--port\",8081,\"--websocket_port\",9150,\"--project_id\",\"valensai\",\"--rules\",\"E:\\\\Valnes AI\\\\codebase\\\\firestore.rules\",\"--single_project_mode\",true,\"--functions_emulator\",\"127.0.0.1:5001\"],\"optionalArgs\":[\"port\",\"webchannel_port\",\"host\",\"rules\",\"websocket_port\",\"functions_emulator\",\"seed_from_export\",\"project_id\",\"single_project_mode\"],\"joinArgs\":false,\"shell\":false}"}}
+[info] i  firestore: Firestore Emulator logging to firestore-debug.log {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator logging to \u001b[1mfirestore-debug.log\u001b[22m"}}
+[info] +  firestore: Firestore Emulator UI websocket is running on 9150. {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator UI websocket is running on 9150."}}
+[debug] [2024-06-27T10:59:22.554Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"storage"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2024-06-27T10:59:23.570Z] Temp file directory for storage emulator: C:\Users\eslam\AppData\Local\Temp/firebase/storage/blobs {"metadata":{"emulator":{"name":"storage"},"message":"Temp file directory for storage emulator: C:\\Users\\eslam\\AppData\\Local\\Temp/firebase/storage/blobs"}}
+[debug] [2024-06-27T10:59:23.583Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2024-06-27T10:59:23.583Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2024-06-27T10:59:23.584Z] Starting Emulator UI with command {"binary":"node","args":["C:\\Users\\eslam\\.cache\\firebase\\emulators\\ui-v1.12.1\\server\\server.mjs"],"optionalArgs":[],"joinArgs":false,"shell":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"C:\\\\Users\\\\eslam\\\\.cache\\\\firebase\\\\emulators\\\\ui-v1.12.1\\\\server\\\\server.mjs\"],\"optionalArgs\":[],\"joinArgs\":false,\"shell\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2024-06-27T10:59:23.729Z] Web / API server started at 127.0.0.1:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at 127.0.0.1:4000\n"}}
+[debug] [2024-06-27T10:59:23.729Z] Web / API server started at ::1:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at ::1:4000\n"}}
+[info] i  functions: Watching "E:\Valnes AI\codebase\firebase\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"E:\\Valnes AI\\codebase\\firebase\\functions\" for Cloud Functions..."}}
+[debug] [2024-06-27T10:59:23.802Z] Validating nodejs source
+[debug] [2024-06-27T10:59:25.753Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^12.1.0",
+    "firebase-functions": "^5.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^3.1.0",
+    "typescript": "^4.9.0"
+  },
+  "private": true
+}
+[debug] [2024-06-27T10:59:25.754Z] Building nodejs source
+[debug] [2024-06-27T10:59:25.755Z] Failed to find version of module node: reached end of search path E:\Valnes AI\codebase\firebase\functions\node_modules
+[warn] !  functions: Your requested "node" version "18" doesn't match your global version "20". Using node@20 from host. 
+[debug] [2024-06-27T10:59:25.758Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-06-27T10:59:25.770Z] Found firebase-functions binary at 'E:\Valnes AI\codebase\firebase\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8132
+
+[debug] [2024-06-27T10:59:26.750Z] Got response from /__/functions.yaml {"endpoints":{"onUserCreate":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"eventTrigger":{"eventType":"providers/firebase.auth/eventTypes/user.create","eventFilters":{"resource":"projects/valensai"},"retry":false},"labels":{},"entryPoint":"onUserCreate"}},"specVersion":"v1alpha1","requiredAPIs":[]}

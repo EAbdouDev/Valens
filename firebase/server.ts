@@ -11,8 +11,7 @@ let firestore: Firestore | undefined = undefined;
 let serviceAccountVar;
 
 if (process.env.APP_URL === "http://localhost:3000") {
-  serviceAccountVar = serviceAccountVar =
-    require("./serviceAccount.json") as ServiceAccount;
+  serviceAccountVar = serviceAccountVar = require("./serviceAccount.json");
 } else {
   serviceAccountVar = process.env.SERVICE_ACCOUNT;
 }
