@@ -10,46 +10,46 @@ interface LayoutProps {
 }
 
 const layout: FC<LayoutProps> = async ({ children }) => {
-  const cookieStore = cookies();
-  const authToken = cookieStore.get("firebaseIdToken")?.value;
+  //   const cookieStore = cookies();
+  //   const authToken = cookieStore.get("firebaseIdToken")?.value;
 
-  if (!authToken || !auth) {
-    redirect("/");
-  }
+  //   if (!authToken || !auth) {
+  //     redirect("/");
+  //   }
 
-  let user: DecodedIdToken | null = null;
+  //   let user: DecodedIdToken | null = null;
 
-  try {
-    user = await auth.verifyIdToken(authToken);
-  } catch (error) {
-    redirect("/");
-  }
+  //   try {
+  //     user = await auth.verifyIdToken(authToken);
+  //   } catch (error) {
+  //     redirect("/");
+  //   }
 
-  if (!user) {
-    redirect("/");
-  }
+  //   if (!user) {
+  //     redirect("/");
+  //   }
 
-  let userInfo = null;
-  try {
-    const userInfoResponse = await fetch(
-      `${process.env.APP_URL}/api/users/${user.uid}`
-    );
+  //   let userInfo = null;
+  //   try {
+  //     const userInfoResponse = await fetch(
+  //       `${process.env.APP_URL}/api/users/${user.uid}`
+  //     );
 
-    if (userInfoResponse.ok) {
-      userInfo = await userInfoResponse.json();
-      console.log("User info fetched:", userInfo);
-    } else {
-      redirect("/");
-    }
-  } catch (error) {
-    redirect("/");
-  }
+  //     if (userInfoResponse.ok) {
+  //       userInfo = await userInfoResponse.json();
+  //       console.log("User info fetched:", userInfo);
+  //     } else {
+  //       redirect("/");
+  //     }
+  //   } catch (error) {
+  //     redirect("/");
+  //   }
 
-  const isStudent = userInfo?.isStudent;
+  //   const isStudent = userInfo?.isStudent;
 
-  if (!isStudent) {
-    redirect("/");
-  }
+  //   if (!isStudent) {
+  //     redirect("/");
+  //   }
 
   return (
     <div className="min-h-screen flex flex-col h-screen">
@@ -64,7 +64,7 @@ const layout: FC<LayoutProps> = async ({ children }) => {
         </div>
 
         <nav className="order-first sm:w-64 overflow-y-auto border-r">
-          <Sidebar />
+          <Sidebar userRole="studnet" />
         </nav>
       </div>
     </div>

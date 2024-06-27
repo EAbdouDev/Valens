@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/popover";
 import Link from "next/link";
 import { UserIcon } from "@hugeicons/react-pro";
-import { User } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface UserMenuProps {}
@@ -55,8 +55,9 @@ const UserMenu: FC<UserMenuProps> = ({}) => {
                 auth?.logout();
                 router.push("/");
               }}
+              className="flex justify-start items-center gap-3 w-full px-4 py-2 hover:bg-slate-100 rounded-lg "
             >
-              Signout
+              <LogOut className="opacity-70 w-5 h-5" /> Sign out
             </button>
           </li>
         </ul>
