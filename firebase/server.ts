@@ -5,14 +5,14 @@ import {
   initializeApp as adminInitializeApp,
 } from "firebase-admin/app";
 import { Firestore, getFirestore } from "firebase-admin/firestore";
-import serviceAccount from "./serviceAccount.json";
 
 const currentApps = getApps();
 let firestore: Firestore | undefined = undefined;
 let serviceAccountVar;
 
 if (process.env.APP_URL === "http://localhost:3000") {
-  serviceAccountVar = serviceAccount;
+  serviceAccountVar = serviceAccountVar =
+    require("./serviceAccount.json") as ServiceAccount;
 } else {
   serviceAccountVar = process.env.SERVICE_ACCOUNT;
 }
