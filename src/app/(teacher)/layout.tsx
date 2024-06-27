@@ -59,7 +59,7 @@ const layout: FC<LayoutProps> = async ({ children }) => {
             <h1 className="text-2xl font-semibold">Dashboard</h1>
           </header>
 
-          <main className="px-4 py-6 flex-1">{children}</main>
+          <main className="px-6 py-8 flex-1">{children}</main>
           <footer className="p-4 border-t">Footer</footer>
         </div>
 
