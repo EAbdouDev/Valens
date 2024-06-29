@@ -32,11 +32,27 @@ const NewGroup: FC<NewGroupProps> = ({}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+  const [defaultUsers, setDefaultUsers] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const auth = useAuth();
   const userId = auth?.currentUser?.uid;
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchDefaultUsers = async () => {
+      try {
+        const response = await fetch(`/api/getLastFiveUsers`);
+        const data = await response.json();
+        setDefaultUsers(data.users);
+      } catch (error) {
+        console.error("Error fetching default users:", error);
+      }
+    };
+
+    fetchDefaultUsers();
+  }, []);
+
   useEffect(() => {
     const searchUsers = async () => {
       if (searchTerm.length > 0) {
@@ -146,12 +162,13 @@ const NewGroup: FC<NewGroupProps> = ({}) => {
         <div className="">
           <Autocomplete
             className="rounded-lg w-[50%]"
-            options={searchResults}
+            options={searchResults.length > 0 ? searchResults : defaultUsers}
             getOptionLabel={(option: User) => option.name}
             onInputChange={(event, newInputValue) => {
               setSearchTerm(newInputValue);
             }}
             onChange={handleAddUser}
+            onFocus={() => setSearchResults(defaultUsers)}
             renderOption={(props, option: User) => (
               <ListItem {...props}>
                 <ListItemAvatar>

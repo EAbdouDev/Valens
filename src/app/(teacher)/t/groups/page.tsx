@@ -14,7 +14,12 @@ export const metadata: Metadata = {
 const page: FC<pageProps> = ({}) => {
   return (
     <div className="w-full">
-      {/* <NewGroup /> */}
+      <header className="mb-16 space-y-2">
+        <h1 className="text-2xl font-semibold">Groups</h1>
+        <p className="font-light">
+          Use groups to assign cases to multiple users.{" "}
+        </p>
+      </header>
 
       <GroupsList />
     </div>

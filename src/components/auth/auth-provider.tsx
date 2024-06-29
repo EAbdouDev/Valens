@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         if (tokenValues.claims.role === "admin") {
           setIsAdmin(true);
-          router.push("/a/dashboard");
+          // router.push("/a/dashboard");
         }
 
         const userResponse = await fetch(`/api/users/${user.uid}`);
@@ -67,11 +67,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           const userJson = await userResponse.json();
           if (userJson?.isTeacher) {
             setIsTeacher(true);
-            router.push("/t/dashboard");
+            // router.push("/t/dashboard");
           }
           if (userJson?.isStudent) {
             setIsStudent(true);
-            router.push("/s/dashboard");
+            // router.push("/s/dashboard");
           }
         } else {
           console.error("could not get user info");

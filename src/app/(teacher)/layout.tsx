@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { FC, ReactNode } from "react";
 import { auth } from "../../../firebase/server";
 import { DecodedIdToken } from "firebase-admin/auth";
+import SidebarWarpper from "@/components/navigation/SidebarWarpper";
+import Navbar from "@/components/navigation/Navbar";
 
 interface LayoutProps {
   children: ReactNode;
@@ -55,15 +57,11 @@ const layout: FC<LayoutProps> = async ({ children }) => {
     <div className="min-h-screen flex flex-col h-screen">
       <div className="flex-1 flex flex-row overflow-y-hidden">
         <div className="flex-1 flex flex-col overflow-y-auto">
-          <header className="border-b px-4 py-6">
-            <h1 className="text-2xl font-semibold">Dashboard</h1>
-          </header>
-
-          <main className="px-6 py-8 flex-1">{children}</main>
-          <footer className="p-4 border-t">Footer</footer>
+          <main className="px-10 py-8 flex-1">{children}</main>
+          {/* <footer className="p-4 border-t">Footer</footer> */}
         </div>
 
-        <nav className="order-first sm:w-64 overflow-y-auto border-r">
+        <nav className="order-first  overflow-y-auto ">
           <Sidebar userRole="teacher" />
         </nav>
       </div>
