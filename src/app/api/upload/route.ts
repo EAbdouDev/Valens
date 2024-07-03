@@ -3,10 +3,8 @@ import { randomUUID } from "crypto";
 import { firestore, storage } from "../../../../firebase/server";
 import { FieldValue } from "firebase-admin/firestore";
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
+export const api = {
+  bodyParser: false,
 };
 
 export async function POST(request: NextRequest) {
