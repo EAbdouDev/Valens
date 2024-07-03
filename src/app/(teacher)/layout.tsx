@@ -57,11 +57,11 @@ const layout: FC<LayoutProps> = async ({ children }) => {
     <div className="min-h-screen flex flex-col h-screen">
       <div className="flex-1 flex flex-row overflow-y-hidden">
         <div className="flex-1 flex flex-col overflow-y-auto">
-          <main className="px-10 py-8 flex-1">{children}</main>
+          <main className="px-10 py-8 flex-1 m-2">{children}</main>
           {/* <footer className="p-4 border-t">Footer</footer> */}
         </div>
 
-        <nav className="order-first  overflow-y-auto ">
+        <nav className="order-first  overflow-y-auto m-2 shadow-[rgba(100,100,111,0.2)_0px_7px_29px_0px] rounded-2xl ">
           <Sidebar userRole="teacher" />
         </nav>
       </div>

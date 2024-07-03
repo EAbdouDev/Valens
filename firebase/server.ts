@@ -6,10 +6,12 @@ import {
 } from "firebase-admin/app";
 import { Firestore, getFirestore } from "firebase-admin/firestore";
 import { Auth, getAuth } from "firebase-admin/auth";
+import { Storage, getStorage } from "firebase-admin/storage";
 
 const currentApps = getApps();
 let firestore: Firestore | undefined = undefined;
 let auth: Auth | undefined = undefined;
+let storage: Storage | undefined = undefined;
 
 const serviceAccountVar = {
   type: process.env.FIREBASE_TYPE!,
@@ -32,17 +34,22 @@ if (currentApps.length === 0) {
       process.env.NEXT_PUBLIC_EMULATOR_FIRESTORE_PATH;
     process.env["FIREBASE_AUTH_EMULATOR_HOST"] =
       process.env.NEXT_PUBLIC_EMULATOR_AUTH_PATH;
+    process.env["FIREBASE_STORAGE_EMULATOR_HOST"] =
+      process.env.NEXT_PUBLIC_EMULATOR_STORAGE_PATH;
   }
 
   const app = adminInitializeApp({
     credential: cert(serviceAccountVar as ServiceAccount),
+    storageBucket: "gs://valensai.appspot.com",
   });
 
   firestore = getFirestore(app);
   auth = getAuth(app);
+  storage = getStorage(app);
 } else {
   firestore = getFirestore(currentApps[0]);
   auth = getAuth(currentApps[0]);
+  storage = getStorage(currentApps[0]);
 }
 
-export { firestore, auth };
+export { firestore, auth, storage };

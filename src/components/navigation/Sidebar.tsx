@@ -5,6 +5,7 @@ import {
   Disc2,
   Hospital,
   House,
+  Network,
   PanelLeftClose,
   PanelRightClose,
   Users,
@@ -44,10 +45,10 @@ const Sidebar: FC<SidebarProps> = ({ userRole }) => {
       icon: <Hospital className="w-5 h-5" />,
     },
     {
-      name: "Recordings",
-      href: "/t/recordings",
-      active: pathname.includes("recordings"),
-      icon: <Disc2 className="w-5 h-5" />,
+      name: "MindMaps",
+      href: "/t/mindmaps",
+      active: pathname.includes("mindmaps"),
+      icon: <Network className="w-5 h-5" />,
     },
     {
       name: "Transcriptions",
@@ -108,7 +109,7 @@ const Sidebar: FC<SidebarProps> = ({ userRole }) => {
 
   return (
     <motion.div
-      className={`h-full flex flex-col border-r w-[256px] `}
+      className={`h-full flex flex-col  w-[256px] `}
       // initial={false}
       // animate={{
       //   width: isExpanded || isPinned ? "256px" : "80px",
@@ -121,9 +122,9 @@ const Sidebar: FC<SidebarProps> = ({ userRole }) => {
       //   if (!isPinned) setIsExpanded(false);
       // }}
     >
-      <div className="flex justify-between items-center w-full px-4 py-6">
+      <div className="flex justify-between items-center w-full px-4 py-6 ">
         <div className="flex flex-col justify-start items-start gap-2">
-          <div className="flex justify-start items-center gap-3">
+          <div className="flex justify-start items-center gap-3 px-2">
             <Image
               src={"/logo/logo_icon_dark_mode-01.svg"}
               alt="logo_dark_icon"
@@ -159,8 +160,8 @@ const Sidebar: FC<SidebarProps> = ({ userRole }) => {
             <li key={link.name} className="w-full">
               <Link
                 href={link.href}
-                className={`flex items-center gap-3 py-3 px-4 rounded-lg w-full font-medium  ${
-                  link.active ? `bg-slate-100` : `hover:bg-slate-100`
+                className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium  ${
+                  link.active ? `bg-white text-violet-600` : `hover:bg-gray-200`
                 }`}
               >
                 {link.icon}

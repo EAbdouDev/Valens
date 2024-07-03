@@ -4,6 +4,7 @@ import { FC } from "react";
 import { useAuth } from "../auth/auth-provider";
 import Link from "next/link";
 import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface LandingNavProps {}
 
@@ -48,9 +49,16 @@ const LandingNav: FC<LandingNavProps> = ({}) => {
       {auth?.currentUser && (
         <Link
           href={`/t/dashboard`}
-          className=" px-4 py-2 rounded-lg bg-black text-white"
+          className=" px-4 py-2 rounded-lg bg-black text-white flex justify-start items-center gap-2"
         >
-          Continue to Dashboard
+          {/* <Avatar>
+            <AvatarImage
+              src={auth?.currentUser?.photoURL || ""}
+              alt="userPicture"
+            />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>{" "} */}
+          Continue to Dashboard as {auth?.currentUser.displayName}
         </Link>
       )}
     </div>

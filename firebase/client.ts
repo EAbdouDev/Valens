@@ -1,6 +1,11 @@
 "use client";
 import { getApps, initializeApp } from "firebase/app";
 import { Auth, connectAuthEmulator, getAuth } from "firebase/auth";
+import {
+  getStorage,
+  connectStorageEmulator,
+  FirebaseStorage,
+} from "firebase/storage";
 
 const currentApps = getApps();
 
@@ -15,22 +20,27 @@ const firebaseConfig = {
 };
 
 let auth: Auth | undefined = undefined;
+let storage: FirebaseStorage | undefined = undefined;
 
 if (currentApps.length <= 0) {
   const app = initializeApp(firebaseConfig);
   auth = getAuth(app);
+  storage = getStorage(app);
 
   if (
     process.env.NEXT_PUBLIC_APP_ENV === "emulator" &&
-    process.env.NEXT_PUBLIC_EMULATOR_AUTH_PATH
+    process.env.NEXT_PUBLIC_EMULATOR_AUTH_PATH &&
+    process.env.NEXT_PUBLIC_EMULATOR_STORAGE_PATH
   ) {
     connectAuthEmulator(
       auth,
       `http://${process.env.NEXT_PUBLIC_EMULATOR_AUTH_PATH}`
     );
+    connectStorageEmulator(storage, "127.0.0.1", 9199);
   }
 } else {
   auth = getAuth(currentApps[0]);
+  storage = getStorage(currentApps[0]);
 }
 
-export { auth };
+export { auth, storage };

@@ -21,10 +21,8 @@ const TeacherDashboard: FC<pageProps> = async ({}) => {
   // console.log(items);
   return (
     <div>
-      Teacher Dashboard{" "}
-      {/* {items?.map((item: any) => (
-        <p>{item.title}</p>
-      ))} */}
+      <h1 className="text-3xl font-bold">Dashboard </h1>
+      <div className="min-w-96 min-h-96 mt-10 bg-white rounded-2xl shadow-[rgba(0, 0, 0, 0.1)_0px_10px_50px] "></div>
     </div>
   );
 };

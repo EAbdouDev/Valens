@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const page: FC<pageProps> = ({}) => {
-  return <div>Recordings</div>;
+  return <div>MindMaps</div>;
 };
 
 export default page;
