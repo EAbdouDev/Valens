@@ -3,10 +3,6 @@ import { randomUUID } from "crypto";
 import { firestore, storage } from "../../../../firebase/server";
 import { FieldValue } from "firebase-admin/firestore";
 
-export const api = {
-  bodyParser: false,
-};
-
 export async function POST(request: NextRequest) {
   try {
     if (!firestore) {
