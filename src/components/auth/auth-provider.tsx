@@ -108,7 +108,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       provider.addScope("profile");
       provider.addScope("openid");
       provider.addScope("https://www.googleapis.com/auth/calendar");
-      provider.addScope("https://www.googleapis.com/auth/calendar.event");
       signInWithPopup(auth, provider)
         .then((user) => {
           console.log(`Signed in !: ${user.user.getIdToken(true)}`);
