@@ -1,18 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { firestore, auth } from "../../../../firebase/server"; // Adjust the import path if necessary
+import { firestore } from "../../../../firebase/server"; // Adjust the import path if necessary
+import { auth } from "../../../../firebase/server";
 
 export async function GET(request: NextRequest) {
   try {
-    if (!firestore || !auth) {
-      return new NextResponse(
-        "Internal error; no firestore or auth was found",
-        {
-          status: 500,
-        }
-      );
+    if (!firestore) {
+      console.error("Firestore not initialized");
+      return new NextResponse("Internal error; no firestore was found", {
+        status: 500,
+      });
     }
 
-    // Fetch all user IDs from Firestore
     const usersCollection = firestore.collection("users");
     const usersSnapshot = await usersCollection.get();
 
@@ -24,7 +22,6 @@ export async function GET(request: NextRequest) {
     const userIds = usersSnapshot.docs.map((doc) => doc.id);
     console.log(`Fetched user IDs from Firestore: ${userIds}`);
 
-    // Fetch user details from Firebase Authentication
     const usersList = await Promise.all(
       userIds.map(async (userId) => {
         try {

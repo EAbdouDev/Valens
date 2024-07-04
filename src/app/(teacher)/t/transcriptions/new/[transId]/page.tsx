@@ -144,11 +144,19 @@ const Page: FC<PageProps> = ({ params }) => {
       <div className="flex-1 flex flex-row overflow-y-hidden">
         <main className="flex-1 overflow-y-auto p-4">
           <div className="mb-4 text-xl font-bold">AI Generated Note:</div>
-          <div className="space-y-4">
+          <div className="space-y-4 shadow-lg rounded-lg bg-white p-4">
             {podcastScript.length > 0 &&
               podcastScript.map((entry, index) => (
-                <div key={index} className={`p-2 ${getColor(entry.host)}`}>
-                  <strong>{entry.host}:</strong> {entry.text}
+                <div
+                  key={index}
+                  className={`p-2 flex justify-start items-start gap-4 `}
+                >
+                  <p className="font-bold opacity-50 text-xs">{index + 1}</p>
+                  <p className="leading-loose font-medium">
+                    {" "}
+                    <strong className="opacity-80">{entry.host}:</strong>{" "}
+                    {entry.text}
+                  </p>
                 </div>
               ))}
           </div>

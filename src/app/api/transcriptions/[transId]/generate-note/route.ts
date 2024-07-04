@@ -19,7 +19,7 @@ const serviceAccountVar = {
   universe_domain: process.env.FIREBASE_UNIVERSE_DOMAIN!,
 };
 
-const apiKey = process.env.NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY!;
+const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY!;
 const google = createGoogleGenerativeAI({
   apiKey,
 });
