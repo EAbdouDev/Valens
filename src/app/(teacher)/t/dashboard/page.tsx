@@ -7,6 +7,8 @@ import { z } from "zod";
 import { MentionsInput, Mention } from "react-mentions";
 import axios from "axios";
 import { useAuth } from "@/components/auth/auth-provider";
+import { getAuth } from "firebase/auth";
+import Cookies from "js-cookie";
 
 interface PageProps {}
 
@@ -64,9 +66,10 @@ const TeacherDashboard: FC<PageProps> = ({}) => {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState<any>({});
   const [users, setUsers] = useState([]);
-  const [accessToken, setAccessToken] = useState<string>("");
+  const [idToken, setIdToken] = useState<string>("");
   const auth = useAuth();
-  console.log(accessToken);
+  const currentUser = auth?.currentUser;
+  console.log(idToken);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -90,16 +93,17 @@ const TeacherDashboard: FC<PageProps> = ({}) => {
     getUsers();
 
     // Get the access token from Firebase auth
-
-    auth?.currentUser
-      ?.getIdToken(true)
-      .then((token) => {
-        setAccessToken(token);
-      })
-      .catch((error) => {
-        console.error("Error getting access token:", error);
-      });
-  }, []);
+    if (currentUser) {
+      currentUser
+        .getIdToken()
+        .then((token) => {
+          setIdToken(token);
+        })
+        .catch((error) => {
+          console.error("Error getting access token:", error);
+        });
+    }
+  }, [currentUser]);
 
   const handleInputChange = (
     event: any,
@@ -156,7 +160,7 @@ const TeacherDashboard: FC<PageProps> = ({}) => {
         TimeZone: z.string().nullable(),
       }),
       End: z.object({
-        DateTime: z.string(),
+        DateTime: z.string().nullable(),
         TimeZone: z.string().nullable(),
       }),
       Recurrence: z.string().nullable(),
@@ -178,7 +182,7 @@ const TeacherDashboard: FC<PageProps> = ({}) => {
   };
 
   const createGoogleCalendarEvent = async (eventData: any) => {
-    if (!accessToken) {
+    if (!idToken) {
       console.error("No access token available");
       return;
     }
@@ -202,7 +206,7 @@ const TeacherDashboard: FC<PageProps> = ({}) => {
 
     try {
       const response = await axios.post("/api/calendar/event", {
-        accessToken,
+        idToken,
         event,
       });
       console.log("Event created:", response.data);
