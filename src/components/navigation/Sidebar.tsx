@@ -2,13 +2,16 @@
 import {
   Book,
   BookAudio,
+  BookOpenCheck,
   Disc2,
+  Files,
   Hospital,
   House,
   Network,
   PanelLeftClose,
   PanelRightClose,
   Users,
+  Zap,
 } from "lucide-react";
 import Image from "next/image";
 import { FC } from "react";
@@ -31,66 +34,50 @@ const Sidebar: FC<SidebarProps> = ({ userRole }) => {
     setIsPinned(!isPinned);
   };
 
-  const teacherLinks = [
+  const links = [
     {
       name: "Dashboard",
-      href: "/t/dashboard",
+      href: "/v/dashboard",
       active: pathname.includes("dashboard"),
       icon: <House className="w-5 h-5" />,
     },
     {
+      name: "Notes",
+      href: "/v/notes",
+      active: pathname.includes("notes"),
+      icon: <Files className="w-5 h-5" />,
+    },
+    {
+      name: "Flashcards",
+      href: "/v/flashcards",
+      active: pathname.includes("flashcards"),
+      icon: <Zap className="w-5 h-5" />,
+    },
+    {
+      name: "Questions",
+      href: "/v/questions",
+      active: pathname.includes("questions"),
+      icon: <BookOpenCheck className="w-5 h-5" />,
+    },
+    {
       name: "Cases",
-      href: "/t/cases",
+      href: "/v/cases",
       active: pathname.includes("cases"),
       icon: <Hospital className="w-5 h-5" />,
     },
     {
       name: "MindMaps",
-      href: "/t/mindmaps",
+      href: "/v/mindmaps",
       active: pathname.includes("mindmaps"),
       icon: <Network className="w-5 h-5" />,
     },
     {
-      name: "Transcriptions",
-      href: "/t/transcriptions",
+      name: "Podcasts",
+      href: "/v/transcriptions",
       active: pathname.includes("transcriptions"),
       icon: <BookAudio className="w-5 h-5" />,
     },
-    {
-      name: "Groups",
-      href: "/t/groups",
-      active: pathname.includes("groups"),
-      icon: <Users className="w-5 h-5" />,
-    },
   ];
-  const adminLinks = [
-    {
-      name: "Dashboard",
-      href: "/a/dashboard",
-      active: pathname.includes("dashboard"),
-      icon: <House className="w-5 h-5" />,
-    },
-  ];
-  const studentLinks = [
-    {
-      name: "Dashboard",
-      href: "/s/dashboard",
-      active: pathname.includes("dashboard"),
-      icon: <House className="w-5 h-5" />,
-    },
-  ];
-
-  let links;
-
-  if (userRole === "teacher") {
-    links = teacherLinks;
-  }
-  if (userRole === "admin") {
-    links = adminLinks;
-  }
-  if (userRole === "student") {
-    links = studentLinks;
-  }
 
   const containerVariants = {
     hidden: { opacity: 1 },
@@ -160,8 +147,10 @@ const Sidebar: FC<SidebarProps> = ({ userRole }) => {
             <li key={link.name} className="w-full">
               <Link
                 href={link.href}
-                className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium  ${
-                  link.active ? `bg-white text-violet-600` : `hover:bg-gray-200`
+                className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out ${
+                  link.active
+                    ? `bg-white text-violet-600 font-semibold`
+                    : `hover:bg-gray-200`
                 }`}
               >
                 {link.icon}
@@ -175,16 +164,16 @@ const Sidebar: FC<SidebarProps> = ({ userRole }) => {
       <div className="  space-y-4">
         <div className="p-2">
           <Link
-            href={"/guides"}
-            className="flex justify-start items-center gap-2 py-3 px-4 hover:bg-slate-100  rounded-lg"
+            href={"/v/guides"}
+            className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out ${
+              pathname.includes("guides")
+                ? `bg-white text-violet-600 font-semibold`
+                : `hover:bg-gray-200`
+            }`}
           >
             <Book className="w-5 h-5" />
             Guides
           </Link>
-        </div>
-        <div className="border-t p-2">
-          {" "}
-          <UserMenu />
         </div>
       </div>
     </motion.div>

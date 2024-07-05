@@ -18,6 +18,7 @@ export async function GET(
       .get();
 
     const userData = userDocument.data();
+    console.log(userData?.role);
 
     return NextResponse.json(userData);
   } catch (error) {

@@ -1,14 +1,9 @@
-import NewGroup from "@/components/teacher/groups/NewGroup";
 import { FC } from "react";
 
 interface pageProps {}
 
 const page: FC<pageProps> = ({}) => {
-  return (
-    <div>
-      <NewGroup />
-    </div>
-  );
+  return <div>guides</div>;
 };
 
 export default page;

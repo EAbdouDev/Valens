@@ -48,7 +48,7 @@ const LandingNav: FC<LandingNavProps> = ({}) => {
       )}
       {auth?.currentUser && (
         <Link
-          href={`/t/dashboard`}
+          href={`/v/dashboard`}
           className=" px-4 py-2 rounded-lg bg-black text-white flex justify-start items-center gap-2"
         >
           {/* <Avatar>

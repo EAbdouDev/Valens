@@ -1,6 +1,7 @@
 "use client";
 import { FC, useEffect, useState } from "react";
 import { format } from "date-fns";
+import UserMenu from "./UserMenu";
 
 interface NavbarProps {}
 
@@ -30,7 +31,8 @@ const Navbar: FC<NavbarProps> = ({}) => {
         <h1 className="text-2xl font-semibold">Dashboard</h1>
       </div>
       <div>
-        <span className="text-lg">{currentTime}</span>
+        <UserMenu />
+        {/* <span className="text-lg">{currentTime}</span> */}
       </div>
     </div>
   );

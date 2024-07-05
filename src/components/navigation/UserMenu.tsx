@@ -19,7 +19,7 @@ const UserMenu: FC<UserMenuProps> = ({}) => {
 
   return (
     <Popover>
-      <PopoverTrigger className="w-full flex justify-start items-center gap-4 text-left hover:bg-slate-100 px-2 py-2 rounded-lg transition-all ease-in-out">
+      <PopoverTrigger className="  hover:bg-slate-100 rounded-full transition-all ease-in-out border">
         <Avatar>
           <AvatarImage
             src={auth?.currentUser?.photoURL || ""}
@@ -28,16 +28,16 @@ const UserMenu: FC<UserMenuProps> = ({}) => {
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
 
-        <div className="space-y-1 max-w-full truncate">
+        {/* <div className="space-y-1 max-w-full truncate">
           <h1 className="text-sm font-medium  max-w-full truncate">
             {auth?.currentUser?.displayName}
           </h1>
           <p className="text-xs opacity-70  max-w-full truncate">
             {auth?.currentUser?.email}
           </p>
-        </div>
+        </div> */}
       </PopoverTrigger>
-      <PopoverContent align="end" alignOffset={30} className=" ml-6 p-2">
+      <PopoverContent align="center" alignOffset={30} className=" mr-6 p-2">
         <ul className="w-full">
           <li className="w-full">
             <Link

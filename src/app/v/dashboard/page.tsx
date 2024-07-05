@@ -67,6 +67,7 @@ const TeacherDashboard: FC<PageProps> = ({}) => {
   const [output, setOutput] = useState<any>({});
   const [users, setUsers] = useState([]);
   const [idToken, setIdToken] = useState<string>("");
+  const [timezone, setTimezone] = useState<string>("");
   const auth = useAuth();
   const currentUser = auth?.currentUser;
   console.log(idToken);
@@ -95,7 +96,7 @@ const TeacherDashboard: FC<PageProps> = ({}) => {
     // Get the access token from Firebase auth
     if (currentUser) {
       currentUser
-        .getIdToken()
+        .getIdToken(true)
         .then((token) => {
           setIdToken(token);
         })
@@ -103,6 +104,10 @@ const TeacherDashboard: FC<PageProps> = ({}) => {
           console.error("Error getting access token:", error);
         });
     }
+
+    // Get the timezone
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    setTimezone(timezone);
   }, [currentUser]);
 
   const handleInputChange = (
@@ -157,11 +162,11 @@ const TeacherDashboard: FC<PageProps> = ({}) => {
       Description: z.string().nullable(),
       Start: z.object({
         DateTime: z.string(),
-        TimeZone: z.string().nullable(),
+        TimeZone: z.string().nullable().default(timezone),
       }),
       End: z.object({
         DateTime: z.string().nullable(),
-        TimeZone: z.string().nullable(),
+        TimeZone: z.string().nullable().default(timezone),
       }),
       Recurrence: z.string().nullable(),
       Attendees: z.array(z.object({ Email: z.string() })),
@@ -171,7 +176,7 @@ const TeacherDashboard: FC<PageProps> = ({}) => {
       const { object } = await generateObject({
         model: google("models/gemini-1.5-pro-latest"),
         schema: schema,
-        prompt: `Extract important information from the following text: "${input}"`,
+        prompt: `Extract important information from the following text to use this data for the calander and generate a description based on this data: "${input}"`,
       });
 
       setOutput(object);
@@ -217,7 +222,7 @@ const TeacherDashboard: FC<PageProps> = ({}) => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold">Dashboard</h1>
+      {/* <h1 className="text-3xl font-bold">Dashboard</h1> */}
       <div className="mt-10 rounded-2xl bg-white p-4">
         <h1 className="text-xl font-semibold">AI + Google Calendar</h1>
         <MentionsInput
