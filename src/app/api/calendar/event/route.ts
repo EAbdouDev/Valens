@@ -11,11 +11,10 @@ export async function POST(request: NextRequest) {
     const uid = decodedToken.uid;
 
     // Initialize OAuth2 client with your Google credentials
-    const oauth2Client = new google.auth.OAuth2(
-      "1012612687585-jarkhi2ru7e80dujka0jdif8ab9eoj7q.apps.googleusercontent.com",
-      "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",
-      "http://localhost:3000"
-    );
+    const oauth2Client = new google.auth.OAuth2({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    });
 
     // Retrieve stored tokens (you should store these securely)
     const tokens = await getOAuth2Tokens(uid, idToken); // Function to get OAuth2 tokens

@@ -15,7 +15,7 @@ const layout: FC<LayoutProps> = async ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col h-screen">
       <div className="flex-1 flex flex-row overflow-y-hidden">
-        <div className="flex-1 flex flex-col overflow-y-auto">
+        <div className="flex-1 flex flex-col overflow-y-auto bg-white mt-2  rounded-tl-xl border">
           <nav className="px-8 py-4 border-b">
             <Navbar />
           </nav>
@@ -23,7 +23,7 @@ const layout: FC<LayoutProps> = async ({ children }) => {
           {/* <footer className="p-4 border-t">Footer</footer> */}
         </div>
 
-        <aside className="order-first  overflow-y-auto  border-r ">
+        <aside className="order-first  overflow-y-auto   ">
           <Sidebar userRole="teacher" />
         </aside>
       </div>
