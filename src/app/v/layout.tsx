@@ -15,8 +15,8 @@ const layout: FC<LayoutProps> = async ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col h-screen">
       <div className="flex-1 flex flex-row overflow-y-hidden">
-        <div className="flex-1 flex flex-col overflow-y-auto bg-white mt-2  rounded-tl-xl border">
-          <nav className="px-8 py-4 border-b">
+        <div className="flex-1 flex flex-col overflow-y-auto bg-white mt-4  rounded-tl-2xl border">
+          <nav className="px-8 py-4 border-b min-h-[70px] max-h-[70px]">
             <Navbar />
           </nav>
           <main className="px-10 py-8 flex-1 ">{children}</main>

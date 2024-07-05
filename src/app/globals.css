@@ -79,3 +79,11 @@
   box-shadow: none;
   @apply !bg-background !shadow-none  !border !rounded-lg;
 }
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}

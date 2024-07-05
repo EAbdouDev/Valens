@@ -4,30 +4,71 @@ import { firestore, auth } from "../../../../../firebase/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const { idToken, event } = await request.json();
+    const { event } = await request.json();
 
-    // Verify the ID token using Firebase Admin SDK
-    const decodedToken = await auth!.verifyIdToken(idToken);
-    const uid = decodedToken.uid;
+    const oAuth2 = google.auth.OAuth2;
 
-    // Initialize OAuth2 client with your Google credentials
-    const oauth2Client = new google.auth.OAuth2({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    const googleCert = {
+      web: {
+        client_id: process.env.CLIENT_ID,
+        project_id: process.env.PROJECT_ID,
+        auth_uri: process.env.AUTH_URI,
+        token_uri: process.env.TOKEN_URI,
+        auth_provider_x509_cert_url: process.env.AUTH_PROVIDER_X509_CERT_URL,
+        client_secret: process.env.CLIENT_SECRET,
+        redirect_uris: process.env.REDIRECT_URIS,
+        javascript_origins: process.env.JAVASCRIPT_ORIGINS,
+        refresh_token: process.env.REFRESH_TOKEN,
+      },
+    };
+
+    const oAuth2Client = new google.auth.OAuth2(
+      process.env.CLIENT_ID,
+      process.env.CLIENT_SECRET,
+      process.env.REDIRECT_URIS
+    );
+
+    // Set the refresh token
+    oAuth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
+
+    const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
+
+    // console.log(event);
+
+    // const eventData = {
+    //   summary: event.Summary,
+    //   location: event.Location,
+    //   description: event.Description,
+    //   start: {
+    //     dateTime: event.Start.DateTime,
+    //     timeZone: event.Start.TimeZone,
+    //   },
+    //   end: {
+    //     dateTime: event.End.DateTime,
+    //     timeZone: event.End.TimeZone,
+    //   },
+    //   recurrence: [event.Recurrence],
+    //   attendees: event.Attendees,
+    //   // 'reminders': {
+    //   //   'useDefault': false,
+    //   //   'overrides': [
+    //   //     {'method': 'email', 'minutes': 24 * 60},
+    //   //     {'method': 'popup', 'minutes': 10}
+    //   //   ]
+    //   // }
+    // };
+
+    const calendarList = await calendar.calendarList.list({
+      auth: oAuth2Client,
     });
-
-    // Retrieve stored tokens (you should store these securely)
-    const tokens = await getOAuth2Tokens(uid, idToken); // Function to get OAuth2 tokens
-    oauth2Client.setCredentials(tokens);
-
-    const calendar = google.calendar({ version: "v3", auth: oauth2Client });
-
-    const response = await calendar.events.insert({
-      calendarId: "primary",
+    console.log(calendarList.data.items);
+    const eventCreation = await calendar.events.insert({
+      auth: oAuth2Client,
       requestBody: event,
+      calendarId: "primary",
     });
-
-    return NextResponse.json(response.data);
+    console.log("error here ");
+    return NextResponse.json(eventCreation);
   } catch (error) {
     console.error("Error creating calendar event:", error);
     return NextResponse.json(
@@ -35,18 +76,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-}
-
-// Implement a function to get OAuth2 tokens
-async function getOAuth2Tokens(uid: string, idToken: string): Promise<any> {
-  // Exchange the Firebase ID token for an OAuth2 token
-  const oauth2Client = new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    process.env.GOOGLE_REDIRECT_URI
-  );
-
-  // Using the idToken to get OAuth2 tokens
-  const { tokens } = await oauth2Client.getToken(idToken);
-  return tokens;
 }

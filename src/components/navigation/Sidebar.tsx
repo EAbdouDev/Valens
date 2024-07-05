@@ -73,8 +73,8 @@ const Sidebar: FC<SidebarProps> = ({ userRole }) => {
     },
     {
       name: "Podcasts",
-      href: "/v/transcriptions",
-      active: pathname.includes("transcriptions"),
+      href: "/v/podcasts",
+      active: pathname.includes("podcasts"),
       icon: <BookAudio className="w-5 h-5" />,
     },
   ];
@@ -162,7 +162,10 @@ const Sidebar: FC<SidebarProps> = ({ userRole }) => {
         </ul>
       </motion.div>
       <div className="  space-y-4">
-        <div className="p-2">
+        {/* <div className="p-4 mb-4 bg-violet-200 rounded-xl mx-4">
+          Powerd by Gemini AI
+        </div> */}
+        <div className="p-2 mb-4">
           <Link
             href={"/v/guides"}
             className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out ${

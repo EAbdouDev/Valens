@@ -2,13 +2,13 @@
 
 import { FC, useState, useEffect } from "react";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
-import { generateObject } from "ai";
+import { streamObject } from "ai";
 import { z } from "zod";
 import { MentionsInput, Mention } from "react-mentions";
 import axios from "axios";
 import { useAuth } from "@/components/auth/auth-provider";
-import { getAuth } from "firebase/auth";
-import Cookies from "js-cookie";
+import { CalendarRange } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface PageProps {}
 
@@ -62,15 +62,14 @@ const customStyle = {
   },
 };
 
-const TeacherDashboard: FC<PageProps> = ({}) => {
+const CalendarComponent: FC<PageProps> = ({}) => {
   const [input, setInput] = useState("");
-  const [output, setOutput] = useState<any>({});
+  const [output, setOutput] = useState<any>(null);
   const [users, setUsers] = useState([]);
   const [idToken, setIdToken] = useState<string>("");
   const [timezone, setTimezone] = useState<string>("");
   const auth = useAuth();
   const currentUser = auth?.currentUser;
-  console.log(idToken);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -93,7 +92,6 @@ const TeacherDashboard: FC<PageProps> = ({}) => {
 
     getUsers();
 
-    // Get the access token from Firebase auth
     if (currentUser) {
       currentUser
         .getIdToken(true)
@@ -105,7 +103,6 @@ const TeacherDashboard: FC<PageProps> = ({}) => {
         });
     }
 
-    // Get the timezone
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     setTimezone(timezone);
   }, [currentUser]);
@@ -117,10 +114,9 @@ const TeacherDashboard: FC<PageProps> = ({}) => {
   ) => {
     setInput(newValue);
 
-    // Extract the query for the mention
     const mentionMatch = newPlainTextValue.match(/@\w*$/);
     if (mentionMatch) {
-      const query = mentionMatch[0].substring(1); // Remove the '@' from the query
+      const query = mentionMatch[0].substring(1);
       searchUsers(query);
     } else {
       setUsers([]);
@@ -173,14 +169,17 @@ const TeacherDashboard: FC<PageProps> = ({}) => {
     });
 
     try {
-      const { object } = await generateObject({
+      const { partialObjectStream } = await streamObject({
         model: google("models/gemini-1.5-pro-latest"),
         schema: schema,
-        prompt: `Extract important information from the following text to use this data for the calander and generate a description based on this data: "${input}"`,
+        prompt: `Extract important information from the following text to use this data for the calendar and generate a description based on this data: "${input}"`,
       });
 
-      setOutput(object);
-      await createGoogleCalendarEvent(object);
+      for await (const partialObject of partialObjectStream) {
+        setOutput(partialObject);
+      }
+
+      // await createGoogleCalendarEvent(output);
     } catch (error) {
       console.error("Error generating object:", error);
     }
@@ -192,17 +191,22 @@ const TeacherDashboard: FC<PageProps> = ({}) => {
       return;
     }
 
+    if (!output) {
+      return;
+    }
+    console.log("starting creating to google");
+
     const event = {
       summary: eventData.Summary,
       location: eventData.Location,
       description: eventData.Description,
       start: {
-        dateTime: eventData.Start.DateTime,
-        timeZone: eventData.Start.TimeZone,
+        dateTime: eventData.Start?.DateTime,
+        timeZone: eventData.Start?.TimeZone,
       },
       end: {
-        dateTime: eventData.End.DateTime,
-        timeZone: eventData.End.TimeZone,
+        dateTime: eventData.End?.DateTime,
+        timeZone: eventData.End?.TimeZone,
       },
       attendees: eventData.Attendees.map((attendee: any) => ({
         email: attendee.Email,
@@ -222,7 +226,6 @@ const TeacherDashboard: FC<PageProps> = ({}) => {
 
   return (
     <div>
-      {/* <h1 className="text-3xl font-bold">Dashboard</h1> */}
       <div className="mt-10 rounded-2xl bg-white p-4">
         <h1 className="text-xl font-semibold">AI + Google Calendar</h1>
         <MentionsInput
@@ -246,14 +249,82 @@ const TeacherDashboard: FC<PageProps> = ({}) => {
         >
           Extract Information
         </button>
+        <button
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
+          onClick={() => createGoogleCalendarEvent(output)}
+        >
+          Send to calander
+        </button>
         {output && (
-          <pre className="mt-4 p-4 bg-gray-100 rounded-lg">
-            {JSON.stringify(output, null, 2)}
-          </pre>
+          <motion.div
+            className="mt-4 p-4 bg-gray-100 rounded-lg flex justify-start items-start max-w-[30%]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="flex-shrink-0 mt-2">
+              <CalendarRange className="w-7 h-7" />
+            </div>
+            <div className="ml-4 space-y-2 mt-2">
+              <p className="text-xl font-semibold capitalize">
+                {output.Summary}
+              </p>
+              {output.Start?.DateTime && output.End?.DateTime && (
+                <div className="text-sm text-gray-600 space-y-2">
+                  <p>
+                    Starts on{" "}
+                    {new Date(output.Start.DateTime)
+                      .toLocaleString("en-GB", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                      })
+                      .replace(",", " at")}{" "}
+                  </p>
+                  <p>
+                    Ends on{" "}
+                    {new Date(output.End.DateTime)
+                      .toLocaleString("en-GB", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                      })
+                      .replace(",", " at")}
+                  </p>
+                </div>
+              )}
+              <p className="text-sm text-gray-600">{output.Location}</p>
+              <p className="text-sm text-gray-600">
+                {output.Attendees?.map((a: any) => (
+                  <p
+                    className="flex justify-start items-center gap-2"
+                    key={a.Email}
+                  >
+                    <img
+                      src="https://lh3.googleusercontent.com/a/AEdFTp4yFBlws2C_IzHMo-tCaHM4OhCSjOVhMoULB1RC=s96-c"
+                      className="rounded-full w-7 h-7"
+                      alt={a.Email}
+                    />{" "}
+                    {a.Email}
+                  </p>
+                ))}
+              </p>
+            </div>
+          </motion.div>
         )}
+
+        <div className="bg-gray-100 p-4 rounded-xl mt-8">
+          <pre>{JSON.stringify(output, null, 2)}</pre>
+        </div>
       </div>
     </div>
   );
 };
 
-export default TeacherDashboard;
+export default CalendarComponent;
