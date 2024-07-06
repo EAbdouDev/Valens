@@ -14,20 +14,32 @@ import {
   Zap,
 } from "lucide-react";
 import Image from "next/image";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import UserMenu from "./UserMenu";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import useSidebar from "@/zuztand/sidebar";
+import { useTheme } from "next-themes";
 
 interface SidebarProps {
   userRole: string;
 }
 
 const Sidebar: FC<SidebarProps> = ({ userRole }) => {
+  const [logoVar, setLogoVar] = useState("/logo/logo_dark_mode-01.svg");
   const pathname = usePathname();
   const { isExpanded, setIsExpanded, isPinned, setIsPinned } = useSidebar();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
+  useEffect(() => {
+    if (isDark) {
+      setLogoVar("/logo/logo_dark_mode-01.svg");
+    } else {
+      setLogoVar("/logo/logo_icon_dark_mode-01.svg");
+    }
+  }, [isDark]);
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
@@ -112,12 +124,7 @@ const Sidebar: FC<SidebarProps> = ({ userRole }) => {
       <div className="flex justify-between items-center w-full px-4 py-6 ">
         <div className="flex flex-col justify-start items-start gap-2">
           <div className="flex justify-start items-center gap-3 px-2">
-            <Image
-              src={"/logo/logo_icon_dark_mode-01.svg"}
-              alt="logo_dark_icon"
-              width={35}
-              height={35}
-            />
+            <Image src={logoVar} alt="logo_dark_icon" width={35} height={35} />
 
             <h1 className="text-xl font-bold">Valens</h1>
           </div>
@@ -150,7 +157,7 @@ const Sidebar: FC<SidebarProps> = ({ userRole }) => {
                 className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out ${
                   link.active
                     ? `bg-white text-violet-600 font-semibold`
-                    : `hover:bg-gray-200`
+                    : `hover:bg-gray-200 dark:hover:bg-[#1c1c1c]`
                 }`}
               >
                 {link.icon}
@@ -171,7 +178,7 @@ const Sidebar: FC<SidebarProps> = ({ userRole }) => {
             className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out ${
               pathname.includes("guides")
                 ? `bg-white text-violet-600 font-semibold`
-                : `hover:bg-gray-200`
+                : `hover:bg-gray-200 dark:hover:bg-[#1c1c1c]`
             }`}
           >
             <Book className="w-5 h-5" />

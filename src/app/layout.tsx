@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/auth/auth-provider";
+import NextThemeProvider from "@/providers/NextThemeProvider";
+import UIProvider from "../providers/UIProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -24,7 +26,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <UIProvider>
+            <NextThemeProvider>{children}</NextThemeProvider>
+          </UIProvider>
+        </AuthProvider>
       </body>
     </html>
   );

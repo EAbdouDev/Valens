@@ -2,6 +2,8 @@
 import { FC, useEffect, useState } from "react";
 import { format } from "date-fns";
 import UserMenu from "./UserMenu";
+import ThemeSwitcher from "./ThemeSwitcher";
+import Main from "../copilot/Main";
 
 interface NavbarProps {}
 
@@ -30,7 +32,9 @@ const Navbar: FC<NavbarProps> = ({}) => {
       <div>
         <h1 className="text-2xl font-semibold">Dashboard</h1>
       </div>
-      <div>
+      <div className="flex justify-center items-center gap-6">
+        <Main />
+        <ThemeSwitcher />
         <UserMenu />
         {/* <span className="text-lg">{currentTime}</span> */}
       </div>

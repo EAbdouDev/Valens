@@ -61,13 +61,13 @@ export async function POST(request: NextRequest) {
     const calendarList = await calendar.calendarList.list({
       auth: oAuth2Client,
     });
-    console.log(calendarList.data.items);
+
     const eventCreation = await calendar.events.insert({
       auth: oAuth2Client,
       requestBody: event,
       calendarId: "primary",
     });
-    console.log("error here ");
+
     return NextResponse.json(eventCreation);
   } catch (error) {
     console.error("Error creating calendar event:", error);

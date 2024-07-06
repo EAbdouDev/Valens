@@ -2,7 +2,7 @@
 
 import { FC, useState, useEffect } from "react";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
-import { streamObject } from "ai";
+import { generateText, streamObject } from "ai";
 import { z } from "zod";
 import { MentionsInput, Mention } from "react-mentions";
 import axios from "axios";
@@ -68,6 +68,8 @@ const CalendarComponent: FC<PageProps> = ({}) => {
   const [users, setUsers] = useState([]);
   const [idToken, setIdToken] = useState<string>("");
   const [timezone, setTimezone] = useState<string>("");
+  const [text, setText] = useState<any>("");
+
   const auth = useAuth();
   const currentUser = auth?.currentUser;
 
@@ -201,11 +203,11 @@ const CalendarComponent: FC<PageProps> = ({}) => {
       location: eventData.Location,
       description: eventData.Description,
       start: {
-        dateTime: eventData.Start?.DateTime,
+        dateTime: new Date(eventData.Start?.DateTime).toISOString(), // Ensuring ISO format
         timeZone: eventData.Start?.TimeZone,
       },
       end: {
-        dateTime: eventData.End?.DateTime,
+        dateTime: new Date(eventData.End?.DateTime).toISOString(), // Ensuring ISO format
         timeZone: eventData.End?.TimeZone,
       },
       attendees: eventData.Attendees.map((attendee: any) => ({
@@ -222,6 +224,33 @@ const CalendarComponent: FC<PageProps> = ({}) => {
     } catch (error) {
       console.error("Error creating calendar event:", error);
     }
+  };
+
+  const fetchText = async () => {
+    console.log("start");
+    const generatedText = await generateText({
+      model: google("models/gemini-1.5-pro-latest"),
+      system: "You are a friendly assistant",
+      prompt: "Who are my friends here",
+      tools: {
+        getUsers: {
+          description: "Get my friends",
+          parameters: z.object({
+            users: z.string().describe("My current users"),
+          }),
+          execute: async () => {
+            const users = getUsers();
+            return `You have these friends: ${users}!`;
+          },
+        },
+      },
+    });
+    setText(generatedText);
+    console.log("end");
+  };
+
+  const getUsers = () => {
+    return "eslamabdou, mohammed Fahmi";
   };
 
   return (
@@ -323,6 +352,9 @@ const CalendarComponent: FC<PageProps> = ({}) => {
           <pre>{JSON.stringify(output, null, 2)}</pre>
         </div>
       </div>
+
+      <button onClick={() => fetchText}>Test</button>
+      <p>{text}</p>
     </div>
   );
 };
