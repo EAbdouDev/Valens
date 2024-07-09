@@ -11,7 +11,10 @@ import { parseRelativeDate, sleep } from "@/lib/utils";
 import { firestore } from "../../../firebase/server";
 import UserCard from "./llm/UserCard";
 import { google as gapi } from "googleapis";
-import DayEventsLists from "./llm/DayEventsLists";
+import DayEventsList from "./llm/DayEventsList";
+import { MemoizedReactMarkdown } from "./markdown";
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
 
 const content = `
     You are a Valens copilot, which means an assistant for Valens webapp users. You can help users create events in Google Calendar and show today's events, beside that you can chat with users if they didn't ask for event creation or to get today events 
@@ -82,7 +85,21 @@ export const sendMessage = async (
       text: ({ content, done }) => {
         if (done) history.done([...history.get(), { role: "system", content }]);
 
-        return <BotMessage>{content}</BotMessage>;
+        return (
+          <BotMessage>
+            <MemoizedReactMarkdown
+              className="prose break-words prose-p:leading-relaxed prose-pre:p-0"
+              remarkPlugins={[remarkGfm, remarkMath]}
+              components={{
+                p({ children }) {
+                  return <p className="mb-2 last:mb-0">{children}</p>;
+                },
+              }}
+            >
+              {content}
+            </MemoizedReactMarkdown>
+          </BotMessage>
+        );
       },
       temperature: 0,
       tools: {
@@ -111,7 +128,7 @@ export const sendMessage = async (
 
             const id = res.status === "success" && res.id;
 
-            // await sleep(1000);
+            await sleep(2000);
             history.done([
               ...history.get(),
               {
@@ -151,9 +168,10 @@ export const sendMessage = async (
               </BotCard>
             );
 
+            await sleep(2000);
+
             const res = await getEventsForDay(day);
 
-            // await sleep(1000);
             history.done([
               ...history.get(),
               {
@@ -164,25 +182,7 @@ export const sendMessage = async (
             ]);
             return (
               <BotCard>
-                {res.length > 0 && (
-                  <div className="flex flex-col justify-start items-start w-full gap-2 ">
-                    {res.map((ev: any) => (
-                      <DayEventsLists
-                        id={ev.id}
-                        attendees=""
-                        created={ev.created}
-                        creator={ev.creator}
-                        description={ev.description}
-                        end={ev.end}
-                        htmlLink={ev.htmlLink}
-                        start={ev.start}
-                        summary={ev.summary}
-                        updated={ev.updated}
-                        key={ev.id}
-                      />
-                    ))}
-                  </div>
-                )}
+                {res.length > 0 && <DayEventsList events={res} />}
               </BotCard>
             );
           },

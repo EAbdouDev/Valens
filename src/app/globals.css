@@ -87,3 +87,7 @@
   height: 0;
   pointer-events: none;
 }
+
+.firebase-emulator-warning {
+  display: none;
+}

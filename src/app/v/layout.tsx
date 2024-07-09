@@ -17,9 +17,9 @@ const layout: FC<LayoutProps> = async ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col h-screen">
       <div className="flex-1 flex flex-row overflow-y-hidden overflow-x-hidden">
-        <div className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden bg-white dark:bg-[#121212] mt-4  rounded-xl border">
+        <div className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden bg-white dark:bg-[#0c0c0c] mt-4  rounded-t-2xl ">
           <AI>
-            <nav className="px-8 py-4 border-b min-h-[70px] max-h-[70px]">
+            <nav className="px-8 py-4  min-h-[70px] max-h-[70px]">
               <Navbar />
             </nav>
           </AI>

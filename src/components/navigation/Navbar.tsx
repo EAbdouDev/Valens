@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import UserMenu from "./UserMenu";
 import ThemeSwitcher from "./ThemeSwitcher";
 import Main from "../copilot/Main";
+import HeaderTitle from "./HeaderTitle";
 
 interface NavbarProps {}
 
@@ -30,7 +31,9 @@ const Navbar: FC<NavbarProps> = ({}) => {
   return (
     <div className="w-full flex justify-between items-center ">
       <div>
-        <h1 className="text-2xl font-semibold">Dashboard</h1>
+        <h1 className="text-2xl font-semibold">
+          <HeaderTitle />
+        </h1>
       </div>
       <div className="flex justify-center items-center gap-6">
         <Main />

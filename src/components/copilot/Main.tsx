@@ -8,7 +8,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { BrainCircuit, Plus, SendHorizontal, X } from "lucide-react";
+import { BrainCircuit, Plus, SendHorizontal, Sparkle, X } from "lucide-react";
 
 import { FC } from "react";
 import ChatScrollAnchor from "./ChatScrollAnchor";
@@ -61,14 +61,14 @@ const Main: FC<MainProps> = ({}) => {
   return (
     <Sheet>
       <SheetTrigger>
-        <BrainCircuit />
+        <Sparkle />
       </SheetTrigger>
-      <SheetContent className="!m-4 rounded-xl border flex flex-col ">
+      <SheetContent className="!m-4  rounded-xl border flex flex-col  ">
         <SheetHeader className="">
           <SheetTitle className="flex justify-between items-center  mb-2">
-            <h1 className="text-2xl">Valens Copilot</h1>
+            <h1 className="text-2xl font-bold">Valens Copilot</h1>
             <button
-              className="px-4 py-2 border-2 rounded-lg flex justify-center items-center gap-2 text-sm font-medium"
+              className="px-4 py-2 border-2 rounded-lg flex justify-center items-center gap-2 text-sm font-semibold"
               onClick={(e) => {
                 e.preventDefault();
                 window.location.reload();

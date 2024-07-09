@@ -4,7 +4,7 @@ import { FC } from "react";
 interface pageProps {}
 
 export const metadata: Metadata = {
-  title: "Recordings",
+  title: "MindMaps",
 
   description: "An assistant to help medical studnets.",
 };

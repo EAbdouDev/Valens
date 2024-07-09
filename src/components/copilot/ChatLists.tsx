@@ -1,5 +1,5 @@
 "use client";
-import { FC } from "react";
+import { FC, useEffect, useRef } from "react";
 import { UIState } from "./actions";
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
 import { useAuth } from "../auth/auth-provider";
@@ -10,6 +10,14 @@ interface chatListsProps {
 
 const ChatLists: FC<chatListsProps> = ({ messages }) => {
   const auth = useAuth();
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   if (!messages.length)
     return (
       <div className="p-4 w-full h-full">
@@ -23,9 +31,10 @@ const ChatLists: FC<chatListsProps> = ({ messages }) => {
         </div>
       </div>
     );
+
   return (
     <ScrollShadow className="w-full h-full" hideScrollBar>
-      <div className="relative ">
+      <div className="relative" ref={scrollRef}>
         {messages.map((message) => (
           <div key={message.id} className="pb-8">
             {message.display}
