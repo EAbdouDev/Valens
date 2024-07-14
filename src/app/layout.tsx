@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
+import { Public_Sans } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/auth/auth-provider";
 import NextThemeProvider from "@/providers/NextThemeProvider";
 import UIProvider from "../providers/UIProvider";
 
-const font = Manrope({
+const font = Public_Sans({
   subsets: ["latin"],
   weight: ["200", "300", "400", "500", "600", "700", "800"],
 });

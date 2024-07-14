@@ -12,8 +12,10 @@ const HeaderTitle: FC<HeaderTitleProps> = ({}) => {
     const titles: { [key: string]: string } = {
       "/v/dashboard": "Dashboard",
       "/v/notes": "Notes",
-      "/contact": "Contact",
-      "/services": "Our Services",
+
+      "/v/cases": "Cases",
+      "/v/podcasts": "Podcasts",
+      "/v/podcasts/new": "New Podcast",
       // Add more path-to-title mappings as needed
     };
 

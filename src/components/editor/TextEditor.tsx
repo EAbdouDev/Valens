@@ -27,12 +27,15 @@ import Collaboration from "@tiptap/extension-collaboration";
 import Mention from "@tiptap/extension-mention";
 import Typography from "@tiptap/extension-typography";
 import Youtube from "@tiptap/extension-youtube";
+import Toolbar from "./Toolbar";
+import useTextPod from "@/zuztand/TextEditorPod";
 
 interface TextEditorProps {}
 
 const TextEditor: FC<TextEditorProps> = ({}) => {
   const [contents, setContents] = useState<string>("");
   const [imageSrc, setImageSrc] = useState("");
+  const { setText, text } = useTextPod();
 
   const extensions = [
     StarterKit.configure({
@@ -154,16 +157,20 @@ const TextEditor: FC<TextEditorProps> = ({}) => {
     }),
   ];
 
+  console.log("text", text);
+
   const editor = useEditor({
     extensions,
     onUpdate: ({ editor }) => {
       setContents(editor.getHTML());
       const content = editor.getText();
-      const mathProblem = detectMathProblem(content);
-      if (mathProblem) {
-        const solution = solveMathProblem(mathProblem);
-        insertSolution(editor, mathProblem, solution);
-      }
+      setText(content);
+
+      // const mathProblem = detectMathProblem(content);
+      // if (mathProblem) {
+      //   const solution = solveMathProblem(mathProblem);
+      //   insertSolution(editor, mathProblem, solution);
+      // }
     },
     editorProps: {
       attributes: {
@@ -177,51 +184,43 @@ const TextEditor: FC<TextEditorProps> = ({}) => {
     },
   });
 
-  const detectMathProblem = (content: string) => {
-    const mathProblemRegex = /(\d+\s*[\+\-\*\/]\s*\d+\s*=)\s*$/;
-    const match = content.match(mathProblemRegex);
-    return match ? match[0] : null;
-  };
+  // const detectMathProblem = (content: string) => {
+  //   const mathProblemRegex = /(\d+\s*[\+\-\*\/]\s*\d+\s*=)\s*$/;
+  //   const match = content.match(mathProblemRegex);
+  //   return match ? match[0] : null;
+  // };
 
-  const solveMathProblem = (problem: string) => {
-    try {
-      const sanitizedProblem = problem.replace("=", "").trim();
-      const solution = new Function(`return (${sanitizedProblem})`)();
-      return solution;
-    } catch (error) {
-      console.error("Error solving math problem:", error);
-      return null;
-    }
-  };
+  // const solveMathProblem = (problem: string) => {
+  //   try {
+  //     const sanitizedProblem = problem.replace("=", "").trim();
+  //     const solution = new Function(`return (${sanitizedProblem})`)();
+  //     return solution;
+  //   } catch (error) {
+  //     console.error("Error solving math problem:", error);
+  //     return null;
+  //   }
+  // };
 
-  const insertSolution = (editor: any, problem: string, solution: any) => {
-    if (solution !== null) {
-      const currentContent = editor.getText();
-      const newContent = currentContent.replace(
-        problem,
-        `${problem}${solution}`
-      );
-      editor.commands.setContent(newContent);
-    }
-  };
+  // const insertSolution = (editor: any, problem: string, solution: any) => {
+  //   if (solution !== null) {
+  //     const currentContent = editor.getText();
+  //     const newContent = currentContent.replace(
+  //       problem,
+  //       `${problem}${solution}`
+  //     );
+  //     editor.commands.setContent(newContent);
+  //   }
+  // };
 
-  const test = {
-    web: {
-      client_id: process.env.CLIENT_ID,
-      project_id: process.env.PROJECT_ID,
-      auth_uri: process.env.AUTH_URI,
-      token_uri: process.env.TOKEN_URI,
-      auth_provider_x509_cert_url: process.env.AUTH_PROVIDER_X509_CERT_URL,
-      client_secret: process.env.CLIENT_SECRET,
-      redirect_uris: process.env.REDIRECT_URIS,
-      javascript_origins: process.env.JAVASCRIPT_ORIGINS,
-    },
-  };
-
-  console.log(test);
   return (
-    <div>
-      <EditorContent editor={editor} />
+    <div className="space-y-2">
+      <div className="bg-gray-50 rounded-xl">
+        {" "}
+        <Toolbar editor={editor} />
+      </div>
+      <div className=" bg-gray-50 rounded-xl">
+        <EditorContent editor={editor} />
+      </div>
     </div>
   );
 };

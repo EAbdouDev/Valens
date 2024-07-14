@@ -10,12 +10,12 @@ export const metadata: Metadata = {
   description: "An assistant to help medical studnets.",
 };
 
-const CasesPage: FC<pageProps> = ({}) => {
+const PodcastsPage: FC<pageProps> = ({}) => {
   return (
     <div className="w-full">
-      <Link href={"/v/cases/new"}>New Case</Link>
+      <Link href={"/v/podcasts/new"}>New Podcast</Link>
     </div>
   );
 };
 
-export default CasesPage;
+export default PodcastsPage;

@@ -177,7 +177,7 @@ export const sendMessage = async (
               {
                 role: "system",
                 name: "get_events_for_day",
-                content: day,
+                content: JSON.stringify(res),
               },
             ]);
             return (

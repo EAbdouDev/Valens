@@ -156,7 +156,7 @@ const Sidebar: FC<SidebarProps> = ({ userRole }) => {
                 href={link.href}
                 className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out ${
                   link.active
-                    ? `bg-white text-violet-600 font-semibold`
+                    ? `bg-white text-violet-600 font-semibold shadow-lg shadow-violet-50`
                     : `hover:bg-gray-200 dark:hover:bg-[#1c1c1c]`
                 }`}
               >

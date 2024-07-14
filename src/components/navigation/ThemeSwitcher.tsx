@@ -30,7 +30,7 @@ const ThemeSwitcher: FC<ThemeSwitcherProps> = ({}) => {
         onClick={handleChangeTheme}
         className="flex justify-center items-center p-1"
       >
-        {isDark ? <Sun /> : <Moon />}
+        {isDark ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
       </button>
     </div>
   );
