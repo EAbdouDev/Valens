@@ -6,6 +6,8 @@ import { AI } from "@/app/actions";
 import { Chat } from "@/components/note-assist/chat";
 import { generateId } from "ai";
 
+export const maxDuration = 300;
+
 interface pageProps {
   params: {
     slug: string;
