@@ -22,11 +22,9 @@ import { motion } from "framer-motion";
 import useSidebar from "@/zuztand/sidebar";
 import { useTheme } from "next-themes";
 
-interface SidebarProps {
-  userRole: string;
-}
+interface SidebarProps {}
 
-const Sidebar: FC<SidebarProps> = ({ userRole }) => {
+const Sidebar: FC<SidebarProps> = ({}) => {
   const [logoVar, setLogoVar] = useState("/logo/logo_dark_mode-01.svg");
   const pathname = usePathname();
   const { isExpanded, setIsExpanded, isPinned, setIsPinned } = useSidebar();
@@ -156,8 +154,8 @@ const Sidebar: FC<SidebarProps> = ({ userRole }) => {
                 href={link.href}
                 className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out ${
                   link.active
-                    ? `bg-white text-violet-600 font-semibold shadow-lg shadow-violet-50`
-                    : `hover:bg-gray-200 dark:hover:bg-[#1c1c1c]`
+                    ? ` text-violet-600 font-semibold bg-gray-100`
+                    : `hover:bg-gray-50 dark:hover:bg-[#1c1c1c]`
                 }`}
               >
                 {link.icon}

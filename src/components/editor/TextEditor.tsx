@@ -126,7 +126,7 @@ const TextEditor: FC<TextEditorProps> = ({}) => {
       alignments: ["left", "center", "right", "justify"],
     }),
     Placeholder.configure({
-      placeholder: "Let your words flow...",
+      placeholder: "You can type here (supports md)...",
       emptyEditorClass: "is-editor-empty",
     }),
     Table.configure({
@@ -156,8 +156,6 @@ const TextEditor: FC<TextEditorProps> = ({}) => {
       },
     }),
   ];
-
-  console.log("text", text);
 
   const editor = useEditor({
     extensions,
@@ -214,11 +212,11 @@ const TextEditor: FC<TextEditorProps> = ({}) => {
 
   return (
     <div className="space-y-2">
-      <div className="bg-gray-50 rounded-xl">
-        {" "}
+      <div className="bg-[#f9f9f9] dark:bg-[#181818] rounded-2xl">
         <Toolbar editor={editor} />
       </div>
-      <div className=" bg-gray-50 rounded-xl">
+
+      <div className="rounded-2xl">
         <EditorContent editor={editor} />
       </div>
     </div>

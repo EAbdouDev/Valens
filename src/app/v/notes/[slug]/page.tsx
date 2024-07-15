@@ -1,10 +1,10 @@
 import TextEditor from "@/components/editor/TextEditor";
 import { FC } from "react";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
+
+import Toolbar from "@/components/editor/Toolbar";
+import { AI } from "@/app/actions";
+import { Chat } from "@/components/note-assist/chat";
+import { generateId } from "ai";
 
 interface pageProps {
   params: {
@@ -13,17 +13,21 @@ interface pageProps {
 }
 
 const page: FC<pageProps> = ({ params }) => {
+  const id = generateId();
+
   return (
-    <div className=" w-full h-full bg-[#f9f9f9] dark:bg-[#181818] rounded-lg">
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel minSize={50} maxSize={75}>
+    <div className=" w-full h-full  rounded-lg ">
+      {/* Main */}
+      <div className="flex justify-start items-start gap-2 w-full h-full">
+        <div className="flex-1 h-full   overflow-auto pr-4">
           <TextEditor />
-        </ResizablePanel>
-        <ResizableHandle />
-        <ResizablePanel minSize={40} maxSize={50} className="p-4">
-          AI
-        </ResizablePanel>
-      </ResizablePanelGroup>
+        </div>
+        <div className="min-w-[40%] max-w-[40%]  h-full rounded-2xl p-4 overflow-auto border">
+          <AI initialAIState={{ chatId: id, messages: [] }}>
+            <Chat id={"sdds"} query={""} />
+          </AI>
+        </div>
+      </div>
     </div>
   );
 };

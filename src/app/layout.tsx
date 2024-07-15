@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/components/auth/auth-provider";
 import NextThemeProvider from "@/providers/NextThemeProvider";
 import UIProvider from "../providers/UIProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const font = Public_Sans({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({
         <AuthProvider>
           <UIProvider>
             <NextThemeProvider>{children}</NextThemeProvider>
+            <Toaster />
           </UIProvider>
         </AuthProvider>
       </body>
