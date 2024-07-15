@@ -5,7 +5,7 @@ import { FC } from "react";
 
 interface NotesPageProps {}
 
-export const maxDuration = 300;
+export const maxDuration = 60;
 export const metadata: Metadata = {
   title: "Notes",
 
