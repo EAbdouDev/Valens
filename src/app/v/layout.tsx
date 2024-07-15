@@ -1,12 +1,6 @@
 import Sidebar from "@/components/navigation/Sidebar";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { FC, ReactNode } from "react";
-import { auth } from "../../../firebase/server";
-import { DecodedIdToken } from "firebase-admin/auth";
-import SidebarWarpper from "@/components/navigation/SidebarWarpper";
 import Navbar from "@/components/navigation/Navbar";
-import Main from "@/components/copilot/Main";
 import { AI } from "@/components/copilot/actions";
 
 interface LayoutProps {
