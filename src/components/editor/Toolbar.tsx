@@ -46,11 +46,6 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/react";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
 
 interface ToolbarProps {
   editor: Editor | null;
