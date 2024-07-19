@@ -24,7 +24,7 @@ const page: FC<pageProps> = ({ params }) => {
         <div className="flex-1 h-full   overflow-auto pr-4">
           <TextEditor />
         </div>
-        <div className="min-w-[40%] max-w-[40%]  h-full rounded-2xl p-4 overflow-auto border">
+        <div className="min-w-[40%] max-w-[40%]  h-full p-4 overflow-auto border-l">
           <AI initialAIState={{ chatId: id, messages: [] }}>
             <Chat id={"sdds"} query={""} />
           </AI>

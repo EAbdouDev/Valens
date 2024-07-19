@@ -10,22 +10,26 @@ interface LayoutProps {
 const layout: FC<LayoutProps> = async ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col h-screen">
-      <div className="flex-1 flex flex-row overflow-y-hidden overflow-x-hidden">
-        <div className="flex-1 flex flex-col overflow-y-hidden overflow-x-hidden bg-white dark:bg-[#0c0c0c] ">
-          <AI>
-            <nav className="px-8 py-4  min-h-[70px] max-h-[70px] border-b bg-transparent backdrop-blur">
-              <Navbar />
-            </nav>
-          </AI>
-          <main className="px-8 py-8 flex-1 overflow-auto">{children}</main>
+      <header className="">
+        <AI>
+          <nav className="p-4 lg:px-6 lg:py-3  max-h-fit border-b bg-transparent backdrop-blur">
+            <Navbar />
+          </nav>
+        </AI>
+      </header>
+      {/* <!-- main container --> */}
+      <div className="flex-1 flex flex-row overflow-y-hidden">
+        <main className="flex-1  overflow-y-auto ">{children}</main>
 
-          {/* <footer className="p-4 border-t">Footer</footer> */}
-        </div>
-
-        <aside className="order-first  overflow-y-auto border-r   ">
+        <nav className="order-first hidden sm:flex sm:w-[250px]  overflow-y-auto border-r  ">
           <Sidebar />
-        </aside>
+        </nav>
+
+        {/* <aside className="sm:w-32  overflow-y-auto">Right Sidebar</aside> */}
       </div>
+      {/* <!-- end main container --> */}
+
+      {/* <footer className="bg-gray-100">Footer</footer> */}
     </div>
   );
 };

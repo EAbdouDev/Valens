@@ -182,41 +182,13 @@ const TextEditor: FC<TextEditorProps> = ({}) => {
     },
   });
 
-  // const detectMathProblem = (content: string) => {
-  //   const mathProblemRegex = /(\d+\s*[\+\-\*\/]\s*\d+\s*=)\s*$/;
-  //   const match = content.match(mathProblemRegex);
-  //   return match ? match[0] : null;
-  // };
-
-  // const solveMathProblem = (problem: string) => {
-  //   try {
-  //     const sanitizedProblem = problem.replace("=", "").trim();
-  //     const solution = new Function(`return (${sanitizedProblem})`)();
-  //     return solution;
-  //   } catch (error) {
-  //     console.error("Error solving math problem:", error);
-  //     return null;
-  //   }
-  // };
-
-  // const insertSolution = (editor: any, problem: string, solution: any) => {
-  //   if (solution !== null) {
-  //     const currentContent = editor.getText();
-  //     const newContent = currentContent.replace(
-  //       problem,
-  //       `${problem}${solution}`
-  //     );
-  //     editor.commands.setContent(newContent);
-  //   }
-  // };
-
   return (
     <div className="space-y-2">
-      <div className="bg-[#f9f9f9] dark:bg-[#181818] rounded-2xl">
+      <div className="   border-b">
         <Toolbar editor={editor} />
       </div>
 
-      <div className="rounded-2xl">
+      <div className="">
         <EditorContent editor={editor} />
       </div>
     </div>

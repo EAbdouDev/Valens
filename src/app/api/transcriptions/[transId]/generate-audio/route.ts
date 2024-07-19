@@ -18,8 +18,8 @@ const client = new ElevenLabsClient({
 });
 
 const voices = {
-  eslam: "itkUuCeluzmxnISkRimf",
-  aya: "ZIf12jahi2u99Y2t04Dq",
+  eslam: "mZ8K1MPRiT5wDQaasg3i",
+  aya: "P7x743VjyZEOihNNygQ9",
 };
 
 type Host = keyof typeof voices;

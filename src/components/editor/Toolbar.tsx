@@ -169,7 +169,7 @@ const Toolbar: FC<ToolbarProps> = ({ editor }) => {
   }
 
   return (
-    <div className=" flex justify-between items-center w-full">
+    <div className=" flex justify-between items-center w-full ">
       <div className=" transition-all ease-soft-spring   rounded-lg flex flex-wrap p-4  justify-start items-center gap-4 ">
         <div className="  flex gap-4">
           <button

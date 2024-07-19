@@ -10,7 +10,7 @@ const NextThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="dark"
+      defaultTheme="light"
       enableSystem
       disableTransitionOnChange
     >

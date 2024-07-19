@@ -5,39 +5,36 @@ import UserMenu from "./UserMenu";
 import ThemeSwitcher from "./ThemeSwitcher";
 import Main from "../copilot/Main";
 import HeaderTitle from "./HeaderTitle";
+import Image from "next/image";
+import { useTheme } from "next-themes";
 
 interface NavbarProps {}
 
 const Navbar: FC<NavbarProps> = ({}) => {
-  const [currentTime, setCurrentTime] = useState<string>("");
+  const [logoVar, setLogoVar] = useState("/logo/logo_dark_mode-01.svg");
+
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const formattedTime = format(now, "dd/MM/yyyy - h:mm a");
-      setCurrentTime(formattedTime);
-    };
-
-    // Update time immediately on component mount
-    updateTime();
-
-    // Set an interval to update the time every minute
-    const intervalId = setInterval(updateTime, 1000);
-
-    // Clean up the interval on component unmount
-    return () => clearInterval(intervalId);
-  }, []);
+    if (isDark) {
+      setLogoVar("/logo/logo_dark_mode-01.svg");
+    } else {
+      setLogoVar("/logo/logo_icon_dark_mode-01.svg");
+    }
+  }, [isDark]);
 
   return (
     <div className="w-full flex justify-between items-center ">
-      <div>
-        <h1 className="text-2xl font-semibold">
-          <HeaderTitle />
-        </h1>
+      <div className="flex justify-start items-center gap-3 ">
+        <Image src={logoVar} alt="logo_dark_icon" width={35} height={35} />
+
+        <h1 className="text-xl font-bold">Valens</h1>
       </div>
+
       <div className="flex justify-center items-center gap-6">
         <Main />
-        <ThemeSwitcher />
+        {/* <ThemeSwitcher /> */}
         <UserMenu />
         {/* <span className="text-lg">{currentTime}</span> */}
       </div>

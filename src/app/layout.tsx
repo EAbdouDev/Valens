@@ -26,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={font.className}>
+      <body className={font.className} suppressHydrationWarning>
         <AuthProvider>
           <UIProvider>
             <NextThemeProvider>{children}</NextThemeProvider>

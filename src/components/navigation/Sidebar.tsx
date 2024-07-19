@@ -21,23 +21,15 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import useSidebar from "@/zuztand/sidebar";
 import { useTheme } from "next-themes";
+import { Tooltip } from "@nextui-org/react";
 
 interface SidebarProps {}
 
 const Sidebar: FC<SidebarProps> = ({}) => {
-  const [logoVar, setLogoVar] = useState("/logo/logo_dark_mode-01.svg");
   const pathname = usePathname();
   const { isExpanded, setIsExpanded, isPinned, setIsPinned } = useSidebar();
   const { theme } = useTheme();
   const isDark = theme === "dark";
-
-  useEffect(() => {
-    if (isDark) {
-      setLogoVar("/logo/logo_dark_mode-01.svg");
-    } else {
-      setLogoVar("/logo/logo_icon_dark_mode-01.svg");
-    }
-  }, [isDark]);
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
@@ -89,101 +81,35 @@ const Sidebar: FC<SidebarProps> = ({}) => {
     },
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 1 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: { opacity: 1, x: 0 },
-  };
-
   return (
     <motion.div
-      className={`h-full flex flex-col  w-[256px] `}
-      // initial={false}
-      // animate={{
-      //   width: isExpanded || isPinned ? "256px" : "80px",
-      // }}
-      // transition={{ duration: 0.3 }}
-      // onMouseEnter={() => {
-      //   if (!isPinned) setIsExpanded(true);
-      // }}
-      // onMouseLeave={() => {
-      //   if (!isPinned) setIsExpanded(false);
-      // }}
+      className={`h-full flex flex-col  w-full justify-center items-center `}
     >
-      <div className="flex justify-between items-center w-full px-4 py-6 ">
-        <div className="flex flex-col justify-start items-start gap-2">
-          <div className="flex justify-start items-center gap-3 px-2">
-            <Image src={logoVar} alt="logo_dark_icon" width={35} height={35} />
-
-            <h1 className="text-xl font-bold">Valens</h1>
-          </div>
-        </div>
-        {/* {(isExpanded || isPinned) && (
-          <button
-            onClick={handleToggle}
-            className="p-2 rounded-lg opacity-60 hover:bg-slate-100 hover:opacity-100 transition-all ease-in-out"
-          >
-            {!isExpanded && isPinned ? (
-              <PanelLeftClose className="w-5 h-5" />
-            ) : (
-              <PanelRightClose className="w-5 h-5" />
-            )}
-          </button>
-        )} */}
-      </div>
-
-      <motion.div
-        className="flex-grow my-4 px-2 py-4 w-full"
-        // variants={containerVariants}
-        // initial="hidden"
-        // animate={isExpanded || isPinned ? "visible" : "hidden"}
-      >
-        <ul className="flex flex-col justify-start items-start gap-4 w-full">
+      <motion.div className="flex-grow my-4 px-2 py-2 w-full">
+        <ul className="flex flex-col justify-start items-start gap-3 w-full">
           {links?.map((link) => (
             <li key={link.name} className="w-full">
-              <Link
-                href={link.href}
-                className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out ${
-                  link.active
-                    ? ` text-violet-600 font-semibold bg-gray-100`
-                    : `hover:bg-gray-50 dark:hover:bg-[#1c1c1c]`
-                }`}
+              <Tooltip
+                content={link.name}
+                placement="right-start"
+                color="primary"
               >
-                {link.icon}
-
-                {link.name}
-              </Link>
+                <Link
+                  href={link.href}
+                  className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out  ${
+                    link.active
+                      ? ` text-white font-semibold bg-black dark:bg-white dark:text-black opacity-100`
+                      : `hover:bg-gray-100 dark:hover:bg-[#1c1c1c] opacity-85`
+                  }`}
+                >
+                  {link.icon}
+                  {link.name}
+                </Link>
+              </Tooltip>
             </li>
           ))}
         </ul>
       </motion.div>
-      <div className="  space-y-4">
-        {/* <div className="p-4 mb-4 bg-violet-200 rounded-xl mx-4">
-          Powerd by Gemini AI
-        </div> */}
-        <div className="p-2 mb-4">
-          <Link
-            href={"/v/guides"}
-            className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out ${
-              pathname.includes("guides")
-                ? `bg-white text-violet-600 font-semibold`
-                : `hover:bg-gray-200 dark:hover:bg-[#1c1c1c]`
-            }`}
-          >
-            <Book className="w-5 h-5" />
-            Guides
-          </Link>
-        </div>
-      </div>
     </motion.div>
   );
 };
