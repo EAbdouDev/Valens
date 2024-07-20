@@ -81,6 +81,15 @@ const Sidebar: FC<SidebarProps> = ({}) => {
     },
   ];
 
+  const noisyGradientStyle = {
+    backgroundImage: `
+      linear-gradient(135deg, #6B73FF 0%, #000DFF 100%),
+      url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgcBAQBWQ1tLAAAAAElFTkSuQmCC")
+    `,
+    backgroundBlendMode: "overlay",
+    backgroundSize: "cover",
+  };
+
   return (
     <motion.div
       className={`h-full flex flex-col  w-full justify-center items-center `}
@@ -98,7 +107,7 @@ const Sidebar: FC<SidebarProps> = ({}) => {
                   href={link.href}
                   className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out  ${
                     link.active
-                      ? ` text-white font-semibold bg-black dark:bg-white dark:text-black opacity-100`
+                      ? ` text-white font-semibold bg-black dark:bg-white dark:text-black opacity-100 ${noisyGradientStyle}`
                       : `hover:bg-gray-100 dark:hover:bg-[#1c1c1c] opacity-85`
                   }`}
                 >

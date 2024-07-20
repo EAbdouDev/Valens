@@ -5,9 +5,18 @@ import { Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC, FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { generatePodcastScript } from "./actions";
+import { generatePodcastScript, saveConcatenatedAudioFile } from "./actions";
 import UploadPDF from "./UploadPDF";
 import Crunker from "crunker";
+import { v4 as uuid } from "uuid";
+import { storage } from "../../../firebase/server";
+import {
+  deleteObject,
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 
 interface HeaderProps {}
 
@@ -16,6 +25,9 @@ const Header: FC<HeaderProps> = ({}) => {
   const [title, setTitle] = useState<string>("Untitled podcast");
   const [res, setRes] = useState<any>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [isCreatingAudio, setIsCreatingAudio] = useState(false);
+  const [isConcate, setIsConcate] = useState(false);
+  const [isDone, setIsDone] = useState(false);
 
   const router = useRouter();
 
@@ -67,21 +79,15 @@ const Header: FC<HeaderProps> = ({}) => {
     setIsGenerating(false);
   };
 
-  const onCreatePodcastAudio = async () => {
-    if (!aiText || aiText.length === 0) {
-      toast.error("No podcast script available to generate audio!");
-      return;
-    }
-
-    // setIsGenerating(true);
-
+  const createAudioFiles = async () => {
+    setIsCreatingAudio(true);
     try {
       const response = await fetch("/api/podcast/generate-podcast-audio", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ podcastScript: aiText }),
+        body: JSON.stringify({ podcastScript: aiText, title }),
       });
 
       if (!response.ok) {
@@ -89,34 +95,68 @@ const Header: FC<HeaderProps> = ({}) => {
       }
 
       const result = await response.json();
-      console.log(result);
 
-      // Use Crunker to concatenate the audio files
-      const crunker = new Crunker();
-      const audioBuffers = await crunker.fetchAudio(...result.audioUrls);
-      const concatenated = crunker.concatAudio(audioBuffers);
-      const output = crunker.export(concatenated, "audio/mp3");
-
-      // Create a download link for the concatenated audio file
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(output.blob);
-      link.download = `${title}.mp3`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      router.push(
-        `/v/podcasts/play?title=${title}&audioUrl=${encodeURIComponent(
-          URL.createObjectURL(output.blob)
-        )}`
-      );
+      return result;
     } catch (error) {
-      console.error("Error generating podcast audio:", error);
-      toast.error("Failed to generate podcast audio");
+      console.log(error);
     } finally {
-      // setIsGenerating(false);
+      setIsCreatingAudio(false);
     }
   };
 
+  async function concateAudioFiles(payload: any) {
+    try {
+      const crunker = new Crunker();
+      const audioBuffers = await crunker.fetchAudio(...payload.audioUrls);
+      const concatenated = crunker.concatAudio(audioBuffers);
+      const output = crunker.export(concatenated, "audio/mp3");
+
+      // Convert the Blob to Buffer
+      const buffer = await output.blob.arrayBuffer();
+      return buffer;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const onCreatePodcastAudio = async () => {
+    if (!aiText || aiText.length === 0) {
+      toast.error("No podcast script available to generate audio!");
+      return;
+    }
+
+    try {
+      const result = await createAudioFiles();
+
+      setIsConcate(true);
+      const buffer = await concateAudioFiles(result); // Ensure result is a plain object with necessary data
+      setIsConcate(false);
+
+      if (buffer) {
+        setIsDone(true);
+        const url = await saveConcatenatedAudioFile(title, buffer, result);
+
+        if (url) {
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = `${title}.mp3`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          router.push(
+            `/v/podcasts/play?title=${title}&audioUrl=${encodeURIComponent(
+              url
+            )}`
+          );
+
+          setIsDone(false);
+        }
+      }
+    } catch (error) {
+      console.error("Error generating podcast audio:", error);
+      toast.error("Failed to generate podcast audio");
+    }
+  };
   return (
     <>
       <header className="h-[60px] w-full bg-gray-50 py-2 px-6 flex justify-between items-center border-b">
@@ -159,6 +199,12 @@ const Header: FC<HeaderProps> = ({}) => {
               <Sparkles className="w-5 h-5" />
               Generate the podcast Audio
             </Button>
+          )}
+
+          {isCreatingAudio && <p>Generating Audio now...</p>}
+          {isConcate && <p>Concatinating Audio Files now...</p>}
+          {isDone && (
+            <p>Almost done, file will be downloaded and redirecting soon... </p>
           )}
         </div>
       </header>

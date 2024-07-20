@@ -1,7 +1,10 @@
 "use server";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateObject } from "ai";
+import Crunker from "crunker";
 import { z } from "zod";
+import { v4 as uuid } from "uuid";
+import { storage } from "../../../firebase/server";
 
 const google = createGoogleGenerativeAI({
   apiKey: process.env.NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY,
@@ -25,4 +28,41 @@ Topic: ${text}`,
   });
 
   return object;
+}
+
+// Save the concatenated file to Firebase Storage
+
+export async function saveConcatenatedAudioFile(
+  title: string,
+  buffer: ArrayBuffer,
+  payload: { audioUrls: string[] } // Ensure this type definition matches the expected structure
+) {
+  try {
+    const bucket = storage!.bucket("gs://valensai.appspot.com");
+
+    const concatenatedFileName = `podcast/${title}_concatenated_${uuid()}.mp3`;
+    const fileRef = bucket.file(concatenatedFileName);
+
+    await fileRef.save(new Uint8Array(buffer), {
+      contentType: "audio/mp3",
+    });
+
+    const [downloadURL] = await fileRef.getSignedUrl({
+      action: "read",
+      expires: "03-01-2500",
+    });
+
+    // Delete the separate audio files
+    for (const audioUrl of payload.audioUrls) {
+      const fileNameToDelete = audioUrl.split("/").pop();
+      if (fileNameToDelete) {
+        const fileRefToDelete = bucket.file(fileNameToDelete);
+        await fileRefToDelete.delete();
+      }
+    }
+
+    return downloadURL;
+  } catch (error) {
+    console.log(error);
+  }
 }

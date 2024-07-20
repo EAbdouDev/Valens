@@ -56,7 +56,7 @@ const isValidHost = (host: string): host is Host => {
 };
 
 export async function POST(req: NextRequest) {
-  const { podcastScript } = await req.json();
+  const { podcastScript, title } = await req.json();
 
   if (!podcastScript || !Array.isArray(podcastScript)) {
     return NextResponse.json(
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
       // Upload the audio file to Firebase Storage
       const buffer = readFileSync(audioFile);
       const bucket = storage!.bucket("gs://valensai.appspot.com");
-      const fileName = `audio/${uuid()}_${path.basename(audioFile)}`;
+      const fileName = `podcast/${title}${uuid()}_${path.basename(audioFile)}`;
       const fileRef = bucket.file(fileName);
 
       await fileRef.save(buffer, {
