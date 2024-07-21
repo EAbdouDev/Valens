@@ -46,7 +46,7 @@ const New: FC<NewProps> = ({}) => {
       router.push(`/v/notes/${slug}`);
     }
     setIsCreating(false);
-    onClose();
+    // onClose();
     reset();
   };
 
@@ -54,7 +54,7 @@ const New: FC<NewProps> = ({}) => {
     <>
       <Button
         onPress={onOpen}
-        className="w-full border border-dashed flex flex-col justify-center items-center gap-2 h-[100px] text-xl font-semibold p-4"
+        className="w-full border border-dashed flex flex-col justify-center items-center gap-2 h-[100px] text-xl font-semibold p-4 "
         variant="ghost"
       >
         <Plus className="w-8 h-8" />
@@ -113,7 +113,7 @@ const New: FC<NewProps> = ({}) => {
                     color="primary"
                     className="font-semibold"
                   >
-                    Create
+                    {isRedirecting ? "Redirecting..." : "Create"}
                   </Button>
                 </form>
               </ModalBody>

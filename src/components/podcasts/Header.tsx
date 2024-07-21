@@ -5,7 +5,7 @@ import { Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC, FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { generatePodcastScript, saveConcatenatedAudioFile } from "./actions";
+import { generatePodcastScript } from "./actions";
 import UploadPDF from "./UploadPDF";
 import Crunker from "crunker";
 import { v4 as uuid } from "uuid";
@@ -17,10 +17,13 @@ import {
   ref,
   uploadBytes,
 } from "firebase/storage";
+import { useAuth } from "../auth/auth-provider";
+import { Variants, motion } from "framer-motion";
 
 interface HeaderProps {}
 
 const Header: FC<HeaderProps> = ({}) => {
+  const auth = useAuth();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("Untitled podcast");
   const [res, setRes] = useState<any>(null);
@@ -68,6 +71,10 @@ const Header: FC<HeaderProps> = ({}) => {
       toast.error("Can't generate an empty file!");
       return;
     }
+
+    if (aiText !== "") {
+      setAiText("");
+    }
     setIsGenerating(true);
     const res = await generatePodcastScript(text);
     if (res) {
@@ -87,7 +94,11 @@ const Header: FC<HeaderProps> = ({}) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ podcastScript: aiText, title }),
+        body: JSON.stringify({
+          podcastScript: aiText,
+          title,
+          userId: auth?.currentUser?.uid,
+        }),
       });
 
       if (!response.ok) {
@@ -134,18 +145,35 @@ const Header: FC<HeaderProps> = ({}) => {
 
       if (buffer) {
         setIsDone(true);
-        const url = await saveConcatenatedAudioFile(title, buffer, result);
 
-        if (url) {
+        // Convert buffer to Uint8Array for JSON serialization
+        const uint8ArrayBuffer = new Uint8Array(buffer);
+
+        const response = await fetch("/api/podcast/save", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title,
+            buffer: Array.from(uint8ArrayBuffer),
+            result,
+            userId: auth?.currentUser?.uid,
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+
           const link = document.createElement("a");
-          link.href = url;
+          link.href = data.url;
           link.download = `${title}.mp3`;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
           router.push(
             `/v/podcasts/play?title=${title}&audioUrl=${encodeURIComponent(
-              url
+              data.url
             )}`
           );
 
@@ -157,22 +185,26 @@ const Header: FC<HeaderProps> = ({}) => {
       toast.error("Failed to generate podcast audio");
     }
   };
+
   return (
     <>
-      <header className="h-[60px] w-full bg-gray-50 py-2 px-6 flex justify-between items-center border-b">
-        <div>
+      <header className="h-[60px] w-full py-2 px-6 flex justify-between items-center border-b transition-all ease-soft-spring">
+        <div className="w-[30%]">
           {!isEditing && (
-            <button onClick={() => setIsEditing(true)}>{title}</button>
+            <motion.button onClick={() => setIsEditing(true)}>
+              {title}
+            </motion.button>
           )}
 
           {isEditing && (
-            <form onSubmit={onSubmitName}>
+            <form onSubmit={onSubmitName} className="w-full">
               <input
                 ref={inputRef}
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="p-2 rounded-lg border w-fit"
+                className="p-2 rounded-lg border w-full"
+                autoFocus
               />
             </form>
           )}

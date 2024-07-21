@@ -2,6 +2,7 @@
 import { FC, useEffect, useState } from "react";
 import { getAllNotes } from "./actions";
 import Link from "next/link";
+import New from "./New";
 
 interface NotesListProps {}
 
@@ -22,16 +23,30 @@ const NotesList: FC<NotesListProps> = ({}) => {
   }, []);
 
   return (
-    <>
-      {notes.map((note) => (
-        <Link
-          href={`/v/notes/${note.slug}`}
-          className="p-4 bg-[#181818] rounded-xl font-semibold"
-        >
-          {note.title}
-        </Link>
-      ))}
-    </>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-4 w-full h-full ">
+      {notes.length > 0 && (
+        <>
+          <New />
+          {notes.map((note) => (
+            <Link
+              href={`/v/notes/${note.slug}`}
+              className="p-4  rounded-lg font-semibold  border min-h-[100px]"
+            >
+              {note.title}
+            </Link>
+          ))}
+        </>
+      )}
+
+      {notes.length === 0 && (
+        <>
+          <div className="p-4  rounded-lg font-semibold  min-h-[100px] animate-pulse bg-gray-200" />
+          <div className="p-4  rounded-lg font-semibold  min-h-[100px] animate-pulse bg-gray-200" />
+          <div className="p-4  rounded-lg font-semibold  min-h-[100px] animate-pulse bg-gray-200" />
+          <div className="p-4  rounded-lg font-semibold  min-h-[100px] animate-pulse bg-gray-200" />
+        </>
+      )}
+    </div>
   );
 };
 

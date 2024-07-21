@@ -7,6 +7,8 @@ import Main from "../copilot/Main";
 import HeaderTitle from "./HeaderTitle";
 import Image from "next/image";
 import { useTheme } from "next-themes";
+import { Input } from "@nextui-org/react";
+import { Search } from "lucide-react";
 
 interface NavbarProps {}
 
@@ -31,7 +33,14 @@ const Navbar: FC<NavbarProps> = ({}) => {
 
         <h1 className="text-xl font-bold">Valens</h1>
       </div>
-
+      <div className="w-[30%]">
+        <Input
+          placeholder="Search..."
+          className="w-full "
+          variant="bordered"
+          startContent={<Search className="w-5 h-5 opacity-70" />}
+        />
+      </div>
       <div className="flex justify-center items-center gap-6">
         <Main />
         {/* <ThemeSwitcher /> */}

@@ -1,7 +1,6 @@
-import New from "@/components/notes/New";
-import NotesList from "@/components/notes/NotesList";
 import { Metadata } from "next";
 import { FC } from "react";
+import NoteTabs from "@/components/notes/NoteTabs";
 
 interface NotesPageProps {}
 
@@ -14,9 +13,8 @@ export const metadata: Metadata = {
 
 const NotesPage: FC<NotesPageProps> = ({}) => {
   return (
-    <div className="  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-4 w-full  ">
-      <New />
-      <NotesList />
+    <div className="   p-8 w-full h-full">
+      <NoteTabs />
     </div>
   );
 };

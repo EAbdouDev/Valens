@@ -24,7 +24,7 @@ const UserMenu: FC<UserMenuProps> = ({}) => {
       )}
       {auth?.currentUser && (
         <Popover>
-          <PopoverTrigger className="  hover:bg-slate-100 rounded-full transition-all ease-in-out border">
+          <PopoverTrigger className="  hover:bg-slate-100 rounded-full transition-all ease-in-out border shadow">
             <Avatar className="w-8 h-8">
               <AvatarImage
                 src={auth?.currentUser?.photoURL || ""}

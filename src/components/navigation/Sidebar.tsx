@@ -13,28 +13,25 @@ import {
   Users,
   Zap,
 } from "lucide-react";
-import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 import UserMenu from "./UserMenu";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import useSidebar from "@/zuztand/sidebar";
 import { useTheme } from "next-themes";
 import { Tooltip } from "@nextui-org/react";
+import { Sidebar, SidebarBody, SidebarLink } from "../ui/sidebar";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 interface SidebarProps {}
 
-const Sidebar: FC<SidebarProps> = ({}) => {
+const MainSidebar: FC<SidebarProps> = ({}) => {
   const pathname = usePathname();
-  const { isExpanded, setIsExpanded, isPinned, setIsPinned } = useSidebar();
   const { theme } = useTheme();
   const isDark = theme === "dark";
-
-  const handleToggle = () => {
-    setIsExpanded(!isExpanded);
-    setIsPinned(!isPinned);
-  };
+  const [open, setOpen] = useState(false);
 
   const links = [
     {
@@ -107,7 +104,7 @@ const Sidebar: FC<SidebarProps> = ({}) => {
                   href={link.href}
                   className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out  ${
                     link.active
-                      ? ` text-white font-semibold bg-black dark:bg-white dark:text-black opacity-100 ${noisyGradientStyle}`
+                      ? ` text-white font-semibold bg-black dark:bg-white dark:text-black opacity-100 `
                       : `hover:bg-gray-100 dark:hover:bg-[#1c1c1c] opacity-85`
                   }`}
                 >
@@ -123,4 +120,4 @@ const Sidebar: FC<SidebarProps> = ({}) => {
   );
 };
 
-export default Sidebar;
+export default MainSidebar;
