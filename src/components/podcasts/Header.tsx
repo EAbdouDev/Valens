@@ -164,6 +164,7 @@ const Header: FC<HeaderProps> = ({}) => {
             result,
             userId: auth?.currentUser?.uid,
           }),
+          mode: "no-cors",
         });
 
         if (response.ok) {
