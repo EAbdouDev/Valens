@@ -2,6 +2,7 @@
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateObject } from "ai";
 import { z } from "zod";
+import { storage } from "../../../firebase/server";
 
 const google = createGoogleGenerativeAI({
   apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
@@ -27,4 +28,50 @@ Topic: ${text}`,
   });
 
   return object;
+}
+
+export async function saveConcatenatedAudioFile(
+  title: string,
+  base64String: string,
+  audioUrls: string[],
+  userId: string
+): Promise<string | undefined> {
+  try {
+    const buffer = Buffer.from(base64String, "base64");
+    const bucket = storage!.bucket();
+
+    const fileName = `podcast/${userId}/${title}_${Date.now()}.mp3`;
+
+    const fileRef = bucket.file(fileName);
+
+    await fileRef.save(buffer, {
+      contentType: "audio/mp3",
+    });
+
+    const [downloadURL] = await fileRef.getSignedUrl({
+      action: "read",
+      expires: "03-01-2500",
+    });
+
+    const tmpFolderPath = `podcast/${userId}/tmp/`;
+    await deleteAllTmp("gs://valensai.appspot.com", tmpFolderPath);
+
+    return downloadURL;
+  } catch (error) {
+    console.error("Error in saveConcatenatedAudioFile:", error);
+    throw new Error("Failed to save concatenated audio file.");
+  }
+}
+
+async function deleteAllTmp(bucketName: string, folderPath: string) {
+  const bucket = storage!.bucket(bucketName);
+  const [files] = await bucket.getFiles({ prefix: folderPath });
+
+  if (files.length === 0) {
+    return;
+  }
+
+  for (const file of files) {
+    await file.delete();
+  }
 }

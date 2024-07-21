@@ -22,7 +22,7 @@ import { Variants, motion } from "framer-motion";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateObject } from "ai";
 import { z } from "zod";
-import { generatePodcastScript } from "./actions";
+import { generatePodcastScript, saveConcatenatedAudioFile } from "./actions";
 
 interface HeaderProps {}
 
@@ -151,34 +151,43 @@ const Header: FC<HeaderProps> = ({}) => {
         setIsDone(true);
 
         // Convert buffer to Uint8Array for JSON serialization
-        const uint8ArrayBuffer = new Uint8Array(buffer);
 
-        const response = await fetch("/api/podcast/save", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title,
-            buffer: Array.from(uint8ArrayBuffer),
-            result,
-            userId: auth?.currentUser?.uid,
-          }),
-          mode: "no-cors",
-        });
+        const arrayBuffer = new Uint8Array(buffer).buffer;
 
-        if (response.ok) {
-          const data = await response.json();
+        // Convert arrayBuffer to a base64 string
+        const base64String = Buffer.from(arrayBuffer).toString("base64");
 
+        const downloadURL = await saveConcatenatedAudioFile(
+          title,
+          base64String,
+          result.audioUrls,
+          auth?.currentUser?.uid!
+        );
+
+        // const response = await fetch("/api/podcast/save", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({
+        //     title,
+        //     buffer: Array.from(uint8ArrayBuffer),
+        //     result,
+        //     userId: auth?.currentUser?.uid,
+        //   }),
+        //   mode: "no-cors",
+        // });
+
+        if (downloadURL) {
           const link = document.createElement("a");
-          link.href = data.url;
+          link.href = downloadURL;
           link.download = `${title}.mp3`;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
           router.push(
             `/v/podcasts/play?title=${title}&audioUrl=${encodeURIComponent(
-              data.url
+              downloadURL
             )}`
           );
 

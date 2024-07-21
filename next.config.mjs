@@ -4,6 +4,11 @@ import path from "path";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "5000mb",
+    },
+  },
   webpack: (config, { isServer }) => {
     // Add worker-loader for .worker.ts files
     config.module.rules.push({
