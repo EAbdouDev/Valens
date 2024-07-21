@@ -109,7 +109,7 @@ const MainSidebar: FC<SidebarProps> = ({}) => {
                   }`}
                 >
                   {link.icon}
-                  {link.name}
+                  {/* {link.name} */}
                 </Link>
               </Tooltip>
             </li>

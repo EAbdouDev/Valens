@@ -120,17 +120,21 @@ const Header: FC<HeaderProps> = ({}) => {
   };
 
   async function concateAudioFiles(payload: any) {
+    console.log("Start Concate Process Now...");
     try {
       const crunker = new Crunker();
       const audioBuffers = await crunker.fetchAudio(...payload.audioUrls);
       const concatenated = crunker.concatAudio(audioBuffers);
+      console.log("Exporting...");
       const output = crunker.export(concatenated, "audio/mp3");
 
+      console.log("Converting the Blob to Buffer...");
       // Convert the Blob to Buffer
       const buffer = await output.blob.arrayBuffer();
+      console.info("Converting the Blob to Buffer: Success...");
       return buffer;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -157,6 +161,7 @@ const Header: FC<HeaderProps> = ({}) => {
         // Convert arrayBuffer to a base64 string
         const base64String = Buffer.from(arrayBuffer).toString("base64");
 
+        console.log("Uploading to firebase...");
         const downloadURL = await saveConcatenatedAudioFile(
           title,
           base64String,

@@ -3,6 +3,7 @@ import { FC, ReactNode } from "react";
 import Navbar from "@/components/navigation/Navbar";
 import { AI } from "@/components/copilot/actions";
 import Link from "next/link";
+import Main from "@/components/copilot/Main";
 
 interface LayoutProps {
   children: ReactNode;
@@ -22,11 +23,9 @@ const layout: FC<LayoutProps> = async ({ children }) => {
       <div className="flex-1 flex flex-row overflow-y-hidden">
         <main className="flex-1  overflow-y-auto ">{children}</main>
 
-        <nav className="order-first hidden sm:flex sm:w-[250px]  overflow-y-auto border-r  ">
+        <nav className="order-first hidden sm:flex sm:w-fit  overflow-y-auto border-r  ">
           <MainSidebar />
         </nav>
-
-        {/* <aside className="sm:w-32  overflow-y-auto">Right Sidebar</aside> */}
       </div>
       {/* <!-- end main container --> */}
 
