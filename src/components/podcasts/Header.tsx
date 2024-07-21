@@ -184,12 +184,15 @@ const Header: FC<HeaderProps> = ({}) => {
         // });
 
         if (downloadURL) {
+          console.log("Got the download URL...", downloadURL);
           const link = document.createElement("a");
           link.href = downloadURL;
           link.download = `${title}.mp3`;
           document.body.appendChild(link);
           link.click();
+          console.log("Trying to download...");
           document.body.removeChild(link);
+          console.log("Redirecting to play page...");
           router.push(
             `/v/podcasts/play?title=${title}&audioUrl=${encodeURIComponent(
               downloadURL
