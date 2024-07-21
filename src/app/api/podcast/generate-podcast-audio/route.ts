@@ -4,6 +4,8 @@ import { v4 as uuid } from "uuid";
 import path from "path";
 import { storage } from "../../../../../firebase/server";
 
+export const maxDuration = 60;
+
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
 
 if (!ELEVENLABS_API_KEY) {
