@@ -8,12 +8,17 @@ interface NotesListProps {}
 
 const NotesList: FC<NotesListProps> = ({}) => {
   const [notes, setNotes] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchNotes = async () => {
       try {
         const notes = await getAllNotes();
-        setNotes(notes);
+        if (notes.length > 0) {
+          setNotes(notes);
+        }
+
+        setIsLoading(false);
       } catch (e) {
         console.error("Failed to fetch notes:", e);
       }
@@ -21,6 +26,17 @@ const NotesList: FC<NotesListProps> = ({}) => {
 
     fetchNotes();
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-4 w-full h-full ">
+        <div className="p-4  rounded-lg font-semibold  min-h-[100px] animate-pulse bg-gray-200" />
+        <div className="p-4  rounded-lg font-semibold  min-h-[100px] animate-pulse bg-gray-200" />
+        <div className="p-4  rounded-lg font-semibold  min-h-[100px] animate-pulse bg-gray-200" />
+        <div className="p-4  rounded-lg font-semibold  min-h-[100px] animate-pulse bg-gray-200" />
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-4 w-full h-full ">
@@ -38,14 +54,7 @@ const NotesList: FC<NotesListProps> = ({}) => {
         </>
       )}
 
-      {notes.length === 0 && (
-        <>
-          <div className="p-4  rounded-lg font-semibold  min-h-[100px] animate-pulse bg-gray-200" />
-          <div className="p-4  rounded-lg font-semibold  min-h-[100px] animate-pulse bg-gray-200" />
-          <div className="p-4  rounded-lg font-semibold  min-h-[100px] animate-pulse bg-gray-200" />
-          <div className="p-4  rounded-lg font-semibold  min-h-[100px] animate-pulse bg-gray-200" />
-        </>
-      )}
+      {notes.length === 0 && <div>Start creating new notes</div>}
     </div>
   );
 };
