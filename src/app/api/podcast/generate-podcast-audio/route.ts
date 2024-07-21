@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ElevenLabsClient } from "elevenlabs";
-import { createWriteStream, readFileSync, unlinkSync } from "fs";
 import { v4 as uuid } from "uuid";
-import { FieldValue } from "firebase-admin/firestore";
 import path from "path";
 import { storage } from "../../../../../firebase/server";
-
-export const maxDuration = 60; // This function can run for a maximum of 5 seconds
 
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
 
@@ -26,6 +22,32 @@ const voices = {
 
 type Host = keyof typeof voices;
 
+const uploadAudioToFirebase = async (audioStream: any, fileName: any) => {
+  const bucket = storage!.bucket("gs://valensai.appspot.com");
+  const fileRef = bucket.file(fileName);
+
+  const writeStream = fileRef.createWriteStream({
+    metadata: { contentType: "audio/mp3" },
+  });
+
+  return new Promise<string>((resolve, reject) => {
+    audioStream
+      .pipe(writeStream)
+      .on("finish", async () => {
+        try {
+          const [downloadURL] = await fileRef.getSignedUrl({
+            action: "read",
+            expires: "03-01-2500",
+          });
+          resolve(downloadURL);
+        } catch (error) {
+          reject(error);
+        }
+      })
+      .on("error", reject);
+  });
+};
+
 const createAudioFileFromText = async (
   text: string,
   voiceId: string
@@ -36,14 +58,9 @@ const createAudioFileFromText = async (
       model_id: "eleven_turbo_v2",
       text,
     });
-    const fileName = `${uuid()}.mp3`;
-    const fileStream = createWriteStream(fileName);
 
-    audio.pipe(fileStream);
-    return new Promise<string>((resolve, reject) => {
-      fileStream.on("finish", () => resolve(fileName));
-      fileStream.on("error", reject);
-    });
+    const fileName = `podcast/tmp/${uuid()}.mp3`;
+    return await uploadAudioToFirebase(audio, fileName);
   } catch (error) {
     console.error(
       `Error generating audio for text "${text}" with voice "${voiceId}":`,
@@ -82,27 +99,8 @@ export async function POST(req: NextRequest) {
         throw new Error(`Invalid host: ${entry.speaker}`);
       }
       const voiceId = voices[host];
-      const audioFile = await createAudioFileFromText(entry.text, voiceId);
-
-      // Upload the audio file to Firebase Storage
-      const buffer = readFileSync(audioFile);
-      const bucket = storage!.bucket("gs://valensai.appspot.com");
-      const fileName = `podcast/${userId}/tmp/${title}${uuid()}_${path.basename(
-        audioFile
-      )}`;
-      const fileRef = bucket.file(fileName);
-
-      await fileRef.save(buffer, {
-        metadata: { contentType: "audio/mp3" },
-      });
-
-      const [downloadURL] = await fileRef.getSignedUrl({
-        action: "read",
-        expires: "03-01-2500",
-      });
-
-      audioUrls.push(downloadURL);
-      unlinkSync(audioFile); // Clean up local file
+      const audioUrl = await createAudioFileFromText(entry.text, voiceId);
+      audioUrls.push(audioUrl);
     }
 
     return NextResponse.json({ audioUrls });
