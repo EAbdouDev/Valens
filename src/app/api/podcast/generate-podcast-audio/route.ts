@@ -6,6 +6,8 @@ import { FieldValue } from "firebase-admin/firestore";
 import path from "path";
 import { storage } from "../../../../../firebase/server";
 
+export const maxDuration = 60; // This function can run for a maximum of 5 seconds
+
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
 
 if (!ELEVENLABS_API_KEY) {

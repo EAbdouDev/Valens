@@ -2,13 +2,12 @@
 
 import { useState, useEffect, useRef, FC } from "react";
 import TextEditor from "@/components/editor/TextEditor";
-import { generatePodcastScript } from "@/components/podcasts/actions";
 import Header from "@/components/podcasts/Header";
 import useTextPod from "@/zuztand/TextEditorPod";
 import { Loader2, Sparkle } from "lucide-react";
-import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css";
 import { ScrollShadow } from "@nextui-org/react";
+
+export const maxDuration = 60; // This function can run for a maximum of 5 seconds
 
 interface pageProps {}
 

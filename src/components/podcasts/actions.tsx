@@ -4,7 +4,7 @@ import { generateObject } from "ai";
 import { z } from "zod";
 
 const google = createGoogleGenerativeAI({
-  apiKey: process.env.NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY,
+  apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
 });
 
 export async function generatePodcastScript(text: string) {

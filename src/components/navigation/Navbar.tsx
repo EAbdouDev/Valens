@@ -43,7 +43,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
       </div>
       <div className="flex justify-center items-center gap-6">
         <Main />
-        {/* <ThemeSwitcher /> */}
+        <ThemeSwitcher />
         <UserMenu />
         {/* <span className="text-lg">{currentTime}</span> */}
       </div>
