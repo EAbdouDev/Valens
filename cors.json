@@ -1,0 +1,8 @@
+[
+  {
+    "origin": ["https://www.valensai.com"],
+    "method": ["GET", "HEAD", "DELETE"],
+    "responseHeader": ["Content-Type"],
+    "maxAgeSeconds": 3600
+  }
+]

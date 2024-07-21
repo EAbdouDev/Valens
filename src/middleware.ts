@@ -4,6 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 const allowedOrigins = [
   "https://storage.googleapis.com/valensai.appspot.com",
   "https://storage.googleapis.com",
+  "https://www.valensai.com",
 ];
 
 const corsOptions = {
