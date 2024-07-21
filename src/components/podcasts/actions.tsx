@@ -1,10 +1,7 @@
 "use server";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateObject } from "ai";
-import Crunker from "crunker";
 import { z } from "zod";
-import { v4 as uuid } from "uuid";
-import { storage } from "../../../firebase/server";
 
 const google = createGoogleGenerativeAI({
   apiKey: process.env.NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY,
