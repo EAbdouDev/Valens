@@ -9,7 +9,6 @@ import { toast } from "sonner";
 import UploadPDF from "./UploadPDF";
 import Crunker from "crunker";
 import { v4 as uuid } from "uuid";
-import { storage } from "../../../firebase/server";
 import {
   deleteObject,
   getDownloadURL,
@@ -23,6 +22,7 @@ import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { generatePodcastScript, saveConcatenatedAudioFile } from "./actions";
+import { storage } from "../../../firebase/client";
 
 interface HeaderProps {}
 
@@ -69,6 +69,18 @@ const Header: FC<HeaderProps> = ({}) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [title]);
+
+  const upload = async (file: any) => {
+    if (storage) {
+      const fileRef = ref(
+        storage,
+        `podcast/${auth?.currentUser?.uid}/${title}_${Date.now()}.mp3`
+      );
+      await uploadBytes(fileRef, file, {
+        contentType: "audio/mp3",
+      });
+    }
+  };
 
   const onCreatePodcastScript = async () => {
     if (text === "") {
@@ -162,12 +174,16 @@ const Header: FC<HeaderProps> = ({}) => {
         const base64String = Buffer.from(arrayBuffer).toString("base64");
 
         console.log("Uploading to firebase...");
-        const downloadURL = await saveConcatenatedAudioFile(
-          title,
-          base64String,
-          result.audioUrls,
-          auth?.currentUser?.uid!
-        );
+
+        const file = Buffer.from(base64String, "base64");
+
+        await upload(file);
+        // const downloadURL = await saveConcatenatedAudioFile(
+        //   title,
+        //   base64String,
+        //   result.audioUrls,
+        //   auth?.currentUser?.uid!
+        // );
 
         // const response = await fetch("/api/podcast/save", {
         //   method: "POST",
@@ -183,24 +199,24 @@ const Header: FC<HeaderProps> = ({}) => {
         //   mode: "no-cors",
         // });
 
-        if (downloadURL) {
-          console.log("Got the download URL...", downloadURL);
-          const link = document.createElement("a");
-          link.href = downloadURL;
-          link.download = `${title}.mp3`;
-          document.body.appendChild(link);
-          link.click();
-          console.log("Trying to download...");
-          document.body.removeChild(link);
-          console.log("Redirecting to play page...");
-          router.push(
-            `/v/podcasts/play?title=${title}&audioUrl=${encodeURIComponent(
-              downloadURL
-            )}`
-          );
+        // if (downloadURL) {
+        //   console.log("Got the download URL...", downloadURL);
+        //   const link = document.createElement("a");
+        //   link.href = downloadURL;
+        //   link.download = `${title}.mp3`;
+        //   document.body.appendChild(link);
+        //   link.click();
+        //   console.log("Trying to download...");
+        //   document.body.removeChild(link);
+        //   console.log("Redirecting to play page...");
+        //   router.push(
+        //     `/v/podcasts/play?title=${title}&audioUrl=${encodeURIComponent(
+        //       downloadURL
+        //     )}`
+        //   );
 
-          setIsDone(false);
-        }
+        //   setIsDone(false);
+        // }
       }
     } catch (error) {
       console.error("Error generating podcast audio:", error);
