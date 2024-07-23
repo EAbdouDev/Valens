@@ -16,7 +16,7 @@ import EditorAgentsTabs from "@/components/notes/EditorAgentsTabs";
 import NoteEditor from "@/components/editor/NoteEditor";
 
 export const revalidate = 0;
-
+export const maxDuration = 60;
 interface PageProps {
   params: {
     slug: string;
