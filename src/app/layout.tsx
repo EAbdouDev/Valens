@@ -5,6 +5,7 @@ import { AuthProvider } from "@/components/auth/auth-provider";
 import NextThemeProvider from "@/providers/NextThemeProvider";
 import UIProvider from "../providers/UIProvider";
 import { Toaster } from "@/components/ui/sonner";
+import NextTopLoader from "nextjs-toploader";
 
 const font = Public_Sans({
   subsets: ["latin"],
@@ -29,7 +30,21 @@ export default function RootLayout({
       <body className={font.className} suppressHydrationWarning>
         <AuthProvider>
           <UIProvider>
-            <NextThemeProvider>{children}</NextThemeProvider>
+            <NextThemeProvider>
+              <NextTopLoader
+                color={"#ffff"}
+                initialPosition={0.08}
+                crawlSpeed={200}
+                showSpinner={false}
+                height={3}
+                crawl={true}
+                easing="ease-in-out"
+                speed={200}
+                shadow="0 0 10px #ffff,0 0 5px #ffffD"
+                zIndex={1600}
+              />
+              {children}
+            </NextThemeProvider>
             <Toaster />
           </UIProvider>
         </AuthProvider>
