@@ -10,7 +10,7 @@ const NoteTabs: FC<NoteContainerProps> = ({}) => {
   return (
     <Tabs
       aria-label="Cat"
-      variant="bordered"
+      variant="underlined"
       color="primary"
       className="w-full"
     >

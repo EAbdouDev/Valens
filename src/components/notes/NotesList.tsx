@@ -1,19 +1,23 @@
 "use client";
 import { FC, useEffect, useState } from "react";
-import { getAllNotes } from "./actions";
+import { getAllUserNotes } from "./actions";
 import Link from "next/link";
 import New from "./New";
+import UserNoteCard from "./UserNoteCard";
+import { useAuth } from "../auth/auth-provider";
 
 interface NotesListProps {}
 
 const NotesList: FC<NotesListProps> = ({}) => {
   const [notes, setNotes] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const auth = useAuth();
 
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const notes = await getAllNotes();
+        if (!auth?.currentUser) return;
+        const notes = await getAllUserNotes(auth.currentUser.uid);
         if (notes.length > 0) {
           setNotes(notes);
         }
@@ -39,22 +43,21 @@ const NotesList: FC<NotesListProps> = ({}) => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-4 w-full h-full ">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5  gap-4 w-full  ">
       {notes.length > 0 && (
         <>
           <New />
           {notes.map((note) => (
-            <Link
-              href={`/v/notes/${note.slug}`}
-              className="p-4  rounded-lg font-semibold  border min-h-[100px]"
-            >
-              {note.title}
-            </Link>
+            <UserNoteCard note={note} key={note.slug} />
           ))}
         </>
       )}
 
-      {notes.length === 0 && <div>Start creating new notes</div>}
+      {notes.length === 0 && (
+        <div>
+          Start creating new notes <New />
+        </div>
+      )}
     </div>
   );
 };

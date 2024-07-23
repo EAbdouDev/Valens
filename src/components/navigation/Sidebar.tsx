@@ -3,6 +3,7 @@ import {
   Book,
   BookAudio,
   BookOpenCheck,
+  BookOpenText,
   Disc2,
   Files,
   Hospital,
@@ -61,7 +62,7 @@ const MainSidebar: FC<SidebarProps> = ({}) => {
     {
       name: "Cases",
       href: "/v/cases",
-      active: pathname.includes("cases"),
+      active: pathname.includes("cases/"),
       icon: <Hospital className="w-5 h-5" />,
     },
     {
@@ -101,6 +102,7 @@ const MainSidebar: FC<SidebarProps> = ({}) => {
                 color="primary"
               >
                 <Link
+                  prefetch={false}
                   href={link.href}
                   className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out  ${
                     link.active
@@ -116,6 +118,25 @@ const MainSidebar: FC<SidebarProps> = ({}) => {
           ))}
         </ul>
       </motion.div>
+
+      <div className="mt-auto py-4">
+        <Tooltip
+          content={"Valens guides"}
+          placement="right-start"
+          color="primary"
+        >
+          <Link
+            href={"/guides"}
+            className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out  ${
+              pathname.includes("guides")
+                ? ` text-white font-semibold bg-black dark:bg-white dark:text-black opacity-100 `
+                : `hover:bg-gray-100 dark:hover:bg-[#1c1c1c] opacity-85`
+            }`}
+          >
+            <BookOpenText className="w-5 h-5" />
+          </Link>
+        </Tooltip>
+      </div>
     </motion.div>
   );
 };

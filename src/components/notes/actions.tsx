@@ -9,7 +9,7 @@ interface Note {
   description?: string;
 }
 
-export const createNote = async (data: Note) => {
+export const createNote = async (data: Note, userId: string) => {
   try {
     const slug =
       slugify(data.title, { lower: true, strict: true }) + "-" + nanoid(5);
@@ -17,6 +17,8 @@ export const createNote = async (data: Note) => {
       ...data,
       slug,
       createdAt: new Date().toISOString(),
+      createdBy: userId,
+      isPublic: false,
     });
     return { id: docRef.id, slug };
   } catch (e) {
@@ -25,16 +27,58 @@ export const createNote = async (data: Note) => {
   }
 };
 
-export const getAllNotes = async () => {
+export const getAllUserNotes = async (userId: string) => {
   try {
-    const notesSnapshot = await firestore!.collection("notes").get();
+    const notesSnapshot = await firestore!
+      .collection("notes")
+      .where("createdBy", "==", userId)
+      .orderBy("createdAt", "desc")
+      .get();
+
     const notes = notesSnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
+
     return notes;
   } catch (e) {
     console.error("Error fetching notes: ", e);
     throw new Error("Error fetching notes");
+  }
+};
+
+export const getNoteCreator = async (userId: string) => {};
+
+export const updateTitle = async (noteId: string, newTitle: string) => {
+  try {
+    const noteRef = firestore!.collection("notes").doc(noteId);
+    await noteRef.update({
+      title: newTitle,
+    });
+    console.log(`Note with ID ${noteId} updated successfully.`);
+  } catch (e) {
+    console.error("Error updating note title: ", e);
+    throw new Error("Error updating note title");
+  }
+};
+
+export const getNoteDetails = async (noteSlug: string) => {
+  if (!noteSlug) return;
+  try {
+    const notesSnapshot = await firestore!
+      .collection("notes")
+      .where("slug", "==", noteSlug)
+      .limit(1)
+      .get();
+
+    if (notesSnapshot.empty) {
+      throw new Error("No note found with the given slug");
+    }
+
+    const note = notesSnapshot.docs[0].data();
+    return { id: notesSnapshot.docs[0].id, ...note };
+  } catch (e) {
+    console.error("Error fetching note details: ", e);
+    throw new Error("Error fetching note details");
   }
 };

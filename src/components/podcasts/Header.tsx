@@ -12,7 +12,6 @@ import { v4 as uuid } from "uuid";
 import {
   deleteObject,
   getDownloadURL,
-  getStorage,
   ref,
   uploadBytes,
 } from "firebase/storage";

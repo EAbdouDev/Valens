@@ -1,45 +1,74 @@
-import TextEditor from "@/components/editor/TextEditor";
-import { FC } from "react";
-
-import Toolbar from "@/components/editor/Toolbar";
+import { FC, Suspense } from "react";
 import { AI } from "@/app/actions";
 import { Chat } from "@/components/note-assist/chat";
 import { generateId } from "ai";
 import BlockTextEditor from "@/components/editor/BlockTextEditor";
+import NoteHeader from "@/components/notes/NoteHeader";
+import { getNoteDetails } from "@/components/notes/actions";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import Cookies from "js-cookie";
+import EditorSidebarTabs from "@/components/notes/EditorSidebarTabs";
+import EditorAgentsTabs from "@/components/notes/EditorAgentsTabs";
+import NoteEditor from "@/components/editor/NoteEditor";
 
-export const maxDuration = 60;
+export const revalidate = 0;
 
-interface pageProps {
+interface PageProps {
   params: {
     slug: string;
   };
 }
 
-const NewNotePage: FC<pageProps> = ({ params }) => {
+const NewNotePage: FC<PageProps> = async ({ params }) => {
   const id = generateId();
+  const note = await getNoteDetails(params.slug);
+
+  if (!note) {
+    // Handle the case where the note is not found
+    return <div>Note not found</div>;
+  }
 
   return (
-    <div className="min-h-full flex flex-col h-full">
-      <header className="border-b p-4"> Header</header>
-      {/* <!-- main container --> */}
-      <div className="flex-1 flex flex-row overflow-y-hidden">
-        <main className="flex-1  overflow-y-auto mt-6">
-          <BlockTextEditor />
-        </main>
+    <AI initialAIState={{ chatId: id, messages: [] }}>
+      <div className="min-h-full flex flex-col h-full">
+        <NoteHeader slug={params.slug} />
 
-        {/* <nav class="order-first sm:w-32 bg-purple-200 overflow-y-auto">Sidebar</nav> */}
+        {/* <!-- main container --> */}
+        <div className="flex-1 flex flex-row overflow-hidden">
+          <ResizablePanelGroup direction="horizontal">
+            <ResizablePanel>
+              <div className="w-full h-full overflow-auto">
+                <nav className="lg:hidden flex border-l h-fit w-full  bg-white border-b">
+                  <EditorSidebarTabs />
+                </nav>
+                <NoteEditor content={"dfdfdf"} />
+              </div>
+            </ResizablePanel>
+            <ResizableHandle />
+            <ResizablePanel
+              className=" hidden lg:flex h-full bg-[#f8f8f8]"
+              maxSize={35}
+              minSize={30}
+            >
+              <div className="w-full h-full overflow-auto">
+                <EditorAgentsTabs />
+              </div>
+            </ResizablePanel>
+          </ResizablePanelGroup>
 
-        <aside className={`sm:w-[35%] overflow-y-auto border-l p-4  `}>
-          <h1 className="text-2xl font-bold mb-10 p-2">Assistant</h1>
-          <AI initialAIState={{ chatId: id, messages: [] }}>
-            <Chat id={"sdds"} query={""} />
-          </AI>
-        </aside>
+          <nav className="hidden lg:flex border-l h-full w-fit bg-white">
+            <EditorSidebarTabs />
+          </nav>
+        </div>
+        {/* <!-- end main container --> */}
+
+        {/* <footer class="bg-gray-100">Footer</footer> */}
       </div>
-      {/* <!-- end main container --> */}
-
-      {/* <footer class="bg-gray-100">Footer</footer> */}
-    </div>
+    </AI>
   );
 };
 

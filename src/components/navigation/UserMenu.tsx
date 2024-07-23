@@ -24,11 +24,11 @@ const UserMenu: FC<UserMenuProps> = ({}) => {
       )}
       {auth?.currentUser && (
         <Popover>
-          <PopoverTrigger className="  hover:bg-slate-100 rounded-full transition-all ease-in-out border shadow">
+          <PopoverTrigger className="  hover:bg-slate-100 rounded-full transition-all ease-in-out border shadow bg-white">
             <Avatar className="w-8 h-8">
               <AvatarImage
                 src={auth?.currentUser?.photoURL || ""}
-                alt="userPicture"
+                alt="userPicture "
               />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
@@ -42,8 +42,31 @@ const UserMenu: FC<UserMenuProps> = ({}) => {
           </p>
         </div> */}
           </PopoverTrigger>
-          <PopoverContent align="center" alignOffset={30} className=" mr-6 p-2">
+          <PopoverContent
+            align="center"
+            alignOffset={60}
+            className="  mr-6 p-4 max-w-[250px] bg-transparent backdrop-blur-3xl"
+          >
             <ul className="w-full">
+              <div className="flex justify-start items-start gap-4 mb-4 border-b pb-2">
+                <div>
+                  <img
+                    src={auth?.currentUser?.photoURL || ""}
+                    alt="userPicture "
+                    className="w-8 h-8  rounded-full border shadow"
+                    style={{ imageRendering: "-webkit-optimize-contrast" }}
+                  />
+                </div>
+                <div>
+                  {" "}
+                  <h1 className="text-sm font-medium  max-w-full truncate">
+                    {auth?.currentUser?.displayName}
+                  </h1>
+                  <p className="text-xs opacity-70  max-w-full truncate">
+                    {auth?.currentUser?.email}
+                  </p>
+                </div>
+              </div>
               <li className="w-full">
                 <Link
                   href={"#"}

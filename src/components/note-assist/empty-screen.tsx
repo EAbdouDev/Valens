@@ -3,20 +3,17 @@ import { ArrowRight } from "lucide-react";
 
 const exampleMessages = [
   {
-    heading: "What is Apple Intelligence?",
-    message: "What is Apple Intelligence?",
+    heading: "What cause liver failure?",
+    message: "What cause liver failure?",
   },
   {
-    heading: "Why is Nvidia growing rapidly?",
-    message: "Why is Nvidia growing rapidly?",
+    heading: "Why is Telemedicine growing rapidly?",
+    message: "Why is Telemedicine growing rapidly?",
   },
+
   {
-    heading: "How does the Vercel AI SDK work?",
-    message: "How does the Vercel AI SDK work?",
-  },
-  {
-    heading: "Tesla vs Rivian",
-    message: "Tesla vs Rivian",
+    heading: "CT Scan vs MRI: What's the difference?",
+    message: "CT Scan vs MRI: What's the difference?",
   },
 ];
 export function EmptyScreen({
