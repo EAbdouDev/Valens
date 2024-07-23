@@ -36,26 +36,28 @@ const EditorAgentsTabs: FC<EditorAgentsTabsProps> = ({}) => {
         </aside>
       )}
 
-      {sideBarTabMobile?.index === 0 && (
-        <Drawer
-          open
-          onOpenChange={(open) => {
-            if (!open) {
-              setSideBarTabMobile(null);
-            }
-          }}
-        >
-          <DrawerContent className="h-full">
-            <DrawerHeader className="flex flex-col justify-start w-full text-left">
-              <DrawerTitle>Assistant</DrawerTitle>
-            </DrawerHeader>
-            <div className="overflow-y-auto overflow-x-hidden px-4">
-              {" "}
-              <Chat id={"no-id-for-now"} query={""} />
-            </div>
-          </DrawerContent>
-        </Drawer>
-      )}
+      <div className="flex lg:hidden">
+        {sideBarTabMobile?.index === 0 && (
+          <Drawer
+            open
+            onOpenChange={(open) => {
+              if (!open) {
+                setSideBarTabMobile(null);
+              }
+            }}
+          >
+            <DrawerContent className="h-full">
+              <DrawerHeader className="flex flex-col justify-start w-full text-left">
+                <DrawerTitle>Assistant</DrawerTitle>
+              </DrawerHeader>
+              <div className="overflow-y-auto overflow-x-hidden px-4">
+                {" "}
+                <Chat id={"no-id-for-now"} query={""} />
+              </div>
+            </DrawerContent>
+          </Drawer>
+        )}
+      </div>
     </div>
   );
 };

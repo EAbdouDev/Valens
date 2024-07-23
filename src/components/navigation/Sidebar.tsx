@@ -62,7 +62,7 @@ const MainSidebar: FC<SidebarProps> = ({}) => {
     {
       name: "Cases",
       href: "/v/cases",
-      active: pathname.includes("cases/"),
+      active: pathname.includes("/cases"),
       icon: <Hospital className="w-5 h-5" />,
     },
     {

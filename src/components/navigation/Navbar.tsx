@@ -43,7 +43,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
       </div>
       <div className="flex justify-center items-center gap-6">
         <Main />
-
+        <ThemeSwitcher />
         <UserMenu />
       </div>
     </div>

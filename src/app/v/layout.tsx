@@ -29,7 +29,7 @@ const layout: FC<LayoutProps> = async ({ children }) => {
       </div>
       {/* <!-- end main container --> */}
 
-      <footer className="border-t py-2 md:flex justify-between items-center gap-4 hidden px-4">
+      <footer className="border-t py-2 xl:flex justify-between items-center gap-4 hidden px-4">
         <div className="flex justify-center items-center gap-2">
           <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_red_4ed1cbfcbc6c9e84c31b987da73fc4168aec8445.svg" />
           <h3 className="text-xs font-light">Powerd by Google Gemini AI</h3>

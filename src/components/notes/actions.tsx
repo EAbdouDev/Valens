@@ -29,11 +29,19 @@ export const createNote = async (data: Note, userId: string) => {
 
 export const getAllUserNotes = async (userId: string) => {
   try {
-    const notesSnapshot = await firestore!
+    if (!firestore) {
+      throw new Error("Firestore is not initialized.");
+    }
+
+    const notesSnapshot = await firestore
       .collection("notes")
       .where("createdBy", "==", userId)
       .orderBy("createdAt", "desc")
       .get();
+
+    if (notesSnapshot.empty) {
+      return [];
+    }
 
     const notes = notesSnapshot.docs.map((doc) => ({
       id: doc.id,
