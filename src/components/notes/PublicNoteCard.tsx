@@ -40,7 +40,7 @@ const getTimeDifference = (date: Date) => {
   return "Just now";
 };
 
-const UserNoteCard: FC<NoteCardProps> = ({ note }) => {
+const PublicNoteCard: FC<NoteCardProps> = ({ note }) => {
   const [timeAgo, setTimeAgo] = useState(getTimeDifference(note.createdAt));
 
   useEffect(() => {
@@ -86,19 +86,19 @@ const UserNoteCard: FC<NoteCardProps> = ({ note }) => {
       </Tooltip>
 
       <div className="w-full flex justify-between items-center gap-x-4 mt-2">
-        {note.isPublic && (
-          <div className="flex justify-center items-center gap-2 text-xs px-2 py-1 bg-green-200 rounded-lg">
-            <Earth className="w-4 h-4" />
-            <p>Public</p>
-          </div>
-        )}
-
-        {!note.isPublic && (
-          <div className="flex justify-center items-center gap-2 text-xs px-2 py-1 bg-yellow-200 rounded-lg">
-            <EarthLock className="w-4 h-4" />
-            <p>Private</p>
-          </div>
-        )}
+        {/* {note.isPublic && (
+            <div className="flex justify-center items-center gap-2 text-xs px-2 py-1 bg-green-200 rounded-lg">
+              <Earth className="w-4 h-4" />
+              <p>Public</p>
+            </div>
+          )}
+   */}
+        {/* {!note.isPublic && (
+            <div className="flex justify-center items-center gap-2 text-xs px-2 py-1 bg-yellow-200 rounded-lg">
+              <EarthLock className="w-4 h-4" />
+              <p>Private</p>
+            </div>
+          )} */}
 
         <p className="text-xs text-gray-500">{timeAgo}</p>
       </div>
@@ -106,4 +106,4 @@ const UserNoteCard: FC<NoteCardProps> = ({ note }) => {
   );
 };
 
-export default UserNoteCard;
+export default PublicNoteCard;

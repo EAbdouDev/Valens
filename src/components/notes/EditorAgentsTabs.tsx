@@ -23,7 +23,9 @@ const EditorAgentsTabs: FC<EditorAgentsTabsProps> = ({}) => {
     <div className="">
       {sideBarTab === 0 && (
         <aside className="w-full h-full overflow-y-auto p-4 flex-1">
-          <h1 className="text-2xl font-bold mb-10 p-2">Assistant</h1>
+          <h1 className="text-2xl font-bold mb-10 p-2 border-b pb-4">
+            Assistant
+          </h1>
 
           <Chat id={"sdds"} query={""} />
         </aside>

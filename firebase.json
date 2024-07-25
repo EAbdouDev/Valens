@@ -40,5 +40,8 @@
       "enabled": true
     },
     "singleProjectMode": true
+  },
+  "extensions": {
+    "firestore-semantic-search": "googlecloud/firestore-semantic-search@0.1.8"
   }
 }
