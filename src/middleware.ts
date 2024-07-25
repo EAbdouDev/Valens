@@ -24,6 +24,7 @@ export function middleware(request: NextRequest) {
     const preflightHeaders = {
       ...(isAllowedOrigin && { "Access-Control-Allow-Origin": origin }),
       ...corsOptions,
+      "Cache-Control": "no-store, max-age=0",
     };
     return NextResponse.json({}, { headers: preflightHeaders });
   }
@@ -39,14 +40,17 @@ export function middleware(request: NextRequest) {
     response.headers.set(key, value);
   });
 
+  // Set Cache-Control headers to prevent caching
+  response.headers.set("Cache-Control", "no-store, max-age=0");
+
   // Allow access to the home page without authentication
   if (request.nextUrl.pathname === "/") {
-    return NextResponse.next();
+    return response;
   }
 
   // Allow access if user is authenticated
   if (userToken) {
-    return NextResponse.next();
+    return response;
   }
 
   // Redirect to home page if user is not authenticated

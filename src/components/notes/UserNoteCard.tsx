@@ -1,4 +1,10 @@
-import { EllipsisVertical, File, FileText } from "lucide-react";
+import {
+  Earth,
+  EarthLock,
+  EllipsisVertical,
+  File,
+  FileText,
+} from "lucide-react";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { auth } from "../../../firebase/client";
@@ -72,11 +78,21 @@ const UserNoteCard: FC<NoteCardProps> = ({ note }) => {
         {note.title}
       </Link>
 
-      <p className="text-sm font-light max-w-full line-clamp-2 opacity-70">
-        {note.description ? note.description : "No description was provided"}
-      </p>
       <div className="w-full flex justify-between items-center gap-x-4 mt-2">
-        <p className="text-xs text-gray-500">Created by You</p>
+        {note.isPublic && (
+          <div className="flex justify-center items-center gap-2 text-xs p-1 bg-green-200 rounded-lg">
+            <Earth className="w-4 h-4" />
+            <p>Public</p>
+          </div>
+        )}
+
+        {!note.isPublic && (
+          <div className="flex justify-center items-center gap-2 text-xs p-1 bg-rose-200 rounded-lg">
+            <EarthLock className="w-4 h-4" />
+            <p>Private</p>
+          </div>
+        )}
+
         <p className="text-xs text-gray-500">{timeAgo}</p>
       </div>
     </div>

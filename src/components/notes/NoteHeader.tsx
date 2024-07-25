@@ -18,14 +18,17 @@ import {
 } from "firebase/firestore";
 import { firestore } from "../../../firebase/client";
 import { ArrowLeft } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import NoteSettings from "./NoteSettings";
 
 interface NoteHeaderProps {
   slug: string;
+  note: any;
 }
 
-const NoteHeader: FC<NoteHeaderProps> = ({ slug }) => {
+const NoteHeader: FC<NoteHeaderProps> = ({ slug, note }) => {
   const [isMounted, setIsMounted] = useState(false);
-  const [note, setNote] = useState<any>(null);
+
   const [title, setTitle] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -35,22 +38,16 @@ const NoteHeader: FC<NoteHeaderProps> = ({ slug }) => {
   useEffect(() => {
     setIsMounted(true);
 
-    const fetchNoteTitle = async () => {
-      const note: any = await getNoteDetails(slug);
-      if (note) {
-        setNote(note);
-        setTitle(note.title);
-      }
-    };
-
     const loadBackend = async () => {
       await tf.setBackend("webgl");
       await tf.ready();
     };
     loadBackend();
-
-    fetchNoteTitle();
   }, [slug]);
+
+  useEffect(() => {
+    setTitle(note.title);
+  }, [note]);
 
   const generateEmb = async () => {
     const model = await use.load();
@@ -166,10 +163,11 @@ const NoteHeader: FC<NoteHeaderProps> = ({ slug }) => {
         )}
       </div>
 
-      <div>
-        <Button variant="bordered" color="primary" onPress={handleSave}>
+      <div className="flex justify-end items-center gap-4">
+        <Button variant="solid" color="primary" onPress={handleSave}>
           Save
         </Button>
+        <NoteSettings note={note} />
       </div>
     </header>
   );

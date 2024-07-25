@@ -3,6 +3,7 @@
 import { FC } from "react";
 import { Tabs, Tab } from "@nextui-org/tabs";
 import NotesList from "./NotesList";
+import PublicNoteList from "./PublicNoteList";
 
 interface NoteContainerProps {}
 
@@ -21,7 +22,11 @@ const NoteTabs: FC<NoteContainerProps> = ({}) => {
         <NotesList />
       </Tab>
       <Tab key="browse" title="Browse Notes" className="w-full">
-        ddd
+        <header className="my-6 ">
+          <h1 className="text-2xl font-bold">Browse Notes</h1>
+        </header>
+
+        <PublicNoteList />
       </Tab>
     </Tabs>
   );

@@ -24,7 +24,7 @@ const EditorSidebarTabs: FC<NotesSidebarProps> = ({}) => {
   ];
 
   return (
-    <div className="flex flex-row lg:flex-col lg:gap-6 gap-4 p-2">
+    <div className="flex flex-row lg:flex-col lg:gap-4 gap-4 p-2 mt-6">
       {tabs.map((tab, index) => (
         <Tooltip
           key={index}

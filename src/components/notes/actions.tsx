@@ -55,6 +55,35 @@ export const getAllUserNotes = async (userId: string) => {
   }
 };
 
+export const getPublicNotes = async () => {
+  try {
+    if (!firestore) {
+      throw new Error("Firestore is not initialized.");
+    }
+
+    const notesSnapshot = await firestore
+      .collection("notes")
+
+      .where("isPublic", "==", true)
+      .orderBy("createdAt", "desc")
+      .get();
+
+    if (notesSnapshot.empty) {
+      return [];
+    }
+
+    const notes = notesSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return notes;
+  } catch (e) {
+    console.error("Error fetching notes: ", e);
+    throw new Error("Error fetching notes");
+  }
+};
+
 export const getNoteCreator = async (userId: string) => {};
 
 export const updateTitle = async (noteId: string, newTitle: string) => {

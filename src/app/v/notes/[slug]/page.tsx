@@ -69,7 +69,7 @@ const NewNotePage: FC<PageProps> = async ({ params }) => {
   return (
     <AI initialAIState={{ chatId: id, messages: [] }}>
       <div className="min-h-full flex flex-col h-full">
-        <NoteHeader slug={params.slug} />
+        <NoteHeader slug={params.slug} note={note} />
 
         {/* <!-- main container --> */}
         <div className="flex-1 flex flex-row overflow-hidden">
