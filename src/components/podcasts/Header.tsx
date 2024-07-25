@@ -1,14 +1,11 @@
 "use client";
 import useTextPod from "@/zuztand/TextEditorPod";
 import { Button, Input } from "@nextui-org/react";
-import { Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC, FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-// import { generatePodcastScript } from "./actions";
-import UploadPDF from "./UploadPDF";
 import Crunker from "crunker";
-import { v4 as uuid } from "uuid";
 import {
   deleteObject,
   getDownloadURL,
@@ -16,12 +13,9 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { useAuth } from "../auth/auth-provider";
-import { Variants, motion } from "framer-motion";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
-import { generateObject } from "ai";
-import { z } from "zod";
-import { generatePodcastScript, saveConcatenatedAudioFile } from "./actions";
-import { storage } from "../../../firebase/client";
+import { generatePodcastScript } from "./actions";
+import { firestore, storage } from "../../../firebase/client";
+import { addDoc, collection } from "firebase/firestore";
 
 interface HeaderProps {}
 
@@ -29,25 +23,16 @@ const Header: FC<HeaderProps> = ({}) => {
   const auth = useAuth();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("Untitled podcast");
-  const [res, setRes] = useState<any>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isCreatingAudio, setIsCreatingAudio] = useState(false);
   const [isConcate, setIsConcate] = useState(false);
   const [isDone, setIsDone] = useState(false);
-
   const router = useRouter();
-
   const { text, setIsGenerating, setAiText, aiText } = useTextPod();
-
-  const onSubmitName = (e: FormEvent) => {
-    e.preventDefault();
-
-    setIsEditing(false);
-    router.push(`/v/podcasts/new?t=${title}`, { scroll: false });
-    if (title === "") {
-      setTitle("Untitled podcast");
-    }
-  };
+  useEffect(() => {
+    setAiText("");
+    setIsGenerating(false);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -69,15 +54,38 @@ const Header: FC<HeaderProps> = ({}) => {
     };
   }, [title]);
 
-  const upload = async (file: any) => {
-    if (storage) {
-      const fileRef = ref(
-        storage,
-        `podcast/${auth?.currentUser?.uid}/${title}_${Date.now()}.mp3`
-      );
-      await uploadBytes(fileRef, file, {
-        contentType: "audio/mp3",
-      });
+  const onSubmitName = (e: FormEvent) => {
+    e.preventDefault();
+
+    setIsEditing(false);
+    router.push(`/v/podcasts/new?t=${title}`, { scroll: false });
+    if (title === "") {
+      setTitle("Untitled podcast");
+    }
+  };
+
+  const upload = async (file: any): Promise<string | null> => {
+    try {
+      if (storage && auth?.currentUser) {
+        const fileRef = ref(
+          storage,
+          `podcast/${auth.currentUser.uid}/${title}_${Date.now()}.mp3`
+        );
+
+        // Upload the file
+        await uploadBytes(fileRef, file, {
+          contentType: "audio/mp3",
+        });
+
+        // Get the download URL
+        const downloadURL = await getDownloadURL(fileRef);
+        return downloadURL;
+      } else {
+        throw new Error("Storage or current user is not initialized.");
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      return null;
     }
   };
 
@@ -91,13 +99,13 @@ const Header: FC<HeaderProps> = ({}) => {
       setAiText("");
     }
     setIsGenerating(true);
+
     const res = await generatePodcastScript(text);
     if (res) {
       console.log(res);
       setAiText(res.podcastScript);
       setTitle(res.title);
     }
-
     setIsGenerating(false);
   };
 
@@ -131,18 +139,13 @@ const Header: FC<HeaderProps> = ({}) => {
   };
 
   async function concateAudioFiles(payload: any) {
-    console.log("Start Concate Process Now...");
     try {
       const crunker = new Crunker();
       const audioBuffers = await crunker.fetchAudio(...payload.audioUrls);
       const concatenated = crunker.concatAudio(audioBuffers);
-      console.log("Exporting...");
-      const output = crunker.export(concatenated, "audio/mp3");
 
-      console.log("Converting the Blob to Buffer...");
-      // Convert the Blob to Buffer
+      const output = crunker.export(concatenated, "audio/mp3");
       const buffer = await output.blob.arrayBuffer();
-      console.info("Converting the Blob to Buffer: Success...");
       return buffer;
     } catch (error) {
       console.error(error);
@@ -159,63 +162,42 @@ const Header: FC<HeaderProps> = ({}) => {
       const result = await createAudioFiles();
 
       setIsConcate(true);
-      const buffer = await concateAudioFiles(result); // Ensure result is a plain object with necessary data
+      const buffer = await concateAudioFiles(result);
       setIsConcate(false);
 
       if (buffer) {
         setIsDone(true);
-
-        // Convert buffer to Uint8Array for JSON serialization
-
         const arrayBuffer = new Uint8Array(buffer).buffer;
-
-        // Convert arrayBuffer to a base64 string
         const base64String = Buffer.from(arrayBuffer).toString("base64");
-
-        console.log("Uploading to firebase...");
-
         const file = Buffer.from(base64String, "base64");
+        const url = await upload(file);
 
-        await upload(file);
-        // const downloadURL = await saveConcatenatedAudioFile(
-        //   title,
-        //   base64String,
-        //   result.audioUrls,
-        //   auth?.currentUser?.uid!
-        // );
+        if (url) {
+          const podcastData = {
+            title,
+            url,
+            script: aiText,
+            createdBy: auth?.currentUser?.uid,
+            createdAt: new Date(),
+            isPublic: false, // Or set this based on your requirements
+          };
 
-        // const response = await fetch("/api/podcast/save", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify({
-        //     title,
-        //     buffer: Array.from(uint8ArrayBuffer),
-        //     result,
-        //     userId: auth?.currentUser?.uid,
-        //   }),
-        //   mode: "no-cors",
-        // });
+          await addDoc(collection(firestore!, "podcasts"), podcastData);
 
-        // if (downloadURL) {
-        //   console.log("Got the download URL...", downloadURL);
-        //   const link = document.createElement("a");
-        //   link.href = downloadURL;
-        //   link.download = `${title}.mp3`;
-        //   document.body.appendChild(link);
-        //   link.click();
-        //   console.log("Trying to download...");
-        //   document.body.removeChild(link);
-        //   console.log("Redirecting to play page...");
-        //   router.push(
-        //     `/v/podcasts/play?title=${title}&audioUrl=${encodeURIComponent(
-        //       downloadURL
-        //     )}`
-        //   );
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = `${title}.mp3`;
+          document.body.appendChild(link);
+          // link.click();
+          document.body.removeChild(link);
+          router.push(
+            `/v/podcasts/play?title=${title}&audioUrl=${encodeURIComponent(
+              url
+            )}`
+          );
 
-        //   setIsDone(false);
-        // }
+          setIsDone(false);
+        }
       }
     } catch (error) {
       console.error("Error generating podcast audio:", error);
@@ -228,9 +210,7 @@ const Header: FC<HeaderProps> = ({}) => {
       <header className="h-[60px] w-full py-2 px-6 flex justify-between items-center border-b transition-all ease-soft-spring">
         <div className="w-[30%]">
           {!isEditing && (
-            <motion.button onClick={() => setIsEditing(true)}>
-              {title}
-            </motion.button>
+            <button onClick={() => setIsEditing(true)}>{title}</button>
           )}
 
           {isEditing && (
@@ -251,24 +231,27 @@ const Header: FC<HeaderProps> = ({}) => {
           <Button
             onClick={onCreatePodcastScript}
             className="flex justify-center items-center gap-2"
-            variant="bordered"
-            color="primary"
+            variant="light"
+            color="default"
           >
-            <Sparkles className="w-5 h-5" />
-            Generate the script
+            <span className=" rounded-full border w-6 h-6 text-center flex justify-center">
+              1
+            </span>
+            {aiText === "" ? "Generate the script" : "Regenrate"}
           </Button>
-
-          {aiText && (
-            <Button
-              onClick={onCreatePodcastAudio}
-              className="flex justify-center items-center gap-2"
-              variant="bordered"
-              color="primary"
-            >
-              <Sparkles className="w-5 h-5" />
-              Generate the podcast Audio
-            </Button>
-          )}
+          <ArrowRight className="opacity-80" />
+          <Button
+            onClick={onCreatePodcastAudio}
+            className="flex justify-center items-center gap-2"
+            variant="light"
+            color="default"
+            isDisabled={aiText === ""}
+          >
+            <span className=" rounded-full border w-6 h-6 text-center flex justify-center">
+              2
+            </span>
+            Generate the podcast Audio
+          </Button>
 
           {isCreatingAudio && <p>Generating Audio now...</p>}
           {isConcate && <p>Concatinating Audio Files now...</p>}

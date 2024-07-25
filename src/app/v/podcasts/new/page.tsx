@@ -7,7 +7,8 @@ import useTextPod from "@/zuztand/TextEditorPod";
 import { Loader2, Sparkle } from "lucide-react";
 import { ScrollShadow } from "@nextui-org/react";
 
-export const maxDuration = 60; // This function can run for a maximum of 5 seconds
+export const maxDuration = 60;
+export const dynamic = "force-dynamic";
 
 interface pageProps {}
 
@@ -18,6 +19,9 @@ const NewPodPage: FC<pageProps> = ({}) => {
     { speaker: string; text: string }[]
   >([]);
 
+  useEffect(() => {
+    setShowSidebar(false);
+  }, []);
   useEffect(() => {
     if (aiText) {
       try {
@@ -43,7 +47,9 @@ const NewPodPage: FC<pageProps> = ({}) => {
       <div
         key={index}
         className={`mb-2  ${
-          entry.speaker === "aya" ? "bg-rose-50 " : "bg-purple-50"
+          entry.speaker === "aya"
+            ? "bg-rose-50 dark:bg-transparent dark:border "
+            : "bg-purple-50 dark:bg-transparent dark:border"
         } rounded-lg p-4 flex flex-col justify-start items-start gap-2`}
       >
         <p className=" opacity-80 font-bold">
@@ -82,10 +88,10 @@ const NewPodPage: FC<pageProps> = ({}) => {
                 <div className="icon">
                   <Sparkle className=" animate-spin duration-1000 transition-all ease-soft-spring mb-4 text-blue-500" />
                 </div>
-                <div className="loader_container space-y-2 ">
-                  <div className="loading-bar gradient-1 animate-loading rounded-xl" />
-                  <div className="loading-bar gradient-2 animate-loading rounded-xl" />
-                  <div className="loading-bar gradient-3 animate-loading rounded-xl" />
+                <div className="loader_container space-y-2">
+                  <div className="loading-bar gradient-1 dark:gradient-1 animate-loading rounded-xl" />
+                  <div className="loading-bar gradient-2 dark:gradient-2 animate-loading rounded-xl" />
+                  <div className="loading-bar gradient-3 dark:gradient-3 animate-loading rounded-xl" />
                 </div>
 
                 <div className=" mt-10 text-center opacity-50 text-sm">

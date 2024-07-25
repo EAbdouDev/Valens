@@ -33,6 +33,15 @@ const MainSidebar: FC<SidebarProps> = ({}) => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const [open, setOpen] = useState(false);
+  const [logoVar, setLogoVar] = useState("/logo/LightV.png");
+
+  useEffect(() => {
+    if (isDark) {
+      setLogoVar("/logo/DarkV.png");
+    } else {
+      setLogoVar("/logo/LightV.png");
+    }
+  }, [isDark]);
 
   const links = [
     {
@@ -92,7 +101,15 @@ const MainSidebar: FC<SidebarProps> = ({}) => {
     <motion.div
       className={`h-full flex flex-col  w-full justify-center items-center `}
     >
-      <motion.div className="flex-grow my-4 px-2 py-2 w-full">
+      <div className="flex justify-center items-center mb-2 pb-2 pt-4 !px-0 w-full ">
+        <Tooltip content="Valens" placement="right-start" color="primary">
+          <Link href={"/v/dashboard"}>
+            {" "}
+            <Image src={logoVar} alt="logo_dark_icon" width={40} height={40} />
+          </Link>
+        </Tooltip>
+      </div>
+      <motion.div className="flex-grow  px-2 py-2 w-full">
         <ul className="flex flex-col justify-start items-start gap-3 w-full">
           {links?.map((link) => (
             <li key={link.name} className="w-full">
@@ -106,8 +123,8 @@ const MainSidebar: FC<SidebarProps> = ({}) => {
                   href={link.href}
                   className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out  ${
                     link.active
-                      ? ` text-white font-semibold bg-black dark:bg-white dark:text-black opacity-100 `
-                      : `hover:bg-gray-100 dark:hover:bg-[#1c1c1c] opacity-85`
+                      ? `  bg-[#e8e8e8] dark:bg-[#202020] dark:text-white opacity-100 font-semibold `
+                      : `hover:bg-gray-100 dark:hover:bg-[#1c1c1c] opacity-50`
                   }`}
                 >
                   {link.icon}
@@ -128,9 +145,9 @@ const MainSidebar: FC<SidebarProps> = ({}) => {
           <Link
             href={"/guides"}
             className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out  ${
-              pathname.includes("guides")
-                ? ` text-white font-semibold bg-black dark:bg-white dark:text-black opacity-100 `
-                : `hover:bg-gray-100 dark:hover:bg-[#1c1c1c] opacity-85`
+              pathname.includes("/guides")
+                ? `  bg-[#e8e8e8] dark:bg-[#202020] dark:text-white opacity-100 font-semibold `
+                : `hover:bg-gray-100 dark:hover:bg-[#1c1c1c] opacity-50`
             }`}
           >
             <BookOpenText className="w-5 h-5" />

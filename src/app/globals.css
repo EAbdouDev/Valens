@@ -117,7 +117,11 @@ body {
 }
 
 .tiptap p {
-  @apply font-medium;
+  @apply font-light;
+}
+
+.tiptap strong {
+  @apply font-semibold;
 }
 
 .firebase-emulator-warning {
@@ -130,6 +134,7 @@ body {
   background-size: 200% auto;
 }
 
+/* Define light mode gradients */
 .gradient-1 {
   background-image: linear-gradient(
     to right,
@@ -153,6 +158,29 @@ body {
     #eff6ff
   );
   width: 60%;
+}
+
+/* Define dark mode gradients */
+.dark .gradient-1 {
+  background-image: linear-gradient(
+    to right,
+    #1e293b 30%,
+    #3b82f6 60%,
+    #1e293b
+  );
+}
+
+.dark .gradient-2 {
+  background-image: linear-gradient(to right, #1e293b 60%, #3b82f6);
+}
+
+.dark .gradient-3 {
+  background-image: linear-gradient(
+    to right,
+    #1e293b 50%,
+    #3b82f6 90%,
+    #1e293b
+  );
 }
 
 @keyframes moving {

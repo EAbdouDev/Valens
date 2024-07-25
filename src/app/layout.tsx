@@ -32,7 +32,7 @@ export default function RootLayout({
           <UIProvider>
             <NextThemeProvider>
               <NextTopLoader
-                color={"#ffff"}
+                color={"#4848cd"}
                 initialPosition={0.08}
                 crawlSpeed={200}
                 showSpinner={false}

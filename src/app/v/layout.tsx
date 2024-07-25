@@ -12,16 +12,18 @@ interface LayoutProps {
 const layout: FC<LayoutProps> = async ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col h-screen">
-      <header className="">
-        <AI>
-          <nav className="p-4 lg:px-6 lg:py-3  max-h-fit border-b bg-transparent backdrop-blur">
-            <Navbar />
-          </nav>
-        </AI>
-      </header>
       {/* <!-- main container --> */}
       <div className="flex-1 flex flex-row overflow-y-hidden">
-        <main className="flex-1  overflow-y-auto ">{children}</main>
+        <main className="flex-1  overflow-y-auto flex flex-col  ">
+          <header className="">
+            <AI>
+              <nav className="p-4 lg:px-6 lg:py-3  max-h-fit border-b bg-transparent backdrop-blur">
+                <Navbar />
+              </nav>
+            </AI>
+          </header>
+          {children}
+        </main>
 
         <nav className="order-first hidden sm:flex sm:w-fit  overflow-y-auto border-r  ">
           <MainSidebar />
@@ -31,7 +33,6 @@ const layout: FC<LayoutProps> = async ({ children }) => {
 
       <footer className="border-t py-2 xl:flex justify-between items-center gap-4 hidden px-4">
         <div className="flex justify-center items-center gap-2">
-          <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_red_4ed1cbfcbc6c9e84c31b987da73fc4168aec8445.svg" />
           <h3 className="text-xs font-light">Powerd by Google Gemini AI</h3>
         </div>
         <div className="flex justify-center items-center">

@@ -22,7 +22,7 @@ const EditorSidebarTabs: FC<NotesSidebarProps> = ({}) => {
       icon: <BookAudio className="w-6 h-6" />,
     },
   ];
-  console.log(sideBarTabMobile);
+
   return (
     <div className="flex flex-row lg:flex-col lg:gap-6 gap-4 p-2">
       {tabs.map((tab, index) => (
@@ -39,7 +39,9 @@ const EditorSidebarTabs: FC<NotesSidebarProps> = ({}) => {
               setSideBarTabMobile({ index: index, isOpen: true });
             }}
             className={` ${
-              index === sideBarTab ? "lg:bg-gray-200" : "lg:hover:bg-gray-200"
+              index === sideBarTab
+                ? "lg:bg-gray-200 dark:bg-secondary dark:text-secondary-foreground"
+                : "lg:hover:bg-gray-200 dark:hover:bg-secondary dark:text-secondary-foreground"
             } p-2 rounded-md`}
           >
             {tab.icon}

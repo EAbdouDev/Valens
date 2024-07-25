@@ -3,9 +3,8 @@ import { FC, FormEvent, useEffect, useRef, useState } from "react";
 import { getNoteDetails, updateTitle } from "./actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { Skeleton } from "../ui/skeleton";
 import useNote from "@/zuztand/notesState";
-import { Button } from "@nextui-org/react";
+import { Button, Skeleton } from "@nextui-org/react";
 import * as tf from "@tensorflow/tfjs";
 import * as use from "@tensorflow-models/universal-sentence-encoder";
 import {
@@ -18,6 +17,7 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { firestore } from "../../../firebase/client";
+import { ArrowLeft } from "lucide-react";
 
 interface NoteHeaderProps {
   slug: string;
@@ -132,13 +132,21 @@ const NoteHeader: FC<NoteHeaderProps> = ({ slug }) => {
   if (!isMounted) return null;
 
   return (
-    <header className="h-[70px] w-full py-2 px-6 flex justify-between items-center border-b transition-all ease-soft-spring">
-      <div className=" max-w-[40%] flex justify-start items-start">
+    <header className="h-[70px] w-full py-2 px-4 flex justify-between items-center border-b transition-all ease-soft-spring">
+      <div className=" max-w-[40%] flex justify-start items-center gap-4">
+        <Button
+          onPress={() => router.back()}
+          isIconOnly
+          variant="light"
+          size="sm"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Button>
         {!title && <Skeleton className="h-14 w-full rounded-lg" />}
         {!isEditing && (
           <button
             onClick={() => setIsEditing(true)}
-            className="w-full max-w-full truncate text-lg"
+            className="w-full max-w-full truncate "
           >
             {title}
           </button>

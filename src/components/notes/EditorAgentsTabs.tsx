@@ -46,7 +46,7 @@ const EditorAgentsTabs: FC<EditorAgentsTabsProps> = ({}) => {
               }
             }}
           >
-            <DrawerContent className="h-full">
+            <DrawerContent className="h-full ">
               <DrawerHeader className="flex flex-col justify-start w-full text-left">
                 <DrawerTitle>Assistant</DrawerTitle>
               </DrawerHeader>

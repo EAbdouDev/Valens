@@ -1,8 +1,6 @@
 import { FC, Suspense } from "react";
 import { AI } from "@/app/actions";
-import { Chat } from "@/components/note-assist/chat";
 import { generateId } from "ai";
-import BlockTextEditor from "@/components/editor/BlockTextEditor";
 import NoteHeader from "@/components/notes/NoteHeader";
 import { getNoteDetails } from "@/components/notes/actions";
 import {
@@ -10,19 +8,55 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import Cookies from "js-cookie";
 import EditorSidebarTabs from "@/components/notes/EditorSidebarTabs";
 import EditorAgentsTabs from "@/components/notes/EditorAgentsTabs";
 import NoteEditor from "@/components/editor/NoteEditor";
+import { firestore } from "../../../../../firebase/server";
+import { Metadata } from "next";
 
 export const revalidate = 0;
 export const maxDuration = 60;
+
 interface PageProps {
   params: {
     slug: string;
   };
 }
 
+export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
+  const { params } = props;
+  const { slug } = params;
+
+  try {
+    if (!firestore) {
+      throw new Error("Firestore is not initialized.");
+    }
+
+    const notesSnapshot = await firestore
+      .collection("notes")
+      .where("slug", "==", slug)
+      .get();
+
+    if (notesSnapshot.empty) {
+      console.error("No such document!");
+      return {
+        title: "Note Not Found",
+      };
+    }
+
+    const note = notesSnapshot.docs[0].data();
+    const title = note?.title || "Untitled Note"; // Use the title field from your document or a default value
+
+    return {
+      title,
+    };
+  } catch (error) {
+    console.error("Error fetching document:", error);
+    return {
+      title: "Error",
+    };
+  }
+};
 const NewNotePage: FC<PageProps> = async ({ params }) => {
   const id = generateId();
   const note = await getNoteDetails(params.slug);
@@ -42,15 +76,19 @@ const NewNotePage: FC<PageProps> = async ({ params }) => {
           <ResizablePanelGroup direction="horizontal">
             <ResizablePanel>
               <div className="w-full h-full overflow-auto">
-                <nav className="lg:hidden flex border-l h-fit w-full  bg-white border-b">
+                <nav className="lg:hidden flex border-l h-fit w-full  border-b">
                   <EditorSidebarTabs />
                 </nav>
-                <NoteEditor content={"dfdfdf"} />
+
+                <NoteEditor
+                  //@ts-expect-error
+                  content={note.content}
+                />
               </div>
             </ResizablePanel>
             <ResizableHandle />
             <ResizablePanel
-              className=" hidden lg:flex h-full bg-[#f8f8f8]"
+              className=" hidden lg:flex h-full "
               maxSize={35}
               minSize={30}
             >
@@ -60,7 +98,7 @@ const NewNotePage: FC<PageProps> = async ({ params }) => {
             </ResizablePanel>
           </ResizablePanelGroup>
 
-          <nav className="hidden lg:flex border-l h-full w-fit bg-white">
+          <nav className="hidden lg:flex border-l h-full w-fit ">
             <EditorSidebarTabs />
           </nav>
         </div>
