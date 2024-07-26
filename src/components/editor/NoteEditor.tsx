@@ -181,15 +181,17 @@ const NoteEditor: FC<NoteEditorProps> = ({ content }) => {
   useEffect(() => {
     if (editor && content) {
       editor.commands.setContent(content);
+      const textFromEditor = editor.getText();
+      setText(textFromEditor);
     }
   }, [editor, content]);
 
   return (
-    <div className="w-full overflow-hidden">
+    <div className="w-full overflow-y-hidden">
       <div className="border-b px-2">
         <NoteToolbar editor={editor} />
       </div>
-      <div className="px-2 overflow-auto">
+      <div className="px-2 overflow-y-auto">
         <EditorContent editor={editor} />
       </div>
     </div>

@@ -60,7 +60,7 @@ const layout: FC<LayoutProps> = async ({ children }) => {
             <h3 className="text-xs font-light">Developed by eslam abdou</h3>
           </Link>
           <div className="flex justify-center items-center gap-4">
-            <p className="text-xs opacity-80 pl-6">V0.01</p>
+            <p className="text-xs opacity-80 pl-6">Attributions*</p>
             <Link
               href={"/privacy-policy"}
               className="text-xs opacity-80 hover:underline"

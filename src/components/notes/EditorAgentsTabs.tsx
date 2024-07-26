@@ -13,6 +13,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import CreateFlashcards from "./agents/CreateFlashcards";
 
 interface EditorAgentsTabsProps {}
 
@@ -20,7 +21,7 @@ const EditorAgentsTabs: FC<EditorAgentsTabsProps> = ({}) => {
   const { sideBarTab, sideBarTabMobile, setSideBarTabMobile } = useNote();
 
   return (
-    <div className="">
+    <div className=" h-full   ">
       {sideBarTab === 0 && (
         <aside className="w-full h-full overflow-y-auto p-4 flex-1">
           <h1 className="text-2xl font-bold mb-10 p-2 border-b pb-4">
@@ -33,8 +34,8 @@ const EditorAgentsTabs: FC<EditorAgentsTabsProps> = ({}) => {
 
       {sideBarTab === 1 && (
         <aside className="w-full h-full overflow-y-auto p-4 flex-1">
-          <h1 className="text-2xl font-bold mb-10 p-2">Convert to podcast</h1>
-          Con
+          <h1 className="text-2xl font-bold mb-10 p-2">Create Flashcards</h1>
+          <CreateFlashcards />
         </aside>
       )}
 

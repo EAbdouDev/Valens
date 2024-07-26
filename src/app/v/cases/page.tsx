@@ -1,3 +1,5 @@
+import CasesTabs from "@/components/cases/CasesTabs";
+import UserCasesList from "@/components/cases/UserCasesList";
 import { Metadata } from "next";
 import Link from "next/link";
 import { FC } from "react";
@@ -22,8 +24,13 @@ const generateSimpleId = (length = 8) => {
 
 const CasesPage: FC<PageProps> = ({}) => {
   return (
-    <div className="w-full">
-      <Link href={`/v/cases/new/${generateSimpleId()}`}>New Case</Link>
+    <div className="w-full p-8">
+      <CasesTabs />
+      <header className="space-y-2 my-10">
+        <h1 className="text-2xl font-bold">My Cases</h1>
+      </header>
+      <UserCasesList />
+      {/* <Link href={`/v/cases/new/selector`}>New Case</Link> */}
     </div>
   );
 };

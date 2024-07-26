@@ -2,7 +2,7 @@
 
 import useNote from "@/zuztand/notesState";
 import { Tooltip } from "@nextui-org/react";
-import { BookAudio, ScanSearch } from "lucide-react";
+import { BookAudio, ScanSearch, Zap } from "lucide-react";
 import { FC } from "react";
 import Cookies from "js-cookie";
 
@@ -18,13 +18,17 @@ const EditorSidebarTabs: FC<NotesSidebarProps> = ({}) => {
       icon: <ScanSearch className="w-6 h-6" />,
     },
     {
+      name: "Create Flashcards",
+      icon: <Zap className="w-6 h-6" />,
+    },
+    {
       name: "Convert to podcast",
       icon: <BookAudio className="w-6 h-6" />,
     },
   ];
 
   return (
-    <div className="flex flex-row lg:flex-col lg:gap-4 gap-4 p-2 mt-6">
+    <div className="flex flex-row lg:flex-col lg:gap-4 gap-4 p-2 mt-6 ">
       {tabs.map((tab, index) => (
         <Tooltip
           key={index}

@@ -9,17 +9,15 @@ import RviewOfSystems from "./form-steps/RviewOfSystems";
 import PhysicalExamination from "./form-steps/PhysicalExamination";
 import DiagnosticTests from "./form-steps/DiagnosticTests";
 
-interface CaseFormProps {
-  caseId: string;
-}
+interface CaseFormProps {}
 
-const CaseForm: FC<CaseFormProps> = ({ caseId }) => {
+const CaseForm: FC<CaseFormProps> = ({}) => {
   const { currentStep } = useFormContext();
 
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <PatientInformation caseId={caseId} />;
+        return <PatientInformation />;
       case 2:
         return <MedicalHistory />;
       case 3:
@@ -31,7 +29,7 @@ const CaseForm: FC<CaseFormProps> = ({ caseId }) => {
       case 6:
         return <DiagnosticTests />;
       default:
-        return <PatientInformation caseId={caseId} />;
+        return <PatientInformation />;
     }
   };
 
