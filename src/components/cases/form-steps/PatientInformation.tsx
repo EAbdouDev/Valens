@@ -24,11 +24,9 @@ import {
 } from "@/components/ui/select";
 import { useFormContext } from "@/components/cases/FormProvider";
 
-interface PatientInformationProps {
-  caseId: string;
-}
+interface PatientInformationProps {}
 
-const PatientInformation: FC<PatientInformationProps> = ({ caseId }) => {
+const PatientInformation: FC<PatientInformationProps> = ({}) => {
   const { formValues, updateFormValues, currentStep, setCurrentStep } =
     useFormContext();
 

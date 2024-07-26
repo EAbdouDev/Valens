@@ -36,7 +36,7 @@
   }
 
   .dark {
-    --background: 20 14.3% 2.1%;
+    --background: 20 14.3% 8.1%;
     --foreground: 60 9.1% 97.8%;
 
     --card: 20 14.3% 4.1%;
@@ -67,6 +67,24 @@
 }
 
 @layer base {
+  :root {
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+
+  .dark {
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
   * {
     @apply border-border;
   }
@@ -75,11 +93,21 @@
   }
 }
 
+* {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100%;
+}
+
 .rhap_container {
   box-shadow: none;
   @apply !bg-background !shadow-none  !border !rounded-lg;
 }
 
+/* TipTap  */
 .tiptap p.is-editor-empty:first-child::before {
   color: #adb5bd;
   content: attr(data-placeholder);
@@ -88,6 +116,83 @@
   pointer-events: none;
 }
 
+.tiptap p {
+  @apply font-light;
+}
+
+.tiptap strong {
+  @apply font-semibold;
+}
+
 .firebase-emulator-warning {
   display: none;
+}
+
+.loading-bar {
+  height: 1.05rem;
+  border-radius: 0.125rem;
+  background-size: 200% auto;
+}
+
+/* Define light mode gradients */
+.gradient-1 {
+  background-image: linear-gradient(
+    to right,
+    #eff6ff 30%,
+    #2563eb90 60%,
+    #eff6ff
+  );
+  width: 80%;
+}
+
+.gradient-2 {
+  background-image: linear-gradient(to right, #eff6ff 60%, #2563eb90);
+  width: 100%;
+}
+
+.gradient-3 {
+  background-image: linear-gradient(
+    to right,
+    #eff6ff 50%,
+    #2563eb90 90%,
+    #eff6ff
+  );
+  width: 60%;
+}
+
+/* Define dark mode gradients */
+.dark .gradient-1 {
+  background-image: linear-gradient(
+    to right,
+    #1e293b 30%,
+    #3b82f6 60%,
+    #1e293b
+  );
+}
+
+.dark .gradient-2 {
+  background-image: linear-gradient(to right, #1e293b 60%, #3b82f6);
+}
+
+.dark .gradient-3 {
+  background-image: linear-gradient(
+    to right,
+    #1e293b 50%,
+    #3b82f6 90%,
+    #1e293b
+  );
+}
+
+@keyframes moving {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.animate-loading {
+  transform-origin: left;
+  animation: moving 1s 1s infinite forwards linear;
 }

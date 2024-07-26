@@ -13,8 +13,8 @@ export const UserMessage: React.FC<UserMessageProps> = ({
 }) => {
   const enableShare = process.env.ENABLE_SHARE === "true";
   return (
-    <div className="flex items-center w-full space-x-1 mt-2 min-h-10">
-      <div className="text-xl flex-1 break-words w-full">{message}</div>
+    <div className="flex items-center w-full space-x-1 mt-2 min-h-10 ">
+      <div className="text-base flex-1 break-words w-full">{message}</div>
     </div>
   );
 };

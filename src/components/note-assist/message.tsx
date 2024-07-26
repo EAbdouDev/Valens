@@ -24,7 +24,7 @@ export function BotMessage({ content }: { content: string }) {
           rehypeKatex,
         ]}
         remarkPlugins={[remarkGfm, remarkMath]}
-        className="prose-sm prose-neutral prose-a:text-accent-foreground/50"
+        className="prose prose-lg text-gray-800 leading-relaxed space-y-4"
       >
         {processedData}
       </MemoizedReactMarkdown>
@@ -35,7 +35,7 @@ export function BotMessage({ content }: { content: string }) {
     <MemoizedReactMarkdown
       rehypePlugins={[[rehypeExternalLinks, { target: "_blank" }]]}
       remarkPlugins={[remarkGfm]}
-      className="prose-sm prose-neutral prose-a:text-accent-foreground/50"
+      className="prose prose-lg text-gray-800 leading-relaxed space-y-4"
     >
       {content}
     </MemoizedReactMarkdown>
@@ -43,7 +43,6 @@ export function BotMessage({ content }: { content: string }) {
 }
 
 // Preprocess LaTeX equations to be rendered by KaTeX
-// ref: https://github.com/remarkjs/react-markdown/issues/785
 const preprocessLaTeX = (content: string) => {
   const blockProcessedContent = content.replace(
     /\\\[([\s\S]*?)\\\]/g,

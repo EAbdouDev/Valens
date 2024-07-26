@@ -3,6 +3,7 @@ import {
   Book,
   BookAudio,
   BookOpenCheck,
+  BookOpenText,
   Disc2,
   Files,
   Hospital,
@@ -13,28 +14,34 @@ import {
   Users,
   Zap,
 } from "lucide-react";
-import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 import UserMenu from "./UserMenu";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import useSidebar from "@/zuztand/sidebar";
 import { useTheme } from "next-themes";
 import { Tooltip } from "@nextui-org/react";
+import { Sidebar, SidebarBody, SidebarLink } from "../ui/sidebar";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 interface SidebarProps {}
 
-const Sidebar: FC<SidebarProps> = ({}) => {
+const MainSidebar: FC<SidebarProps> = ({}) => {
   const pathname = usePathname();
-  const { isExpanded, setIsExpanded, isPinned, setIsPinned } = useSidebar();
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  const [open, setOpen] = useState(false);
+  const [logoVar, setLogoVar] = useState("/logo/LightV.png");
 
-  const handleToggle = () => {
-    setIsExpanded(!isExpanded);
-    setIsPinned(!isPinned);
-  };
+  useEffect(() => {
+    if (isDark) {
+      setLogoVar("/logo/DarkV.png");
+    } else {
+      setLogoVar("/logo/LightV.png");
+    }
+  }, [isDark]);
 
   const links = [
     {
@@ -64,7 +71,7 @@ const Sidebar: FC<SidebarProps> = ({}) => {
     {
       name: "Cases",
       href: "/v/cases",
-      active: pathname.includes("cases"),
+      active: pathname.includes("/cases"),
       icon: <Hospital className="w-5 h-5" />,
     },
     {
@@ -94,7 +101,15 @@ const Sidebar: FC<SidebarProps> = ({}) => {
     <motion.div
       className={`h-full flex flex-col  w-full justify-center items-center `}
     >
-      <motion.div className="flex-grow my-4 px-2 py-2 w-full">
+      <div className="flex justify-center items-center mb-2 pb-2 pt-4 !px-0 w-full ">
+        <Tooltip content="Valens" placement="right-start" color="primary">
+          <Link href={"/v/dashboard"}>
+            {" "}
+            <Image src={logoVar} alt="logo_dark_icon" width={40} height={40} />
+          </Link>
+        </Tooltip>
+      </div>
+      <motion.div className="flex-grow  px-2 py-2 w-full">
         <ul className="flex flex-col justify-start items-start gap-3 w-full">
           {links?.map((link) => (
             <li key={link.name} className="w-full">
@@ -104,23 +119,43 @@ const Sidebar: FC<SidebarProps> = ({}) => {
                 color="primary"
               >
                 <Link
+                  prefetch={false}
                   href={link.href}
                   className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out  ${
                     link.active
-                      ? ` text-white font-semibold bg-black dark:bg-white dark:text-black opacity-100 ${noisyGradientStyle}`
-                      : `hover:bg-gray-100 dark:hover:bg-[#1c1c1c] opacity-85`
+                      ? `  bg-[#e8e8e8] dark:bg-[#202020] dark:text-white opacity-100 font-semibold `
+                      : `hover:bg-gray-100 dark:hover:bg-[#1c1c1c] opacity-50`
                   }`}
                 >
                   {link.icon}
-                  {link.name}
+                  {/* {link.name} */}
                 </Link>
               </Tooltip>
             </li>
           ))}
         </ul>
       </motion.div>
+
+      <div className="mt-auto py-4">
+        <Tooltip
+          content={"Valens guides"}
+          placement="right-start"
+          color="primary"
+        >
+          <Link
+            href={"/guides"}
+            className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out  ${
+              pathname.includes("/guides")
+                ? `  bg-[#e8e8e8] dark:bg-[#202020] dark:text-white opacity-100 font-semibold `
+                : `hover:bg-gray-100 dark:hover:bg-[#1c1c1c] opacity-50`
+            }`}
+          >
+            <BookOpenText className="w-5 h-5" />
+          </Link>
+        </Tooltip>
+      </div>
     </motion.div>
   );
 };
 
-export default Sidebar;
+export default MainSidebar;

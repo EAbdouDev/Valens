@@ -8,7 +8,7 @@ import { BotCard, BotMessage } from "./llm/message";
 import { Loader2 } from "lucide-react";
 import { z } from "zod";
 import { parseRelativeDate, sleep } from "@/lib/utils";
-import { firestore } from "../../../firebase/server";
+import { auth, firestore } from "../../../firebase/server";
 import UserCard from "./llm/UserCard";
 import { google as gapi } from "googleapis";
 import DayEventsList from "./llm/DayEventsList";

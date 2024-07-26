@@ -90,18 +90,16 @@ export function ChatPanel({ messages, query }: ChatPanelProps) {
   // If there are messages and the new button has not been pressed, display the new Button
   if (messages.length > 0) {
     return (
-      <div className="fixed bottom-2 md:bottom-6 left-0 right-16   pointer-events-none flex justify-end items-center">
+      <div className=" bottom-2 md:bottom-6 left-0 right-16   flex justify-end items-center">
         <Button
           type="button"
           variant={"secondary"}
-          className="rounded-full bg-secondary/80 group transition-all hover:scale-105 pointer-events-auto"
+          className="rounded-xl bg-black text-white"
           onClick={() => handleClear()}
           disabled={isGenerating}
         >
-          <span className="text-sm mr-2 group-hover:block hidden animate-in fade-in duration-300">
-            New
-          </span>
-          <Plus size={18} className="group-hover:rotate-90 transition-all" />
+          <Plus size={18} className="" />
+          <span className="text-sm ml-2 ">New</span>
         </Button>
       </div>
     );
@@ -113,7 +111,7 @@ export function ChatPanel({ messages, query }: ChatPanelProps) {
 
   return (
     <div className={""}>
-      <form onSubmit={handleSubmit} className="max-w-2xl w-full px-6">
+      <form onSubmit={handleSubmit} className="max-w-full w-full ">
         <div className="relative flex items-center w-full">
           <Textarea
             ref={inputRef}
@@ -124,7 +122,7 @@ export function ChatPanel({ messages, query }: ChatPanelProps) {
             placeholder="Ask a question..."
             spellCheck={false}
             value={input}
-            className="resize-none w-full min-h-12 rounded-fill bg-muted border border-input pl-4 pr-10 pt-3 pb-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'"
+            className="resize-none w-full min-h-12 !rounded-lg  border border-input pl-4 pr-10 pt-3 pb-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 "
             onChange={(e) => {
               setInput(e.target.value);
               setShowEmptyScreen(e.target.value.length === 0);
@@ -146,23 +144,23 @@ export function ChatPanel({ messages, query }: ChatPanelProps) {
                 textarea.form?.requestSubmit();
               }
             }}
-            onHeightChange={(height) => {
-              // Ensure inputRef.current is defined
-              if (!inputRef.current) return;
+            // onHeightChange={(height) => {
+            //   // Ensure inputRef.current is defined
+            //   if (!inputRef.current) return;
 
-              // The initial height and left padding is 70px and 2rem
-              const initialHeight = 70;
-              // The initial border radius is 32px
-              const initialBorder = 32;
-              // The height is incremented by multiples of 20px
-              const multiple = (height - initialHeight) / 20;
+            //   // The initial height and left padding is 70px and 2rem
+            //   const initialHeight = 70;
+            //   // The initial border radius is 32px
+            //   const initialBorder = 32;
+            //   // The height is incremented by multiples of 20px
+            //   const multiple = (height - initialHeight) / 20;
 
-              // Decrease the border radius by 4px for each 20px height increase
-              const newBorder = initialBorder - 4 * multiple;
-              // The lowest border radius will be 8px
-              inputRef.current.style.borderRadius =
-                Math.max(8, newBorder) + "px";
-            }}
+            //   // Decrease the border radius by 4px for each 20px height increase
+            //   const newBorder = initialBorder - 4 * multiple;
+            //   // The lowest border radius will be 8px
+            //   inputRef.current.style.borderRadius =
+            //     Math.max(8, newBorder) + "px";
+            // }}
             onFocus={() => setShowEmptyScreen(true)}
             onBlur={() => setShowEmptyScreen(false)}
           />

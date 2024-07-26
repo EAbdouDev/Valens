@@ -5,16 +5,12 @@ import { Button } from "@nextui-org/react";
 import { Save } from "lucide-react";
 import StepperSidebar from "@/components/cases/StepperSidebar";
 
-interface pageProps {
-  params: {
-    id: string;
-  };
-}
+interface pageProps {}
 
-const NewCasePage: FC<pageProps> = ({ params }) => {
+const NewCasePage: FC<pageProps> = ({}) => {
   return (
-    <div className="w-full h-full p-4">
-      <header className=" px-6 py-4 flex justify-between items-center w-full  bg-gray-100 rounded-2xl">
+    <div className="w-full h-full ">
+      <header className=" px-6 py-4 flex justify-between items-center w-full border-b">
         <div>
           <p>Untitled case</p>
         </div>
@@ -30,13 +26,13 @@ const NewCasePage: FC<pageProps> = ({ params }) => {
         </div>
       </header>
 
-      <div className="grid grid-cols-5 h-full mt-2">
-        <div className="col-span-1  h-full py-6 px-8 ">
+      <div className="flex flex-row  h-full mt-2 p-6">
+        <div className=" h-full py-6 px-8   ">
           <StepperSidebar />
         </div>
-        <div className="col-span-4 py-6 px-8 h-full ">
-          <div className="max-w-5xl mx-auto pb-10">
-            <CaseForm caseId={params.id} />
+        <div className="flex-1 py-6 px-8 h-full ">
+          <div className="max-w-7xl mx-auto pb-10">
+            <CaseForm />
           </div>
         </div>
       </div>

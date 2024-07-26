@@ -9,7 +9,8 @@ export const videoSearchTool = ({ uiStream, fullResponse }: ToolProps) =>
   tool({
     description: "Search for videos from YouTube",
     parameters: searchSchema,
-    execute: async ({ query }) => {
+    execute: async ({ query, max_results, search_depth }) => {
+      // Added search_depth to the destructured parameters
       let hasError = false;
       // Append the search section
       const streamResults = createStreamableValue<string>();
@@ -23,7 +24,7 @@ export const videoSearchTool = ({ uiStream, fullResponse }: ToolProps) =>
             "X-API-KEY": process.env.SERPER_API_KEY || "",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ q: query }),
+          body: JSON.stringify({ q: query, max_results, search_depth }), // Include search_depth in the request body
         });
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -35,7 +36,7 @@ export const videoSearchTool = ({ uiStream, fullResponse }: ToolProps) =>
       }
 
       if (hasError) {
-        fullResponse = `An error occurred while searching for videos with "${query}.`;
+        fullResponse = `An error occurred while searching for videos with "${query}".`;
         uiStream.update(null);
         streamResults.done();
         return searchResult;

@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { createNote } from "./actions";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../auth/auth-provider";
 
 interface NewProps {}
 
@@ -30,6 +31,7 @@ const New: FC<NewProps> = ({}) => {
   const [isCreating, setIsCreating] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const router = useRouter();
+  const auth = useAuth();
   const {
     register,
     handleSubmit,
@@ -40,26 +42,28 @@ const New: FC<NewProps> = ({}) => {
   });
 
   const onSubmit = async (data: any) => {
+    if (!auth?.currentUser) return;
     setIsCreating(true);
-    const { slug } = await createNote(data);
+    const { slug } = await createNote(data, auth?.currentUser?.uid!);
     if (slug) {
       router.push(`/v/notes/${slug}`);
     }
     setIsCreating(false);
-    onClose();
-    reset();
+    setIsRedirecting(true);
+    // onClose();
+    // reset();
   };
 
   return (
     <>
-      <Button
-        onPress={onOpen}
-        className="w-full border border-dashed flex flex-col justify-center items-center gap-2 h-[100px] text-xl font-semibold p-4"
-        variant="ghost"
+      <div
+        onClick={onOpen}
+        className=" cursor-pointer w-full border-2 border-dashed rounded-lg flex flex-col justify-center items-center gap-2  text-xl font-semibold p-4 hover:bg-gray-100 dark:hover:bg-muted  hover:border-divider transtion-all ease-soft-spring"
+        // variant="ghost"
       >
         <Plus className="w-8 h-8" />
         New Note
-      </Button>
+      </div>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
@@ -70,7 +74,7 @@ const New: FC<NewProps> = ({}) => {
               <ModalBody>
                 <form
                   onSubmit={handleSubmit(onSubmit)}
-                  className="flex flex-col gap-8"
+                  className="flex flex-col gap-4 mb-2"
                 >
                   <div>
                     <label
@@ -92,20 +96,7 @@ const New: FC<NewProps> = ({}) => {
                       </span>
                     )}
                   </div>
-                  <div>
-                    <label
-                      htmlFor="description"
-                      className="block text-sm font-medium "
-                    >
-                      Description
-                    </label>
-                    <Textarea
-                      variant="bordered"
-                      id="description"
-                      {...register("description")}
-                      className="mt-1.5 block w-full  sm:text-sm"
-                    />
-                  </div>
+
                   <Button
                     isDisabled={isCreating}
                     isLoading={isCreating}
@@ -113,11 +104,10 @@ const New: FC<NewProps> = ({}) => {
                     color="primary"
                     className="font-semibold"
                   >
-                    Create
+                    {isRedirecting ? "Redirecting..." : "Create"}
                   </Button>
                 </form>
               </ModalBody>
-              <ModalFooter></ModalFooter>
             </>
           )}
         </ModalContent>

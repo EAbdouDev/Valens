@@ -1,6 +1,7 @@
 "use client";
-import { FC, useEffect } from "react";
-import { ThemeProvider } from "next-themes";
+import { FC, Suspense, useEffect, useState } from "react";
+import { ThemeProvider, useTheme } from "next-themes";
+import NextTopLoader from "nextjs-toploader";
 
 interface ThemeProviderProps {
   children: React.ReactNode;
