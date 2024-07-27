@@ -42,3 +42,5 @@ Jul 26, 2024 6:51:47 PM com.google.cloud.datastore.emulator.firestore.webchannel
 INFO: channel closed
 Jul 26, 2024 7:34:21 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected HTTP/2 connection.
+*** shutting down gRPC server since JVM is shutting down
+*** server shut down
