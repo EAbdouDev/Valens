@@ -12,8 +12,8 @@ import DiagnosticTests from "./form-steps/DiagnosticTests";
 interface CaseFormProps {}
 
 const CaseForm: FC<CaseFormProps> = ({}) => {
-  const { currentStep } = useFormContext();
-
+  const { currentStep, formValues } = useFormContext();
+  console.log(formValues);
   const renderStep = () => {
     switch (currentStep) {
       case 1:
@@ -33,7 +33,7 @@ const CaseForm: FC<CaseFormProps> = ({}) => {
     }
   };
 
-  return <div className="form-container">{renderStep()}</div>;
+  return <div className="form-container w-full h-full">{renderStep()}</div>;
 };
 
 export default CaseForm;

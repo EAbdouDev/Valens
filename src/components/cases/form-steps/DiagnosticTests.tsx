@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useFormContext } from "@/components/cases/FormProvider";
 import UploadDialog from "../UploadDialog";
+import { FileIcon, X } from "lucide-react";
 
 interface DiagnosticTestsProps {}
 
@@ -29,18 +29,23 @@ const DiagnosticTests: FC<DiagnosticTestsProps> = ({}) => {
     defaultValues: formValues,
   });
 
-  const { fields: labResultsFields, append: appendLabResult } = useFieldArray({
+  const {
+    fields: labResultsFields,
+    append: appendLabResult,
+    remove: removeLabResult,
+  } = useFieldArray({
     control: form.control,
-    //@ts-expect-error
     name: "labResults",
   });
 
-  const { fields: imagingStudiesFields, append: appendImagingStudy } =
-    useFieldArray({
-      control: form.control,
-      //@ts-expect-error
-      name: "imagingStudies",
-    });
+  const {
+    fields: imagingStudiesFields,
+    append: appendImagingStudy,
+    remove: removeImagingStudy,
+  } = useFieldArray({
+    control: form.control,
+    name: "imagingStudies",
+  });
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentField, setCurrentField] = useState<
@@ -80,7 +85,7 @@ const DiagnosticTests: FC<DiagnosticTestsProps> = ({}) => {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onNext)} className="space-y-8">
-          <div className="w-full flex justify-between items-center mb-12 ">
+          <div className="w-full flex justify-between items-center mb-12">
             <div>
               <h1 className="text-2xl font-semibold">Diagnostic Tests</h1>
             </div>
@@ -92,112 +97,98 @@ const DiagnosticTests: FC<DiagnosticTestsProps> = ({}) => {
             </div>
           </div>
           <div>
-            <div className="flex justify-between items-center ">
+            <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Lab Results</h2>
               <Button
                 type="button"
                 onClick={() => openDialog("labResults")}
                 className="mt-4"
+                variant={"outline"}
               >
                 Upload Lab Result
               </Button>
             </div>
-            {labResultsFields.length > 0 && (
-              <div className="flex flex-col justify-start items-start gap-4 flex-wrap w-full my-4 p-4 bg-gray-100 rounded-xl">
+            {labResultsFields.length > 0 ? (
+              <div className="my-4 space-y-2">
                 {labResultsFields.map((field, index) => (
                   <div
                     key={field.id}
-                    className="space-y-4 flex flex-col justify-center items-center gap-4"
+                    className="flex items-center justify-between p-4 bg-gray-50 rounded-md"
                   >
-                    {/* @ts-expect-error */}
-                    {field.file && (
-                      <div className=" flex  justify-center items-center gap-2">
-                        {/* @ts-expect-error */}
-
-                        {field.file.startsWith("data:image") && (
-                          <img
-                            //@ts-expect-error
-                            src={field.file}
-                            //@ts-expect-error
-
-                            alt={field.label}
-                            className="w-20 h-20 rounded-md object-cover aspect-video"
-                          />
-                        )}
-                        <p className="flex-1">
-                          {/* @ts-expect-error */}
-                          {field.label}
-                        </p>
-                      </div>
-                    )}
+                    <div className="flex items-center gap-4">
+                      {field.file && field.file.startsWith("data:image") ? (
+                        <img
+                          src={field.file}
+                          alt={field.label}
+                          className="w-8 h-8 rounded-md object-cover"
+                        />
+                      ) : (
+                        <FileIcon className="w-8 h-8" />
+                      )}
+                      <p className="flex-1">{field.label}</p>
+                    </div>
+                    <Button
+                      type="button"
+                      variant={"ghost"}
+                      onClick={() => removeLabResult(index)}
+                      size={"icon"}
+                    >
+                      <X className="w-5 h-5" />
+                    </Button>
                   </div>
                 ))}
               </div>
+            ) : (
+              <p className="my-4 text-gray-500">No lab results uploaded yet.</p>
             )}
           </div>
           <div>
-            <h2 className="text-xl font-semibold">Imaging Studies</h2>
-            {imagingStudiesFields.map((field, index) => (
-              <div key={field.id} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  //@ts-expect-error
-                  name={`imagingStudies.${index}.label`}
-                  render={({ field, fieldState }) => (
-                    <FormItem>
-                      <FormLabel>Label</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Label" {...field} />
-                      </FormControl>
-                      <FormMessage className="text-red-500 text-sm">
-                        {fieldState.error?.message}
-                      </FormMessage>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  //@ts-expect-error
-                  name={`imagingStudies.${index}.file`}
-                  render={({ field, fieldState }) => (
-                    <FormItem>
-                      <FormLabel>File</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          readOnly
-                          placeholder="Uploaded file"
-                          {...field}
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold">Imaging Studies</h2>
+              <Button
+                type="button"
+                onClick={() => openDialog("imagingStudies")}
+                className="mt-4"
+                variant={"outline"}
+              >
+                Upload Imaging Study
+              </Button>
+            </div>
+            {imagingStudiesFields.length > 0 ? (
+              <div className="my-4 space-y-2">
+                {imagingStudiesFields.map((field, index) => (
+                  <div
+                    key={field.id}
+                    className="flex items-center justify-between p-2 bg-gray-50 rounded-md"
+                  >
+                    <div className="flex items-center gap-4">
+                      {field.file && field.file.startsWith("data:image") ? (
+                        <img
+                          src={field.file}
+                          alt={field.label}
+                          className="w-8 h-8 rounded-md object-cover"
                         />
-                      </FormControl>
-                      <FormMessage className="text-red-500 text-sm">
-                        {fieldState.error?.message}
-                      </FormMessage>
-                    </FormItem>
-                  )}
-                />
-                {/* @ts-expect-error */}
-                {field.file && (
-                  <div>
-                    {/* @ts-expect-error */}
-                    {field.file.startsWith("data:image") && (
-                      <img
-                        //@ts-expect-error
-                        src={field.file}
-                        //@ts-expect-error
-                        alt={field.label}
-                        style={{ maxWidth: "100%" }}
-                      />
-                    )}
-                    {/* @ts-expect-error */}
-                    <p>{field.label}</p>
+                      ) : (
+                        <FileIcon className="w-8 h-8" />
+                      )}
+                      <p className="flex-1">{field.label}</p>
+                    </div>
+                    <Button
+                      type="button"
+                      variant={"ghost"}
+                      onClick={() => removeImagingStudy(index)}
+                      size={"icon"}
+                    >
+                      <X className="w-5 h-5" />
+                    </Button>
                   </div>
-                )}
+                ))}
               </div>
-            ))}
-            <Button type="button" onClick={() => openDialog("imagingStudies")}>
-              Upload Imaging Study
-            </Button>
+            ) : (
+              <p className="my-4 text-gray-500">
+                No imaging studies uploaded yet.
+              </p>
+            )}
           </div>
         </form>
       </Form>

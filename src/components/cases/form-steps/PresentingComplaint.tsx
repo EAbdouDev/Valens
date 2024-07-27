@@ -63,13 +63,13 @@ const PresentingComplaint: FC<MedicalHistoryProps> = ({}) => {
               <FormLabel>Chief Complaint</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Write the chief Complaint..."
+                  placeholder="Describe the main issue or symptom..."
                   {...field}
                   rows={5}
                 />
               </FormControl>
               <FormDescription>
-                More details means accurate responses from Gemini
+                Providing detailed information will help in accurate diagnosis.
               </FormDescription>
               <FormMessage className="text-red-500 text-sm">
                 {fieldState.error?.message}
@@ -82,16 +82,16 @@ const PresentingComplaint: FC<MedicalHistoryProps> = ({}) => {
           name="historyOfPresentingIllness"
           render={({ field, fieldState }) => (
             <FormItem>
-              <FormLabel>History Of Presenting Illness</FormLabel>
+              <FormLabel>History of Presenting Illness</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Write the historyOfPresentingIllness..."
+                  placeholder="Provide a detailed history of the current illness..."
                   {...field}
                   rows={5}
                 />
               </FormControl>
               <FormDescription>
-                Patients usually have genatic diseases
+                A thorough history helps in understanding the illness better.
               </FormDescription>
               <FormMessage className="text-red-500 text-sm">
                 {fieldState.error?.message}

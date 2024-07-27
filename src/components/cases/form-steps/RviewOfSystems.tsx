@@ -21,7 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 interface MedicalHistoryProps {}
 
-const RviewOfSystems: FC<MedicalHistoryProps> = ({}) => {
+const ReviewOfSystems: FC<MedicalHistoryProps> = ({}) => {
   const { formValues, updateFormValues, currentStep, setCurrentStep } =
     useFormContext();
 
@@ -44,7 +44,7 @@ const RviewOfSystems: FC<MedicalHistoryProps> = ({}) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onNext)} className="space-y-8">
-        <div className="w-full flex justify-between items-center mb-12 ">
+        <div className="w-full flex justify-between items-center mb-12">
           <div>
             <h1 className="text-2xl font-semibold">Review Of Systems</h1>
           </div>
@@ -63,13 +63,13 @@ const RviewOfSystems: FC<MedicalHistoryProps> = ({}) => {
               <FormLabel>Respiratory</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Write the respiratory review..."
+                  placeholder="Describe any respiratory issues..."
                   {...field}
                   rows={5}
                 />
               </FormControl>
               <FormDescription>
-                More details means accurate responses from Gemini
+                Detailed information helps in accurate diagnosis.
               </FormDescription>
               <FormMessage className="text-red-500 text-sm">
                 {fieldState.error?.message}
@@ -85,13 +85,13 @@ const RviewOfSystems: FC<MedicalHistoryProps> = ({}) => {
               <FormLabel>Cardiovascular</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Write the family history..."
+                  placeholder="Describe any cardiovascular issues..."
                   {...field}
                   rows={5}
                 />
               </FormControl>
               <FormDescription>
-                Patients usually have genatic diseases
+                Provide details to ensure comprehensive assessment.
               </FormDescription>
               <FormMessage className="text-red-500 text-sm">
                 {fieldState.error?.message}
@@ -107,135 +107,149 @@ const RviewOfSystems: FC<MedicalHistoryProps> = ({}) => {
               <FormLabel>Gastrointestinal</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Write the social history..."
+                  placeholder="Describe any gastrointestinal issues..."
                   {...field}
                   rows={5}
                 />
               </FormControl>
               <FormDescription>
-                Does this patient smoke, drinks?
+                Include any relevant symptoms or conditions.
               </FormDescription>
-              <FormMessage>{fieldState.error?.message}</FormMessage>
+              <FormMessage className="text-red-500 text-sm">
+                {fieldState.error?.message}
+              </FormMessage>
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name="endocrine"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Endocrine</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Write the surgical history for the patient..."
+                  placeholder="Describe any endocrine issues..."
                   {...field}
                   rows={5}
                 />
               </FormControl>
               <FormDescription>
-                Some disease are occupational related.
+                Include any relevant symptoms or conditions.
               </FormDescription>
-              <FormMessage />
+              <FormMessage className="text-red-500 text-sm">
+                {fieldState.error?.message}
+              </FormMessage>
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name="genitourinary"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Genitourinary</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Write the allergies if the patient have any..."
+                  placeholder="Describe any genitourinary issues..."
                   {...field}
                   rows={5}
                 />
               </FormControl>
               <FormDescription>
-                Some disease are occupational related.
+                Include any relevant symptoms or conditions.
               </FormDescription>
-              <FormMessage />
+              <FormMessage className="text-red-500 text-sm">
+                {fieldState.error?.message}
+              </FormMessage>
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name="hematological"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Hematological</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Write the medications if the patient takes any..."
+                  placeholder="Describe any hematological issues..."
                   {...field}
                   rows={5}
                 />
               </FormControl>
               <FormDescription>
-                Some disease are occupational related.
+                Include any relevant symptoms or conditions.
               </FormDescription>
-              <FormMessage />
+              <FormMessage className="text-red-500 text-sm">
+                {fieldState.error?.message}
+              </FormMessage>
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name="musculoskeletal"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Musculoskeletal</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Write the medications if the patient takes any..."
+                  placeholder="Describe any musculoskeletal issues..."
                   {...field}
                   rows={5}
                 />
               </FormControl>
               <FormDescription>
-                Some disease are occupational related.
+                Include any relevant symptoms or conditions.
               </FormDescription>
-              <FormMessage />
+              <FormMessage className="text-red-500 text-sm">
+                {fieldState.error?.message}
+              </FormMessage>
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name="neurological"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Neurological</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Write the medications if the patient takes any..."
+                  placeholder="Describe any neurological issues..."
                   {...field}
                   rows={5}
                 />
               </FormControl>
               <FormDescription>
-                Some disease are occupational related.
+                Include any relevant symptoms or conditions.
               </FormDescription>
-              <FormMessage />
+              <FormMessage className="text-red-500 text-sm">
+                {fieldState.error?.message}
+              </FormMessage>
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name="other"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Other</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Write the medications if the patient takes any..."
+                  placeholder="Describe any other issues..."
                   {...field}
                   rows={5}
                 />
               </FormControl>
               <FormDescription>
-                Some disease are occupational related.
+                Include any additional relevant information.
               </FormDescription>
-              <FormMessage />
+              <FormMessage className="text-red-500 text-sm">
+                {fieldState.error?.message}
+              </FormMessage>
             </FormItem>
           )}
         />
@@ -244,4 +258,4 @@ const RviewOfSystems: FC<MedicalHistoryProps> = ({}) => {
   );
 };
 
-export default RviewOfSystems;
+export default ReviewOfSystems;

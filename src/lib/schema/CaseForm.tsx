@@ -54,8 +54,22 @@ export const physicalExaminationSchema = z.object({
 });
 
 export const diagnosticTestsSchema = z.object({
-  labResults: z.array(z.string()).optional(),
-  imagingStudies: z.array(z.string()).optional(),
+  labResults: z
+    .array(
+      z.object({
+        label: z.string(),
+        file: z.string().optional(),
+      })
+    )
+    .optional(),
+  imagingStudies: z
+    .array(
+      z.object({
+        label: z.string(),
+        file: z.string().optional(),
+      })
+    )
+    .optional(),
 });
 
 export const differentialDiagnosisSchema = z.object({
