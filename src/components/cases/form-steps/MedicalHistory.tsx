@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,10 +14,11 @@ import {
 
 import { useFormContext } from "@/components/cases/FormProvider";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { medicalHistorySchema } from "@/lib/schema/CaseForm";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 
 interface MedicalHistoryProps {}
 
@@ -28,6 +29,26 @@ const MedicalHistory: FC<MedicalHistoryProps> = ({}) => {
   const form = useForm<z.infer<typeof medicalHistorySchema>>({
     resolver: zodResolver(medicalHistorySchema),
     defaultValues: formValues,
+  });
+
+  const {
+    fields: allergyFields,
+    append: appendAllergy,
+    remove: removeAllergy,
+  } = useFieldArray({
+    control: form.control,
+    //@ts-expect-error
+    name: "allergies",
+  });
+
+  const {
+    fields: medicationFields,
+    append: appendMedication,
+    remove: removeMedication,
+  } = useFieldArray({
+    control: form.control,
+    //@ts-expect-error
+    name: "medications",
   });
 
   const onNext = (values: z.infer<typeof medicalHistorySchema>) => {
@@ -69,7 +90,7 @@ const MedicalHistory: FC<MedicalHistoryProps> = ({}) => {
                 />
               </FormControl>
               <FormDescription>
-                More details means accurate responses from Gemini
+                Detailed past medical history helps in accurate diagnosis.
               </FormDescription>
               <FormMessage className="text-red-500 text-sm">
                 {fieldState.error?.message}
@@ -91,7 +112,7 @@ const MedicalHistory: FC<MedicalHistoryProps> = ({}) => {
                 />
               </FormControl>
               <FormDescription>
-                Patients usually have genatic diseases
+                Family history can indicate genetic predispositions.
               </FormDescription>
               <FormMessage className="text-red-500 text-sm">
                 {fieldState.error?.message}
@@ -113,16 +134,18 @@ const MedicalHistory: FC<MedicalHistoryProps> = ({}) => {
                 />
               </FormControl>
               <FormDescription>
-                Does this patient smoke, drinks?
+                Social habits such as smoking or drinking can affect health.
               </FormDescription>
-              <FormMessage>{fieldState.error?.message}</FormMessage>
+              <FormMessage className="text-red-500 text-sm">
+                {fieldState.error?.message}
+              </FormMessage>
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name="surgicalHistory"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Surgical History</FormLabel>
               <FormControl>
@@ -133,49 +156,93 @@ const MedicalHistory: FC<MedicalHistoryProps> = ({}) => {
                 />
               </FormControl>
               <FormDescription>
-                Some disease are occupational related.
+                Previous surgeries can impact current health conditions.
               </FormDescription>
-              <FormMessage />
+              <FormMessage className="text-red-500 text-sm">
+                {fieldState.error?.message}
+              </FormMessage>
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name="allergies"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Allergies</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Write the allergies if the patient have any..."
-                  {...field}
-                  rows={5}
-                />
-              </FormControl>
+              <div className="space-y-2">
+                {allergyFields.map((field, index) => (
+                  <div key={field.id} className="flex items-center gap-2">
+                    <FormControl>
+                      <Input
+                        placeholder="Write an allergy..."
+                        {...form.register(`allergies.${index}`)}
+                      />
+                    </FormControl>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => removeAllergy(index)}
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                ))}
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => appendAllergy("")}
+                >
+                  Add Allergy
+                </Button>
+              </div>
               <FormDescription>
-                Some disease are occupational related.
+                Knowing allergies is crucial for safe treatment.
               </FormDescription>
-              <FormMessage />
+              <FormMessage className="text-red-500 text-sm">
+                {fieldState.error?.message}
+              </FormMessage>
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name="medications"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Medications</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Write the medications if the patient takes any..."
-                  {...field}
-                  rows={5}
-                />
-              </FormControl>
+              <div className="space-y-2">
+                {medicationFields.map((field, index) => (
+                  <div key={field.id} className="flex items-center gap-2">
+                    <FormControl>
+                      <Input
+                        placeholder="Write a medication..."
+                        {...form.register(`medications.${index}`)}
+                      />
+                    </FormControl>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => removeMedication(index)}
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                ))}
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => appendMedication("")}
+                >
+                  Add Medication
+                </Button>
+              </div>
               <FormDescription>
-                Some disease are occupational related.
+                Current medications can interact with new treatments.
               </FormDescription>
-              <FormMessage />
+              <FormMessage className="text-red-500 text-sm">
+                {fieldState.error?.message}
+              </FormMessage>
             </FormItem>
           )}
         />

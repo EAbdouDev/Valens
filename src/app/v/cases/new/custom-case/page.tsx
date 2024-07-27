@@ -9,7 +9,7 @@ interface pageProps {}
 
 const NewCasePage: FC<pageProps> = ({}) => {
   return (
-    <div className="w-full h-full ">
+    <div className="w-full h-full  ">
       <header className=" px-6 py-4 flex justify-between items-center w-full border-b">
         <div>
           <p>Untitled case</p>
@@ -26,12 +26,12 @@ const NewCasePage: FC<pageProps> = ({}) => {
         </div>
       </header>
 
-      <div className="flex flex-row  h-full mt-2 p-6">
-        <div className=" h-full py-6 px-8   ">
+      <div className="flex flex-row  h-full   ">
+        <div className=" h-full     ">
           <StepperSidebar />
         </div>
         <div className="flex-1 py-6 px-8 h-full ">
-          <div className="max-w-7xl mx-auto pb-10">
+          <div className="max-w-7xl mx-auto pb-10  ">
             <CaseForm />
           </div>
         </div>

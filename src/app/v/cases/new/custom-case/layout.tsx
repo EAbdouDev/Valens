@@ -7,7 +7,7 @@ interface layoutProps {
 }
 
 export const metadata: Metadata = {
-  title: "New Case",
+  title: "New Custom Case",
 
   description: "An assistant to help medical studnets.",
 };

@@ -56,91 +56,105 @@ const PatientInformation: FC<PatientInformationProps> = ({}) => {
             <h1 className="text-2xl font-semibold">Patient Info</h1>
           </div>
           <div className="flex justify-center items-center gap-4">
-            <Button type="submit">Next</Button>
+            <Button type="submit">Continue</Button>
           </div>
         </div>
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>You can generate a random name.</FormDescription>
-              <FormMessage className="text-red-500 text-sm">
-                {fieldState.error?.message}
-              </FormMessage>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="age"
-          render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel>Age</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  placeholder="45"
-                  {...field}
-                  onChange={(e) => {
-                    const value = e.target.valueAsNumber;
-                    field.onChange(isNaN(value) ? "" : value);
-                  }}
-                />
-              </FormControl>
-              <FormDescription>
-                Age can be a key factor in diagnosis.
-              </FormDescription>
-              <FormMessage className="text-red-500 text-sm">
-                {fieldState.error?.message}
-              </FormMessage>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="gender"
-          render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel>Gender</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select gender" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="male">Male</SelectItem>
-                    <SelectItem value="female">Female</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormDescription>
-                Gender can be a key factor in diagnosis.
-              </FormDescription>
-              <FormMessage>{fieldState.error?.message}</FormMessage>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="occupation"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Occupation</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                Some disease are occupational related.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex justify-center items-center gap-4 flex-wrap">
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field, fieldState }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="shadcn" {...field} />
+                  </FormControl>
+                  <FormDescription>Write the patient name.</FormDescription>
+                  <FormMessage className="text-red-500 text-sm">
+                    {fieldState.error?.message}
+                  </FormMessage>
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex-1">
+            {" "}
+            <FormField
+              control={form.control}
+              name="age"
+              render={({ field, fieldState }) => (
+                <FormItem>
+                  <FormLabel>Age</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="45"
+                      {...field}
+                      onChange={(e) => {
+                        const value = e.target.valueAsNumber;
+                        field.onChange(isNaN(value) ? "" : value);
+                      }}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Age can be a key factor in diagnosis.
+                  </FormDescription>
+                  <FormMessage className="text-red-500 text-sm">
+                    {fieldState.error?.message}
+                  </FormMessage>
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-center items-center gap-4 flex-wrap">
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="gender"
+              render={({ field, fieldState }) => (
+                <FormItem>
+                  <FormLabel>Gender</FormLabel>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select gender" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="male">Male</SelectItem>
+                        <SelectItem value="female">Female</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormDescription>
+                    Gender can be a key factor in diagnosis.
+                  </FormDescription>
+                  <FormMessage>{fieldState.error?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="occupation"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Occupation</FormLabel>
+                  <FormControl>
+                    <Input placeholder="shadcn" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Some disease are occupational related.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
       </form>
     </Form>
   );
