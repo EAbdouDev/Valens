@@ -12,7 +12,7 @@ interface layoutProps {
 }
 
 const layout: FC<layoutProps> = ({ children }) => {
-  return <div>{children}</div>;
+  return <div className="container p-8 max-w-3xl mx-auto">{children}</div>;
 };
 
 export default layout;

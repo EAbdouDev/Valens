@@ -53,7 +53,7 @@ const UserMenu: FC<UserMenuProps> = ({}) => {
                   <img
                     src={auth?.currentUser?.photoURL || ""}
                     alt="userPicture "
-                    className="w-8 h-8  rounded-full border shadow"
+                    className="w-8 h-8  rounded-full border shadow bg-white"
                     style={{ imageRendering: "-webkit-optimize-contrast" }}
                   />
                 </div>
@@ -67,7 +67,7 @@ const UserMenu: FC<UserMenuProps> = ({}) => {
                   </p>
                 </div>
               </div>
-              <li className="w-full">
+              {/* <li className="w-full">
                 <Link
                   href={"#"}
                   className="flex justify-start items-center gap-3 w-full px-4 py-2 hover:bg-slate-100 rounded-lg "
@@ -75,7 +75,7 @@ const UserMenu: FC<UserMenuProps> = ({}) => {
                   <User className="opacity-70 w-5 h-5" />
                   Profile
                 </Link>
-              </li>
+              </li> */}
 
               <li>
                 <button
@@ -83,9 +83,9 @@ const UserMenu: FC<UserMenuProps> = ({}) => {
                     auth?.logout();
                     router.push("/");
                   }}
-                  className="flex justify-start items-center gap-3 w-full px-4 py-2 hover:bg-slate-100 rounded-lg "
+                  className="text-sm flex justify-start items-center gap-3 w-full px-4 py-2 hover:bg-slate-100 dark:hover:bg-muted rounded-lg "
                 >
-                  <LogOut className="opacity-70 w-5 h-5" /> Sign out
+                  <LogOut className="opacity-70 w-4 h-4" /> Sign out
                 </button>
               </li>
             </ul>

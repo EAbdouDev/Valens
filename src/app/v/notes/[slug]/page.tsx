@@ -1,4 +1,4 @@
-import { FC, Suspense } from "react";
+import { FC } from "react";
 import { AI } from "@/app/actions";
 import { generateId } from "ai";
 import NoteHeader from "@/components/notes/NoteHeader";
@@ -74,16 +74,19 @@ const NewNotePage: FC<PageProps> = async ({ params }) => {
         {/* <!-- main container --> */}
         <div className="flex-1 flex flex-row overflow-hidden">
           <ResizablePanelGroup direction="horizontal">
-            <ResizablePanel>
+            <ResizablePanel defaultSize={70}>
               <div className="w-full h-full overflow-auto">
                 <nav className="lg:hidden flex border-l h-fit w-full  border-b">
                   <EditorSidebarTabs />
                 </nav>
 
-                <NoteEditor
-                  //@ts-expect-error
-                  content={note.content}
-                />
+                <div className="">
+                  {" "}
+                  <NoteEditor
+                    //@ts-expect-error
+                    content={note.content}
+                  />
+                </div>
               </div>
             </ResizablePanel>
             <ResizableHandle />
@@ -91,6 +94,7 @@ const NewNotePage: FC<PageProps> = async ({ params }) => {
               className=" hidden lg:flex h-full "
               maxSize={35}
               minSize={30}
+              defaultSize={30}
             >
               <div className="w-full h-full overflow-auto">
                 <EditorAgentsTabs />

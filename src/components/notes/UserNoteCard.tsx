@@ -52,7 +52,7 @@ const UserNoteCard: FC<NoteCardProps> = ({ note }) => {
   }, [note.createdAt]);
 
   return (
-    <div className="shadow-[rgba(99,99,99,0.2)_0px_2px_8px_0px] dark:border rounded-lg p-4 flex flex-col justify-start items-start gap-2">
+    <div className="shadow-[rgba(99,99,99,0.2)_0px_2px_8px_0px] dark:shadow-none dark:border rounded-2xl p-4 flex flex-col justify-start items-start gap-2">
       <div className="w-full flex justify-between items-center gap-x-4 mb-2">
         <FileText className="w-6 h-6" />
         <Popover placement="bottom" showArrow={true}>
@@ -87,14 +87,14 @@ const UserNoteCard: FC<NoteCardProps> = ({ note }) => {
 
       <div className="w-full flex justify-between items-center gap-x-4 mt-2">
         {note.isPublic && (
-          <div className="flex justify-center items-center gap-2 text-xs px-2 py-1 bg-green-200 rounded-lg">
+          <div className="flex justify-center items-center gap-2 text-xs px-2 py-1 bg-green-200 dark:bg-green-100 dark:text-black rounded-lg">
             <Earth className="w-4 h-4" />
             <p>Public</p>
           </div>
         )}
 
         {!note.isPublic && (
-          <div className="flex justify-center items-center gap-2 text-xs px-2 py-1 bg-yellow-200 rounded-lg">
+          <div className="flex justify-center items-center gap-2 text-xs px-2 py-1 bg-yellow-200 dark:bg-yellow-100 dark:text-black rounded-lg">
             <EarthLock className="w-4 h-4" />
             <p>Private</p>
           </div>

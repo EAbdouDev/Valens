@@ -25,7 +25,7 @@ const ThemeSwitcher: FC<ThemeSwitcherProps> = ({}) => {
   }
 
   return (
-    <div className="">
+    <div className="opacity-80">
       <button
         onClick={handleChangeTheme}
         className="flex justify-center items-center p-1"

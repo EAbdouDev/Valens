@@ -4,37 +4,24 @@ import CaseForm from "@/components/cases/CaseForm";
 import { Button } from "@nextui-org/react";
 import { Save } from "lucide-react";
 import StepperSidebar from "@/components/cases/StepperSidebar";
+import Header from "@/components/cases/Header";
 
 interface pageProps {}
 
 const NewCasePage: FC<pageProps> = ({}) => {
   return (
-    <div className="w-full h-full  ">
-      <header className=" px-6 py-4 flex justify-between items-center w-full border-b">
-        <div>
-          <p>Untitled case</p>
-        </div>
-        <div>
-          <Button
-            className="flex justify-center items-center gap-2"
-            variant="solid"
-            color="primary"
-          >
-            <Save className="w-5 h-5" />
-            Save
-          </Button>
-        </div>
-      </header>
+    <div className="min-h-full flex flex-col h-full">
+      <Header caseId={null} />
+      <div className="flex-1 flex flex-row overflow-y-hidden">
+        <main className="flex-1  overflow-y-auto py-6 px-10 ">
+          {" "}
+          <CaseForm />
+        </main>
 
-      <div className="flex flex-row  h-full   ">
-        <div className=" h-full     ">
+        <nav className="order-first sm:w-[25%]  overflow-y-auto p-2 border-r ">
+          {" "}
           <StepperSidebar />
-        </div>
-        <div className="flex-1 py-6 px-8 h-full ">
-          <div className="max-w-7xl mx-auto pb-10  ">
-            <CaseForm />
-          </div>
-        </div>
+        </nav>
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 const NotesPage: FC<NotesPageProps> = ({}) => {
   return (
-    <div className="   p-8 w-full h-full">
+    <div className="p-8 w-full h-full container">
       <NoteTabs />
     </div>
   );

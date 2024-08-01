@@ -17,10 +17,15 @@ import { Input } from "@/components/ui/input";
 import { useFormContext } from "@/components/cases/FormProvider";
 import UploadDialog from "../UploadDialog";
 import { FileIcon, X } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../../../../firebase/client";
+import { useAuth } from "@/components/auth/auth-provider";
 
 interface DiagnosticTestsProps {}
 
 const DiagnosticTests: FC<DiagnosticTestsProps> = ({}) => {
+  const auth = useAuth();
   const { formValues, updateFormValues, currentStep, setCurrentStep } =
     useFormContext();
 
@@ -63,17 +68,22 @@ const DiagnosticTests: FC<DiagnosticTestsProps> = ({}) => {
     setCurrentStep(currentStep - 1);
   };
 
-  const handleUpload = (label: string, file: File) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const fileContent = reader.result as string;
+  const uploadFile = async (file: File, userId: string) => {
+    const storageRef = ref(storage!, `cases/${userId}/${file.name}`);
+    const snapshot = await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    return downloadURL;
+  };
+
+  const handleUpload = async (label: string, file: File) => {
+    if (auth && auth.currentUser) {
+      const downloadURL = await uploadFile(file, auth.currentUser.uid);
       if (currentField === "labResults") {
-        appendLabResult({ label, file: fileContent });
+        appendLabResult({ label, fileLink: downloadURL });
       } else {
-        appendImagingStudy({ label, file: fileContent });
+        appendImagingStudy({ label, fileLink: downloadURL });
       }
-    };
-    reader.readAsDataURL(file);
+    }
   };
 
   const openDialog = (field: "labResults" | "imagingStudies") => {
@@ -99,6 +109,7 @@ const DiagnosticTests: FC<DiagnosticTestsProps> = ({}) => {
           <div>
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Lab Results</h2>
+
               <Button
                 type="button"
                 onClick={() => openDialog("labResults")}
@@ -108,6 +119,24 @@ const DiagnosticTests: FC<DiagnosticTestsProps> = ({}) => {
                 Upload Lab Result
               </Button>
             </div>
+            <div className="my-4">
+              <FormField
+                control={form.control}
+                name="labResultsFindings"
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    <FormLabel>Lab Results Findings</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Enter lab results findings..."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage>{fieldState.error?.message}</FormMessage>
+                  </FormItem>
+                )}
+              />
+            </div>
             {labResultsFields.length > 0 ? (
               <div className="my-4 space-y-2">
                 {labResultsFields.map((field, index) => (
@@ -116,15 +145,8 @@ const DiagnosticTests: FC<DiagnosticTestsProps> = ({}) => {
                     className="flex items-center justify-between p-4 bg-gray-50 rounded-md"
                   >
                     <div className="flex items-center gap-4">
-                      {field.file && field.file.startsWith("data:image") ? (
-                        <img
-                          src={field.file}
-                          alt={field.label}
-                          className="w-8 h-8 rounded-md object-cover"
-                        />
-                      ) : (
-                        <FileIcon className="w-8 h-8" />
-                      )}
+                      <FileIcon className="w-8 h-8" />
+
                       <p className="flex-1">{field.label}</p>
                     </div>
                     <Button
@@ -142,6 +164,7 @@ const DiagnosticTests: FC<DiagnosticTestsProps> = ({}) => {
               <p className="my-4 text-gray-500">No lab results uploaded yet.</p>
             )}
           </div>
+
           <div>
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Imaging Studies</h2>
@@ -154,6 +177,24 @@ const DiagnosticTests: FC<DiagnosticTestsProps> = ({}) => {
                 Upload Imaging Study
               </Button>
             </div>
+            <div className="my-4">
+              <FormField
+                control={form.control}
+                name="imagingStudiesFindings"
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    <FormLabel>Imaging Studies Findings</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Enter imaging studies findings..."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage>{fieldState.error?.message}</FormMessage>
+                  </FormItem>
+                )}
+              />
+            </div>
             {imagingStudiesFields.length > 0 ? (
               <div className="my-4 space-y-2">
                 {imagingStudiesFields.map((field, index) => (
@@ -162,15 +203,7 @@ const DiagnosticTests: FC<DiagnosticTestsProps> = ({}) => {
                     className="flex items-center justify-between p-2 bg-gray-50 rounded-md"
                   >
                     <div className="flex items-center gap-4">
-                      {field.file && field.file.startsWith("data:image") ? (
-                        <img
-                          src={field.file}
-                          alt={field.label}
-                          className="w-8 h-8 rounded-md object-cover"
-                        />
-                      ) : (
-                        <FileIcon className="w-8 h-8" />
-                      )}
+                      {field.fileLink && <FileIcon className="w-8 h-8" />}
                       <p className="flex-1">{field.label}</p>
                     </div>
                     <Button

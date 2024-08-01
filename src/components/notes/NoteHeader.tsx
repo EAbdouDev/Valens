@@ -4,7 +4,7 @@ import { getNoteDetails, updateTitle } from "./actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import useNote from "@/zuztand/notesState";
-import { Button, Skeleton } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import * as tf from "@tensorflow/tfjs";
 import * as use from "@tensorflow-models/universal-sentence-encoder";
 import {
@@ -20,6 +20,7 @@ import { firestore } from "../../../firebase/client";
 import { ArrowLeft } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import NoteSettings from "./NoteSettings";
+import { Skeleton } from "../ui/skeleton";
 
 interface NoteHeaderProps {
   slug: string;
@@ -49,17 +50,9 @@ const NoteHeader: FC<NoteHeaderProps> = ({ slug, note }) => {
     setTitle(note.title);
   }, [note]);
 
-  const generateEmb = async () => {
-    const model = await use.load();
-    const embeddings = await model.embed([text]);
-
-    const embeddingArray = embeddings.arraySync()[0];
-    return embeddingArray;
-  };
-
   const handleSave = async () => {
     if (!firestore) return;
-    const vectors = await generateEmb();
+
     try {
       // Find the document by slug
       const notesQuery = query(
@@ -74,7 +67,6 @@ const NoteHeader: FC<NoteHeaderProps> = ({ slug, note }) => {
           const noteRef = doc(firestore!, "notes", docSnapshot.id);
           batch.update(noteRef, {
             content: editorObj,
-            embedding: vectors,
           });
         });
         await batch.commit();
@@ -126,8 +118,6 @@ const NoteHeader: FC<NoteHeaderProps> = ({ slug, note }) => {
     };
   }, [title, note]);
 
-  if (!isMounted) return null;
-
   return (
     <header className="h-[70px] w-full py-2 px-4 flex justify-between items-center border-b transition-all ease-soft-spring">
       <div className=" max-w-[40%] flex justify-start items-center gap-4">
@@ -139,11 +129,13 @@ const NoteHeader: FC<NoteHeaderProps> = ({ slug, note }) => {
         >
           <ArrowLeft className="w-5 h-5" />
         </Button>
-        {!title && <Skeleton className="h-14 w-full rounded-lg" />}
+        {!title && (
+          <div className="h-14 w-full rounded-lg bg-gray-100 animate-pulse" />
+        )}
         {!isEditing && (
           <button
             onClick={() => setIsEditing(true)}
-            className="w-full max-w-full truncate "
+            className="w-full max-w-full truncate font-medium "
           >
             {title}
           </button>

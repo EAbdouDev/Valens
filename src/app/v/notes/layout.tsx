@@ -8,7 +8,7 @@ interface layoutProps {
 
 const layout: FC<layoutProps> = ({ children }) => {
   return (
-    <div className="w-full h-full ">
+    <div className="w-full h-full  ">
       <AppStateProvider>{children}</AppStateProvider>
     </div>
   );

@@ -126,7 +126,7 @@ const TextEditor: FC<TextEditorProps> = ({}) => {
       alignments: ["left", "center", "right", "justify"],
     }),
     Placeholder.configure({
-      placeholder: "You can type here (supports md)...",
+      placeholder: "Let your words flow...",
       emptyEditorClass: "is-editor-empty",
     }),
     Table.configure({

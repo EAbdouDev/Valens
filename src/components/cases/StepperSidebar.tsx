@@ -21,31 +21,23 @@ const steps = [
 ];
 
 const StepperSidebar: FC<StepperSidebarProps> = () => {
-  const { currentStep, setCurrentStep, updateFormValues } = useFormContext();
-
-  const handleStepClick = async (step: number) => {
-    // Save current form values before switching steps
-    const formValues = document.forms[0];
-    const formData = new FormData(formValues);
-    const values = Object.fromEntries(formData.entries());
-
-    updateFormValues(values);
-    setCurrentStep(step);
-  };
+  const { currentStep } = useFormContext();
 
   return (
-    <div className="h-full w-full rounded-lg">
+    <div className="h-full w-full rounded-lg mb-10">
       <ul className="list-none rounded-lg w-full h-full p-4 space-y-4">
         {steps.map((step, index) => (
           <li
             key={index}
-            className={`py-2 px-4 cursor-pointer rounded-md ${
-              currentStep === index + 1
-                ? "bg-black text-white"
-                : "opacity-50 hover:opacity-100"
+            className={`flex items-center py-2 px-4 rounded-md ${
+              currentStep === index + 1 ? "bg-muted  " : "opacity-50"
             }`}
-            onClick={() => handleStepClick(index + 1)}
           >
+            <div
+              className={`w-4 h-4 rounded-full mr-4 ${
+                currentStep === index + 1 ? "bg-black" : "bg-gray-400"
+              }`}
+            />
             {step}
           </li>
         ))}

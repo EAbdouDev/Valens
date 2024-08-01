@@ -12,9 +12,9 @@ const CasesTabs: FC<CasesTabsProps> = ({}) => {
     <div className="Tabs flex justify-start items-center gap-6 font-light transition-all ease-soft-spring">
       <Link
         href="/v/cases"
-        className={`transition-all ease-soft-spring ${
+        className={`transition-all ease-soft-spring text-sm ${
           pathname === "/v/cases"
-            ? "border-b-2 border-black opacity-100"
+            ? "border-b-2 border-black dark:border-white opacity-100"
             : "opacity-70"
         }`}
       >
@@ -22,9 +22,9 @@ const CasesTabs: FC<CasesTabsProps> = ({}) => {
       </Link>
       <Link
         href="/v/cases/browse"
-        className={`transition-all ease-soft-spring ${
+        className={`transition-all ease-soft-spring text-sm ${
           pathname === "/v/cases/browse"
-            ? "border-b-2 border-black opacity-100"
+            ? "border-b-2 border-black dark:border-white opacity-100"
             : "opacity-70"
         }`}
       >

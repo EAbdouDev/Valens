@@ -14,6 +14,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import CreateFlashcards from "./agents/CreateFlashcards";
+import PdfChat from "./agents/pdfChat";
 
 interface EditorAgentsTabsProps {}
 
@@ -24,9 +25,7 @@ const EditorAgentsTabs: FC<EditorAgentsTabsProps> = ({}) => {
     <div className=" h-full   ">
       {sideBarTab === 0 && (
         <aside className="w-full h-full overflow-y-auto p-4 flex-1">
-          <h1 className="text-2xl font-bold mb-10 p-2 border-b pb-4">
-            Assistant
-          </h1>
+          <h1 className="text-2xl font-bold mb-10 p-2   ">Search & Chat</h1>
 
           <Chat id={"sdds"} query={""} />
         </aside>
@@ -36,6 +35,14 @@ const EditorAgentsTabs: FC<EditorAgentsTabsProps> = ({}) => {
         <aside className="w-full h-full overflow-y-auto p-4 flex-1">
           <h1 className="text-2xl font-bold mb-10 p-2">Create Flashcards</h1>
           <CreateFlashcards />
+        </aside>
+      )}
+
+      {sideBarTab === 3 && (
+        <aside className="w-full h-full overflow-y-auto p-4 flex-1">
+          <h1 className="text-2xl font-bold mb-10 p-2">PDF </h1>
+          ss
+          {/* <PdfChat /> */}
         </aside>
       )}
 

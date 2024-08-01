@@ -31,6 +31,7 @@ import NoteToolbar from "./NoteToolbar";
 import FontFamily from "@tiptap/extension-font-family";
 import TextStyle from "@tiptap/extension-text-style";
 import useNote from "@/zuztand/notesState";
+import { Loader } from "lucide-react";
 
 interface NoteEditorProps {
   content: string;
@@ -129,7 +130,7 @@ const NoteEditor: FC<NoteEditorProps> = ({ content }) => {
         alignments: ["left", "center", "right", "justify"],
       }),
       Placeholder.configure({
-        placeholder: "You can type here (supports md)...",
+        placeholder: "Let your words flow...",
         emptyEditorClass: "is-editor-empty",
       }),
       Table.configure({
@@ -185,6 +186,14 @@ const NoteEditor: FC<NoteEditorProps> = ({ content }) => {
       setText(textFromEditor);
     }
   }, [editor, content]);
+
+  if (!editor) {
+    return (
+      <div className="p-6 flex flex-col flex-grow w-full h-full justify-center items-center lg:mt-20">
+        <Loader className="w-6 h-6 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full overflow-y-hidden">

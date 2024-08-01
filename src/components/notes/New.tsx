@@ -58,7 +58,7 @@ const New: FC<NewProps> = ({}) => {
     <>
       <div
         onClick={onOpen}
-        className=" cursor-pointer w-full border-2 border-dashed rounded-lg flex flex-col justify-center items-center gap-2  text-xl font-semibold p-4 hover:bg-gray-100 dark:hover:bg-muted  hover:border-divider transtion-all ease-soft-spring"
+        className=" cursor-pointer w-full border-2 border-dashed rounded-2xl flex flex-col justify-center items-center gap-2  text-xl font-semibold p-4 hover:bg-gray-100 dark:hover:bg-muted  hover:border-divider transtion-all ease-soft-spring"
         // variant="ghost"
       >
         <Plus className="w-8 h-8" />
@@ -68,8 +68,13 @@ const New: FC<NewProps> = ({}) => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
-                Create New Note
+              <ModalHeader className="flex flex-col gap-1 !p-0">
+                <img
+                  src="/gbg.jpg"
+                  alt=""
+                  className="w-full h-auto rounded-t-lg"
+                />
+                <h1 className="m-4">Create New Note</h1>
               </ModalHeader>
               <ModalBody>
                 <form

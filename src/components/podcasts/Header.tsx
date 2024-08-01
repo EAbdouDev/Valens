@@ -28,7 +28,8 @@ const Header: FC<HeaderProps> = ({}) => {
   const [isConcate, setIsConcate] = useState(false);
   const [isDone, setIsDone] = useState(false);
   const router = useRouter();
-  const { text, setIsGenerating, setAiText, aiText } = useTextPod();
+  const { text, setIsGenerating, setAiText, aiText, isGenerating } =
+    useTextPod();
   useEffect(() => {
     setAiText("");
     setIsGenerating(false);
@@ -205,6 +206,8 @@ const Header: FC<HeaderProps> = ({}) => {
     }
   };
 
+  const isDisabled = isCreatingAudio || isConcate || isGenerating;
+
   return (
     <>
       <header className="h-[60px] w-full py-2 px-6 flex justify-between items-center border-b transition-all ease-soft-spring">
@@ -233,6 +236,7 @@ const Header: FC<HeaderProps> = ({}) => {
             className="flex justify-center items-center gap-2"
             variant="light"
             color="default"
+            isDisabled={isDisabled}
           >
             <span className=" rounded-full border w-6 h-6 text-center flex justify-center">
               1
@@ -245,7 +249,7 @@ const Header: FC<HeaderProps> = ({}) => {
             className="flex justify-center items-center gap-2"
             variant="light"
             color="default"
-            isDisabled={aiText === ""}
+            isDisabled={aiText === "" || isDisabled}
           >
             <span className=" rounded-full border w-6 h-6 text-center flex justify-center">
               2

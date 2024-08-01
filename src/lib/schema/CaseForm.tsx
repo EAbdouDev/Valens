@@ -3,26 +3,25 @@ import { z } from "zod";
 // Define individual schemas for each part of the form
 
 export const patientInformationSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  age: z.number().int().min(0, "Age must be a positive integer"),
+  name: z.string(),
+  age: z.number(),
   gender: z.enum(["male", "female"]),
-  occupation: z.string().optional(),
+  occupation: z.string(),
+  image: z.string().optional(),
 });
 
 export const medicalHistorySchema = z.object({
-  pastMedicalHistory: z.string().min(1, "Past medical history is required"),
-  familyMedicalHistory: z.string().min(1, "Family medical history is required"),
-  surgicalHistory: z.string().min(1).optional(),
+  pastMedicalHistory: z.string(),
+  familyMedicalHistory: z.string(),
+  surgicalHistory: z.string(),
   medications: z.array(z.string()).optional(),
   allergies: z.array(z.string()).optional(),
   socialHistory: z.string().optional(),
 });
 
 export const presentingComplaintSchema = z.object({
-  chiefComplaint: z.string().min(1, "Chief complaint is required"),
-  historyOfPresentingIllness: z
-    .string()
-    .min(1, "History of presenting illness is required"),
+  chiefComplaint: z.string(),
+  historyOfPresentingIllness: z.string(),
 });
 
 export const reviewOfSystemsSchema = z.object({
@@ -40,11 +39,11 @@ export const reviewOfSystemsSchema = z.object({
 export const physicalExaminationSchema = z.object({
   vitalSigns: z
     .object({
-      temperatureC: z.number().optional(),
-      temperatureF: z.number().optional(),
-      pulse: z.number().optional(),
+      temperatureC: z.string().optional(),
+      temperatureF: z.string().optional(),
+      pulse: z.string().optional(),
       bloodPressure: z.string().optional(),
-      respiratoryRate: z.number().optional(),
+      respiratoryRate: z.string().optional(),
     })
     .optional(),
   height: z.string().optional(),
@@ -58,7 +57,7 @@ export const diagnosticTestsSchema = z.object({
     .array(
       z.object({
         label: z.string(),
-        file: z.string().optional(),
+        fileLink: z.string().optional(),
       })
     )
     .optional(),
@@ -66,28 +65,35 @@ export const diagnosticTestsSchema = z.object({
     .array(
       z.object({
         label: z.string(),
-        file: z.string().optional(),
+        fileLink: z.string().optional(),
+      })
+    )
+    .optional(),
+  labResultsFindings: z.string().optional(),
+  imagingStudiesFindings: z.string().optional(),
+});
+
+export const differentialDiagnosisSchema = z.object({
+  differentialDiagnoses: z
+    .array(
+      z.object({
+        diagnosis: z.string(),
+        reasonFor: z.string().optional(),
+        reasonAgainst: z.string().optional(),
       })
     )
     .optional(),
 });
 
-export const differentialDiagnosisSchema = z.object({
-  possibleDiagnoses: z
-    .array(z.string())
-    .min(1, "At least one possible diagnosis is required"),
-});
-
 export const finalDiagnosisSchema = z.object({
-  confirmedDiagnosis: z
-    .string()
-    .min(1, "Final confirmed diagnosis is required"),
+  confirmedDiagnosis: z.string(),
+  reasonForFinalDiagnosis: z.string(),
 });
 
 export const treatmentPlanSchema = z.object({
-  medications: z.array(z.string()).optional(),
+  medicationsTreatment: z.array(z.string()).optional(),
   nonPharmacologicalInterventions: z.string().optional(),
-  followUpPlan: z.string().min(1, "Follow-up plan is required"),
+  followUpPlan: z.string(),
 });
 
 export const additionalNotesSchema = z.object({
@@ -95,7 +101,7 @@ export const additionalNotesSchema = z.object({
 });
 
 export const feedbackCriteriaSchema = z.object({
-  assessmentCriteria: z.string().min(1, "Assessment criteria is required"),
+  assessmentCriteria: z.string(),
 });
 
 // Combine individual schemas into the full case creation schema

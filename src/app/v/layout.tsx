@@ -1,39 +1,51 @@
 import MainSidebar from "@/components/navigation/Sidebar";
 import { FC, ReactNode } from "react";
 import Navbar from "@/components/navigation/Navbar";
-import { AI } from "@/components/copilot/actions";
 import Link from "next/link";
-import Main from "@/components/copilot/Main";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
-const layout: FC<LayoutProps> = async ({ children }) => {
+const Layout: FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="min-h-screen flex flex-col h-screen">
-      {/* <!-- main container --> */}
-      <div className="flex-1 flex flex-row overflow-y-hidden">
-        <main className="flex-1  overflow-y-hidden flex flex-col  ">
-          <header className="">
+    <div className="min-h-screen flex flex-col h-screen relative">
+      {/* Background Image */}
+      <div
+        className="fixed inset-0 w-full h-full bg-cover bg-center bg-fixed z-[-2]"
+        style={{ backgroundImage: "url('/gbg.jpg')" }}
+      ></div>
+
+      {/* Blur Overlay */}
+      <div className="fixed inset-0 w-full h-full backdrop-blur-lg bg-black/30 z-[-1]"></div>
+
+      {/* Main container */}
+      <div className="flex-1 flex flex-row overflow-y-hidden relative z-10">
+        <main className="flex-1 overflow-y-hidden flex flex-col">
+          {/* Header */}
+          {/* <header>
             <AI>
-              <nav className="p-4 lg:px-6 lg:py-3  max-h-fit border-b bg-transparent backdrop-blur">
+              <nav className="p-4 lg:px-6 lg:py-3 max-h-fit border-b bg-transparent backdrop-blur">
                 <Navbar />
               </nav>
             </AI>
-          </header>
-          <div className="flex-1  overflow-y-auto   "> {children}</div>
+          </header> */}
+
+          {/* Main content */}
+          <div className="flex-1 overflow-y-auto">{children}</div>
         </main>
 
-        <nav className="order-first hidden sm:flex sm:w-fit  overflow-y-auto border-r  ">
+        {/* Sidebar */}
+        <nav className="order-first hidden sm:flex sm:w-fit overflow-y-auto border-r">
           <MainSidebar />
         </nav>
       </div>
-      {/* <!-- end main container --> */}
+      {/* End main container */}
 
+      {/* Footer */}
       <footer className="border-t py-2 xl:flex justify-between items-center gap-4 hidden px-4">
         <div className="flex justify-center items-center gap-2">
-          <h3 className="text-xs font-light">Powerd by Google Gemini AI</h3>
+          <h3 className="text-xs font-light">Powered by Google Gemini AI</h3>
         </div>
         <div className="flex justify-center items-center">
           <Link
@@ -41,7 +53,6 @@ const layout: FC<LayoutProps> = async ({ children }) => {
             target="_blank"
             className="flex justify-center items-center gap-2 hover:underline border-r-2 pr-6"
           >
-            {" "}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="icon icon-tabler icon-tabler-brand-github"
@@ -59,13 +70,12 @@ const layout: FC<LayoutProps> = async ({ children }) => {
             </svg>
             <h3 className="text-xs font-light">Developed by eslam abdou</h3>
           </Link>
-          <div className="flex justify-center items-center gap-4">
-            <p className="text-xs opacity-80 pl-6">Attributions*</p>
+          <div className="flex justify-center items-center gap-4 pl-4">
             <Link
-              href={"/privacy-policy"}
+              href={"/attributions"}
               className="text-xs opacity-80 hover:underline"
             >
-              Privacy Policy
+              Attributions*
             </Link>
           </div>
         </div>
@@ -74,4 +84,4 @@ const layout: FC<LayoutProps> = async ({ children }) => {
   );
 };
 
-export default layout;
+export default Layout;

@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 interface pageProps {}
 
 const SelectorPage: FC<pageProps> = ({}) => {
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState("custom-case");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const handleNext = () => {
@@ -24,7 +24,7 @@ const SelectorPage: FC<pageProps> = ({}) => {
     router.push(`/v/cases/new/${selected}`);
   };
   return (
-    <div className="p-8 w-full h-full">
+    <div className="p-8 w-full h-full mt-10">
       <header className="space-y-2 mb-8">
         <h1 className="text-2xl font-bold">Create New Case</h1>
         <p className="text-gray-500">
@@ -40,7 +40,7 @@ const SelectorPage: FC<pageProps> = ({}) => {
         <Link href={"/v/cases/new/ai/note-case"}>Generate Case from Note</Link>
       </div> */}
 
-      <div className="flex flex-col justify-center items-center max-w-2xl mx-auto  gap-6 mt-20">
+      <div className="flex flex-col justify-center items-center max-w-2xl mx-auto  gap-6 mt-10">
         <RadioGroup
           className="w-full"
           value={selected}
@@ -53,16 +53,12 @@ const SelectorPage: FC<pageProps> = ({}) => {
             Create Case from Scratch
           </CustomRadio>
           <CustomRadio
+            isDisabled
+            className="opacity-50"
             description="Tell Gemini the disease name and let him create the case for you. "
             value="ai/disease-name"
           >
             AI: Generate Case by Disease Name
-          </CustomRadio>
-          <CustomRadio
-            description="Pick a note and Gemini will analyze the content and create the case for you."
-            value="ai/note-case"
-          >
-            AI: Generate Case from Note
           </CustomRadio>
         </RadioGroup>
 

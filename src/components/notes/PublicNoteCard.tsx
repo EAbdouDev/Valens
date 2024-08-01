@@ -10,6 +10,8 @@ import { FC, useEffect, useState } from "react";
 import { auth } from "../../../firebase/client";
 import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/popover";
 import { Button, Tooltip } from "@nextui-org/react";
+import { getNoteCreator } from "./actions";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface NoteCardProps {
   note: any;
@@ -42,6 +44,17 @@ const getTimeDifference = (date: Date) => {
 
 const PublicNoteCard: FC<NoteCardProps> = ({ note }) => {
   const [timeAgo, setTimeAgo] = useState(getTimeDifference(note.createdAt));
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchCreatorData = async () => {
+      if (!note) return;
+
+      const user = await getNoteCreator(note.createdBy);
+      setUser(user);
+    };
+    fetchCreatorData();
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -52,7 +65,7 @@ const PublicNoteCard: FC<NoteCardProps> = ({ note }) => {
   }, [note.createdAt]);
 
   return (
-    <div className="shadow-[rgba(99,99,99,0.2)_0px_2px_8px_0px] dark:border rounded-lg p-4 flex flex-col justify-start items-start gap-2">
+    <div className="bg-white shadow-[rgba(99,99,99,0.2)_0px_2px_8px_0px] dark:border rounded-lg p-4 flex flex-col justify-start items-start gap-2">
       <div className="w-full flex justify-between items-center gap-x-4 mb-2">
         <FileText className="w-6 h-6" />
         <Popover placement="bottom" showArrow={true}>
@@ -86,19 +99,19 @@ const PublicNoteCard: FC<NoteCardProps> = ({ note }) => {
       </Tooltip>
 
       <div className="w-full flex justify-between items-center gap-x-4 mt-2">
-        {/* {note.isPublic && (
-            <div className="flex justify-center items-center gap-2 text-xs px-2 py-1 bg-green-200 rounded-lg">
-              <Earth className="w-4 h-4" />
-              <p>Public</p>
-            </div>
-          )}
-   */}
-        {/* {!note.isPublic && (
-            <div className="flex justify-center items-center gap-2 text-xs px-2 py-1 bg-yellow-200 rounded-lg">
-              <EarthLock className="w-4 h-4" />
-              <p>Private</p>
-            </div>
-          )} */}
+        {user && (
+          <div className="flex justify-center items-center gap-2 text-sm">
+            <Avatar className="w-6 h-6 border">
+              <AvatarImage
+                src={user[0].picture ? user[0].picture : ""}
+                alt="userImage"
+              />
+              <AvatarFallback>NN</AvatarFallback>
+            </Avatar>
+
+            <p>{user[0].name ? user[0].name : ""}</p>
+          </div>
+        )}
 
         <p className="text-xs text-gray-500">{timeAgo}</p>
       </div>

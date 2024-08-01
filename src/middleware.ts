@@ -17,7 +17,6 @@ export function middleware(request: NextRequest) {
   const origin = request.headers.get("origin") ?? "";
   const isAllowedOrigin = allowedOrigins.includes(origin);
 
-  // Handle preflighted requests
   const isPreflight = request.method === "OPTIONS";
 
   if (isPreflight) {
@@ -29,7 +28,6 @@ export function middleware(request: NextRequest) {
     return NextResponse.json({}, { headers: preflightHeaders });
   }
 
-  // Handle simple requests
   const response = NextResponse.next();
 
   if (isAllowedOrigin) {
@@ -40,20 +38,16 @@ export function middleware(request: NextRequest) {
     response.headers.set(key, value);
   });
 
-  // Set Cache-Control headers to prevent caching
   response.headers.set("Cache-Control", "no-store, max-age=0");
 
-  // Allow access to the home page without authentication
   if (request.nextUrl.pathname === "/") {
     return response;
   }
 
-  // Allow access if user is authenticated
   if (userToken) {
     return response;
   }
 
-  // Redirect to home page if user is not authenticated
   return NextResponse.redirect(new URL("/", request.url));
 }
 

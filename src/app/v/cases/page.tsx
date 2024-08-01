@@ -24,7 +24,7 @@ const generateSimpleId = (length = 8) => {
 
 const CasesPage: FC<PageProps> = ({}) => {
   return (
-    <div className="w-full p-8">
+    <div className="p-10 w-full  container">
       <CasesTabs />
       <header className="space-y-2 my-10">
         <h1 className="text-2xl font-bold">My Cases</h1>

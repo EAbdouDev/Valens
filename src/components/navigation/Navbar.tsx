@@ -3,7 +3,6 @@ import { FC, useEffect, useState } from "react";
 import { format } from "date-fns";
 import UserMenu from "./UserMenu";
 import ThemeSwitcher from "./ThemeSwitcher";
-import Main from "../copilot/Main";
 import HeaderTitle from "./HeaderTitle";
 import Image from "next/image";
 import { useTheme } from "next-themes";
@@ -24,8 +23,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
         />
       </div>
       <div className="flex justify-center items-center gap-6">
-        <Main />
-        {/* <ThemeSwitcher /> */}
+        <ThemeSwitcher />
         <UserMenu />
       </div>
     </div>

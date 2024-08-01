@@ -1,5 +1,5 @@
 "use client";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,29 +23,57 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useFormContext } from "@/components/cases/FormProvider";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useAuth } from "@/components/auth/auth-provider";
+import { storage } from "../../../../firebase/client";
 
 interface PatientInformationProps {}
 
 const PatientInformation: FC<PatientInformationProps> = ({}) => {
   const { formValues, updateFormValues, currentStep, setCurrentStep } =
     useFormContext();
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const auth = useAuth();
 
   const form = useForm<z.infer<typeof patientInformationSchema>>({
     resolver: zodResolver(patientInformationSchema),
     defaultValues: formValues,
   });
 
+  useEffect(() => {
+    // Update the image preview state based on form values when the component mounts
+    const imageUrl = formValues.image;
+    if (imageUrl) {
+      setImagePreview(imageUrl);
+    }
+  }, [formValues.image]);
+
   const onNext = (values: z.infer<typeof patientInformationSchema>) => {
     updateFormValues(values);
-
     setCurrentStep(currentStep + 1);
   };
 
   const onBack = () => {
     const values = form.getValues();
     updateFormValues(values);
-
     setCurrentStep(currentStep - 1);
+  };
+
+  const uploadFile = async (file: File, userId: string) => {
+    const storageRef = ref(storage!, `patient_images/${userId}/${file.name}`);
+    const snapshot = await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    return downloadURL;
+  };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const downloadURL = await uploadFile(file, auth!.currentUser!.uid);
+      form.setValue("image", downloadURL);
+      updateFormValues({ ...form.getValues(), image: downloadURL });
+      setImagePreview(downloadURL);
+    }
   };
 
   return (
@@ -59,6 +87,30 @@ const PatientInformation: FC<PatientInformationProps> = ({}) => {
             <Button type="submit">Continue</Button>
           </div>
         </div>
+
+        <div className="flex justify-start items-start flex-col mb-8">
+          <input
+            id="image-upload"
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            style={{ display: "none" }}
+          />
+          <label htmlFor="image-upload">
+            <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-200 cursor-pointer flex justify-center items-center">
+              {imagePreview ? (
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span className="text-gray-500">Upload Image</span>
+              )}
+            </div>
+          </label>
+        </div>
+
         <div className="flex justify-center items-center gap-4 flex-wrap">
           <div className="flex-1">
             <FormField
@@ -68,7 +120,7 @@ const PatientInformation: FC<PatientInformationProps> = ({}) => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="shadcn" {...field} />
+                    <Input placeholder="Mohammed..." {...field} />
                   </FormControl>
                   <FormDescription>Write the patient name.</FormDescription>
                   <FormMessage className="text-red-500 text-sm">
@@ -144,10 +196,10 @@ const PatientInformation: FC<PatientInformationProps> = ({}) => {
                 <FormItem>
                   <FormLabel>Occupation</FormLabel>
                   <FormControl>
-                    <Input placeholder="shadcn" {...field} />
+                    <Input placeholder="Teacher..." {...field} />
                   </FormControl>
                   <FormDescription>
-                    Some disease are occupational related.
+                    Some diseases are occupationally related.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
