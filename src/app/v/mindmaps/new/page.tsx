@@ -1,7 +1,10 @@
+"use client";
+
 import TextEditor from "@/components/editor/TextEditor";
-import ExcalidrawWrapper from "@/components/mindmaps/ExcalidrawWrapper";
+// import ExcalidrawWrapper from "@/components/mindmaps/ExcalidrawWrapper";
 import Header from "@/components/mindmaps/Header";
 import { FC } from "react";
+import dynamic from "next/dynamic";
 
 interface pageProps {}
 
@@ -19,7 +22,7 @@ const NewMindMapPage: FC<pageProps> = ({}) => {
         </main>
 
         <aside className={`sm:w-[50%] overflow-y-auto  border-l `}>
-          <ExcalidrawWrapper />
+          {/* <ExcalidrawWrapper /> */}
         </aside>
       </div>
       {/* <!-- end main container --> */}

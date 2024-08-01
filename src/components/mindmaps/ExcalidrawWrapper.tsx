@@ -146,13 +146,13 @@ const ExcalidrawWrapper: FC<ExcalidrawWrapperProps> = ({}) => {
   //     }
   //   };
 
-  //   if (!isMounted || isLoading) {
-  //     return (
-  //       <div className="flex flex-col justify-center items-center flew-grow w-full h-full gap-4">
-  //         <Loader2 className="animate-spin" /> Getting Content...
-  //       </div>
-  //     );
-  //   }
+  if (!isMounted) {
+    return (
+      <div className="flex flex-col justify-center items-center flew-grow w-full h-full gap-4">
+        <Loader2 className="animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-full">
