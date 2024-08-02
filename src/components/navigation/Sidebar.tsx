@@ -66,7 +66,7 @@ const MainSidebar: FC<SidebarProps> = ({}) => {
     >
       <div className="flex justify-center items-center mb-2 pb-2 pt-4 !px-0 w-full">
         <Tooltip content="Valens" placement="right-start" color="primary">
-          <Link href={"/v/dashboard"}>
+          <Link href={"/v/notes"}>
             <Image src={logoVar} alt="logo_dark_icon" width={40} height={40} />
           </Link>
         </Tooltip>
@@ -98,7 +98,7 @@ const MainSidebar: FC<SidebarProps> = ({}) => {
       </motion.div>
 
       <div className="mt-auto py-4 flex flex-col gap-6">
-        {/* <ThemeSwitcher /> */}
+        <ThemeSwitcher />
         <UserMenu />
       </div>
     </motion.div>

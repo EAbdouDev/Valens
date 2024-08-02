@@ -2,7 +2,7 @@
 
 import useNote from "@/zuztand/notesState";
 import { Tooltip } from "@nextui-org/react";
-import { BookAudio, ScanSearch, Zap } from "lucide-react";
+import { AudioLinesIcon, BookAudio, ScanSearch, Zap } from "lucide-react";
 import { FC } from "react";
 import Cookies from "js-cookie";
 import { IconPdf } from "@tabler/icons-react";
@@ -24,7 +24,7 @@ const EditorSidebarTabs: FC<NotesSidebarProps> = ({}) => {
     },
     {
       name: "Convert to podcast",
-      icon: <BookAudio className="w-6 h-6" />,
+      icon: <AudioLinesIcon className="w-6 h-6 " />,
     },
     {
       name: "PDF Tools",
