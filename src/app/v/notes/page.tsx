@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 const NotesPage: FC<NotesPageProps> = ({}) => {
   return (
     <div className="p-8 w-full  container">
-      <header className="mt-6 mb-8 ">
+      <header className=" mb-8 ">
         <h1 className="text-2xl 2xl:text-3xl font-bold">My Notes</h1>
       </header>
       <NotesList />

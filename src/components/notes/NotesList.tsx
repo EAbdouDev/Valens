@@ -64,9 +64,7 @@ const NotesList: FC<NotesListProps> = ({}) => {
             />
             <div className="opacity-60 text-center">
               <p>There're no notes for you to see yet.</p>
-              <p>
-                Start creating new note, or you can browse the community notes.
-              </p>
+              <p>Start creating your first note.</p>
             </div>
             <div className="w-fit mt-6">
               <NewButton />

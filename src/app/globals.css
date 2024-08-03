@@ -139,7 +139,7 @@ body {
 }
 
 .tiptap p {
-  @apply font-light;
+  @apply font-light leading-loose;
 }
 
 .tiptap strong {

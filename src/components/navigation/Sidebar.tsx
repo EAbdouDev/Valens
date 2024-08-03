@@ -6,6 +6,7 @@ import {
   Hospital,
   House,
   Network,
+  TrafficCone,
   Zap,
 } from "lucide-react";
 import { FC, useEffect, useState } from "react";

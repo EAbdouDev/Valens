@@ -102,54 +102,58 @@ const CreateFlashcards: FC<CreateFlashcardsProps> = ({ noteSlug }) => {
 
   return (
     <div>
-      <div className="w-full mt-8">
-        <div className="space-y-4 mt-4">
+      <div className="w-full  p-2">
+        <div className="space-y-4 ">
           {groups.map((group, index) => (
             <div
               key={index}
-              className="flex justify-between items-center p-2 border rounded-lg"
+              className="bg-[#bfbfbf] dark:bg-[#2a2a2a] pb-3 rounded-lg"
             >
-              <h3 className=" font-medium">
-                {group.name} #{index + 1}
-              </h3>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button
-                    onClick={() => setSelectedGroup(index)}
-                    variant="bordered"
-                  >
-                    View Flashcards
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-h-[90%] 2xl:min-w-[50%] overflow-y-auto">
-                  <DialogHeader className="mb-2">
-                    <DialogTitle className="text-2xl">
-                      {groups[selectedGroup!]?.name} #{index + 1}
-                    </DialogTitle>
-                  </DialogHeader>
+              <div className="bg-[#d0d0d0] dark:bg-[#353535]  pb-3 rounded-lg">
+                <div className="flex flex-col justify-start items-start gap-2 p-2  rounded-md bg-white dark:bg-background border">
+                  <h3 className=" font-medium">
+                    {group.name} #{index + 1}
+                  </h3>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                        onClick={() => setSelectedGroup(index)}
+                        variant="bordered"
+                      >
+                        View Flashcards
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-h-[90%] 2xl:min-w-[50%] overflow-y-auto">
+                      <DialogHeader className="mb-2">
+                        <DialogTitle className="text-2xl">
+                          {groups[selectedGroup!]?.name} #{index + 1}
+                        </DialogTitle>
+                      </DialogHeader>
 
-                  <div>
-                    <p>
-                      {groups[selectedGroup!]?.flashcards.length} Flashcards
-                    </p>
-                  </div>
-                  <div className="flex flex-col justify-start items-start gap-1 w-full">
-                    {groups[selectedGroup!]?.flashcards.map(
-                      (f: Flashcard, i: number) => (
-                        <div
-                          key={i}
-                          className="flex flex-col justify-start items-start gap-1 w-full border p-2 rounded-md"
-                        >
-                          <h1 className="font-semibold text-lg">
-                            {f.question}
-                          </h1>
-                          <p className="text-sm">{f.answer}</p>
-                        </div>
-                      )
-                    )}
-                  </div>
-                </DialogContent>
-              </Dialog>
+                      <div>
+                        <p>
+                          {groups[selectedGroup!]?.flashcards.length} Flashcards
+                        </p>
+                      </div>
+                      <div className="flex flex-col justify-start items-start gap-1 w-full">
+                        {groups[selectedGroup!]?.flashcards.map(
+                          (f: Flashcard, i: number) => (
+                            <div
+                              key={i}
+                              className="flex flex-col justify-start items-start gap-1 w-full border p-2 rounded-md"
+                            >
+                              <h1 className="font-semibold text-lg">
+                                {f.question}
+                              </h1>
+                              <p className="text-sm">{f.answer}</p>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              </div>
             </div>
           ))}
         </div>

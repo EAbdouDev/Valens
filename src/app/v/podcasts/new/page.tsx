@@ -72,7 +72,7 @@ const NewPodPage: FC<pageProps> = ({}) => {
       <div className="flex-1 flex flex-row overflow-y-hidden">
         <main className="flex-1  overflow-y-auto">
           {" "}
-          <TextEditor />
+          <TextEditor content="" />
         </main>
 
         {/* <nav class="order-first sm:w-32 bg-purple-200 overflow-y-auto">Sidebar</nav> */}

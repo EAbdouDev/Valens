@@ -53,7 +53,7 @@ const UserMenu: FC<UserMenuProps> = ({}) => {
                   <img
                     src={auth?.currentUser?.photoURL || ""}
                     alt="userPicture "
-                    className="w-8 h-8  rounded-full border shadow bg-white"
+                    className="w-8 h-8  rounded-full border shadow bg-white flex-none"
                     style={{ imageRendering: "-webkit-optimize-contrast" }}
                   />
                 </div>

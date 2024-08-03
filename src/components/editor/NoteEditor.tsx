@@ -161,8 +161,7 @@ const NoteEditor: FC<NoteEditorProps> = ({ content }) => {
       }),
     ],
     onUpdate: ({ editor }) => {
-      const htmlContent = editor.getHTML();
-      setEditorObj(htmlContent);
+      setEditorObj(editor.getHTML());
       const textContent = editor.getText();
       setText(textContent);
     },
@@ -184,12 +183,13 @@ const NoteEditor: FC<NoteEditorProps> = ({ content }) => {
       editor.commands.setContent(content);
       const textFromEditor = editor.getText();
       setText(textFromEditor);
+      setEditorObj(content);
     }
   }, [editor, content]);
 
   if (!editor) {
     return (
-      <div className="p-6 flex flex-col flex-grow w-full h-full justify-center items-center lg:mt-20">
+      <div className="p-6 flex flex-col flex-grow w-full  justify-center items-center lg:mt-20">
         <Loader className="w-6 h-6 animate-spin" />
       </div>
     );
@@ -197,7 +197,7 @@ const NoteEditor: FC<NoteEditorProps> = ({ content }) => {
 
   return (
     <div className="w-full h-full flex flex-col">
-      <div className=" px-2 sticky top-0 z-10 bg-muted rounded-lg m-1">
+      <div className=" px-2 sticky top-0 z-10 bg-muted rounded-lg mx-2">
         <NoteToolbar editor={editor} />
       </div>
       <div className="px-2 overflow-y-auto flex-1">

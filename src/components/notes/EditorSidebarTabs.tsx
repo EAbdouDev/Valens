@@ -33,7 +33,7 @@ const EditorSidebarTabs: FC<NotesSidebarProps> = ({}) => {
       icon: <AudioLinesIcon className="w-6 h-6 " />,
     },
     {
-      name: "PDF Tools",
+      name: "PDF to notes",
       icon: <IconPdf className="w-6 h-6" />,
     },
     {

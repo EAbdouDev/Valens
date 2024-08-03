@@ -1,7 +1,7 @@
 "use server";
 
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
-import { generateObject } from "ai";
+import { generateObject, generateText } from "ai";
 import { z } from "zod";
 import { firestore } from "../../../../firebase/server";
 
@@ -56,12 +56,7 @@ export async function saveFlashcards(
   }
 }
 
-export async function getNoteFlashcards(
-  
-  noteSlug: string,
-  userId: string,
-  
-) {
+export async function getNoteFlashcards(noteSlug: string, userId: string) {
   try {
     if (!firestore) {
       throw new Error("Firestore is not initialized.");
@@ -69,7 +64,8 @@ export async function getNoteFlashcards(
 
     const flashcardsSnapshot = await firestore
       .collection("flashcards")
-      .where("createdBy", "==", userId).where('noteSlug', '==', noteSlug)
+      .where("createdBy", "==", userId)
+      .where("noteSlug", "==", noteSlug)
       .orderBy("createdAt", "desc")
       .get();
 
@@ -135,4 +131,34 @@ The last slide should be a "Thank You" slide.
   });
 
   return object;
+}
+
+export async function generateSummary(textPdf: string) {
+  const prompt = `You are an advanced AI capable of reading and understanding complex texts. Your task is to read the provided text and generate a concise, coherent, and informative summary of it. The summary should be in the form of HTML to be displayed on a webpage. Follow these instructions carefully:
+
+Input Text: You will be given a block of text. Read and understand this text thoroughly.
+Generate Summary: Extract the key points and main ideas from the text. Ensure the summary is concise and captures the essence of the original content. The summary can be long if needed, but it should explain the concepts in the text in a way that is easy to understand and don't miss any points.
+add the resources at the end.
+Format as HTML: The summary should be formatted as HTML. Use appropriate HTML tags to structure the summary, making sure it is easy to read and visually appealing.
+Guidelines for HTML Formatting:
+Use <h1> for the main heading of the summary.
+Use <h2> for subheadings if needed.
+Use <h3> also.
+Use <p> for paragraphs.
+Use <ul> and <li> for bullet points if listing important points.
+Use <hr/> to add a line between each section.
+Ensure there is sufficient spacing between sections using <br/> tags for line breaks.
+Ensure the HTML is properly structured and valid.
+Just return the summary and don't retrun any other text and don't mention that this HTML Document.
+Don't miss any point at all.
+
+here is the text: ${textPdf}
+`;
+
+  const { text } = await generateText({
+    model: google("models/gemini-1.5-pro-latest"),
+    prompt,
+  });
+
+  return text;
 }

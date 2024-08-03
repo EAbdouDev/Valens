@@ -15,6 +15,7 @@ import { firestore } from "../../../../../firebase/server";
 import { Metadata } from "next";
 
 export const revalidate = 0;
+// export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 interface PageProps {
@@ -69,7 +70,7 @@ const NewNotePage: FC<PageProps> = async ({ params }) => {
   return (
     <AI initialAIState={{ chatId: id, messages: [] }}>
       <div className="min-h-full flex flex-col h-full">
-        {/* <NoteHeader slug={params.slug} note={note} /> */}
+        <NoteHeader slug={params.slug} note={note} />
 
         {/* <!-- main container --> */}
         <div className="flex-1 flex flex-row overflow-hidden">
@@ -88,9 +89,9 @@ const NewNotePage: FC<PageProps> = async ({ params }) => {
                 </div>
               </div>
             </ResizablePanel>
-            <ResizableHandle />
+            {/* <ResizableHandle /> */}
             <ResizablePanel
-              className="hidden lg:flex h-full m-1 rounded-lg"
+              className="hidden lg:flex h-full  border rounded-l-lg"
               maxSize={35}
               minSize={30}
               defaultSize={30}
@@ -101,7 +102,7 @@ const NewNotePage: FC<PageProps> = async ({ params }) => {
             </ResizablePanel>
           </ResizablePanelGroup>
 
-          <nav className="hidden lg:flex  h-full w-fit bg-muted rounded-lg">
+          <nav className="hidden lg:flex  h-full w-fit bg-muted rounded-r-lg  dark:border-[#3e3e3e]">
             <EditorSidebarTabs />
           </nav>
         </div>

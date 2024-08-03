@@ -18,7 +18,7 @@ const NewMindMapPage: FC<pageProps> = ({}) => {
       <div className="flex-1 flex flex-row overflow-y-hidden">
         <main className="flex-1  overflow-y-auto">
           {" "}
-          <TextEditor />{" "}
+          <TextEditor content="" />{" "}
         </main>
 
         <aside className={`sm:w-[50%] overflow-y-auto  border-l `}>

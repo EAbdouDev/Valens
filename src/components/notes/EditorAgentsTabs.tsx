@@ -14,7 +14,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import CreateFlashcards from "./agents/CreateFlashcards";
-import PdfChat from "./agents/pdfChat";
+import PdfSum from "./agents/pdfSum";
 import Slides from "./agents/slides/Slide";
 
 interface EditorAgentsTabsProps {
@@ -28,9 +28,7 @@ const EditorAgentsTabs: FC<EditorAgentsTabsProps> = ({ noteSlug }) => {
     <div className=" h-full   ">
       {sideBarTab === 0 && (
         <aside className="w-full h-full overflow-y-auto p-2 flex-1">
-          <h1 className="text-2xl font-bold mb-10 border-b pb-2  ">
-            Search & Chat
-          </h1>
+          <h1 className="text-2xl font-bold mb-10  p-4  ">Search & Chat</h1>
 
           <Chat id={"sdds"} query={""} />
         </aside>
@@ -38,16 +36,16 @@ const EditorAgentsTabs: FC<EditorAgentsTabsProps> = ({ noteSlug }) => {
 
       {sideBarTab === 1 && (
         <aside className="w-full h-full overflow-y-auto p-2 flex-1">
-          <h1 className="text-2xl font-bold mb-8 pb-2  ">Flashcards</h1>
+          <h1 className="text-2xl font-bold mb-10 p-4 ">Flashcards</h1>
           <CreateFlashcards noteSlug={noteSlug} />
         </aside>
       )}
 
       {sideBarTab === 3 && (
         <aside className="w-full h-full overflow-y-auto p-4 flex-1">
-          <h1 className="text-2xl font-bold mb-10 p-2">PDF </h1>
-          ss
-          {/* <PdfChat /> */}
+          <h1 className="text-2xl font-bold mb-10 p-2">PDF to notes </h1>
+
+          <PdfSum />
         </aside>
       )}
 
@@ -59,7 +57,7 @@ const EditorAgentsTabs: FC<EditorAgentsTabsProps> = ({ noteSlug }) => {
         </aside>
       )}
 
-      <div className="flex lg:hidden">
+      {/* <div className="flex lg:hidden">
         {sideBarTabMobile?.index === 0 && (
           <Drawer
             open
@@ -80,7 +78,7 @@ const EditorAgentsTabs: FC<EditorAgentsTabsProps> = ({ noteSlug }) => {
             </DrawerContent>
           </Drawer>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

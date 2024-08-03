@@ -1,26 +1,21 @@
 "use client";
 import { FC, FormEvent, useEffect, useRef, useState } from "react";
-import { getNoteDetails, updateTitle } from "./actions";
+import { updateTitle } from "./actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import useNote from "@/zuztand/notesState";
-import { Button } from "@nextui-org/react";
-import * as tf from "@tensorflow/tfjs";
-import * as use from "@tensorflow-models/universal-sentence-encoder";
+import { Button, Tooltip } from "@nextui-org/react";
+
 import {
   collection,
   query,
   getDocs,
   where,
   doc,
-  updateDoc,
   writeBatch,
 } from "firebase/firestore";
 import { firestore } from "../../../firebase/client";
-import { ArrowLeft } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
-import NoteSettings from "./NoteSettings";
-import { Skeleton } from "../ui/skeleton";
+import { ArrowLeft, Cloud } from "lucide-react";
 
 interface NoteHeaderProps {
   slug: string;
@@ -38,12 +33,6 @@ const NoteHeader: FC<NoteHeaderProps> = ({ slug, note }) => {
 
   useEffect(() => {
     setIsMounted(true);
-
-    const loadBackend = async () => {
-      await tf.setBackend("webgl");
-      await tf.ready();
-    };
-    loadBackend();
   }, [slug]);
 
   useEffect(() => {
@@ -119,8 +108,8 @@ const NoteHeader: FC<NoteHeaderProps> = ({ slug, note }) => {
   }, [title, note]);
 
   return (
-    <header className="h-[70px] w-full py-2 px-2 flex justify-between items-center  transition-all ease-soft-spring ">
-      <div className=" max-w-[40%] flex justify-start items-center gap-4">
+    <header className="h-[60px] w-full  px-2 flex justify-between items-center  transition-all ease-soft-spring ">
+      <div className=" max-w-[60%] flex justify-start items-center gap-4">
         <Button
           onPress={() => router.back()}
           isIconOnly
@@ -133,12 +122,14 @@ const NoteHeader: FC<NoteHeaderProps> = ({ slug, note }) => {
           <div className="h-14 w-full rounded-lg bg-gray-100 animate-pulse" />
         )}
         {!isEditing && (
-          <button
-            onClick={() => setIsEditing(true)}
-            className="w-full max-w-full truncate font-medium text-lg "
-          >
-            {title}
-          </button>
+          <Tooltip content="Rename" color="primary">
+            <button
+              onClick={() => setIsEditing(true)}
+              className="w-full max-w-full truncate font-medium text-lg border p-1 rounded-lg border-transparent hover:border-muted "
+            >
+              {title}
+            </button>
+          </Tooltip>
         )}
 
         {isEditing && (
