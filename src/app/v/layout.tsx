@@ -10,40 +10,19 @@ interface LayoutProps {
 const Layout: FC<LayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col h-screen relative">
-      {/* Background Image */}
-      <div
-        className="fixed inset-0 w-full h-full bg-cover bg-center bg-fixed z-[-2]"
-        style={{ backgroundImage: "url('/gbg.jpg')" }}
-      ></div>
-
-      {/* Blur Overlay */}
-      <div className="fixed inset-0 w-full h-full backdrop-blur-lg bg-black/30 z-[-1]"></div>
-
-      {/* Main container */}
       <div className="flex-1 flex flex-row overflow-y-hidden relative z-10">
         <main className="flex-1 overflow-y-hidden flex flex-col">
-          {/* Header */}
-          {/* <header>
-            <AI>
-              <nav className="p-4 lg:px-6 lg:py-3 max-h-fit border-b bg-transparent backdrop-blur">
-                <Navbar />
-              </nav>
-            </AI>
-          </header> */}
-
-          {/* Main content */}
-          <div className="flex-1 overflow-y-auto">{children}</div>
+          <div className="flex-1 overflow-y-auto  rounded-lg my-2 mr-2">
+            {children}
+          </div>
         </main>
 
-        {/* Sidebar */}
-        <nav className="order-first hidden sm:flex sm:w-fit overflow-y-auto border-r">
+        <nav className="order-first hidden sm:flex sm:w-fit overflow-y-auto m-2 bg-muted rounded-lg">
           <MainSidebar />
         </nav>
       </div>
-      {/* End main container */}
-
-      {/* Footer */}
-      <footer className="border-t py-2 xl:flex justify-between items-center gap-4 hidden px-4">
+      {/* 
+      <footer className="mb-2 mx-2  bg-muted rounded-lg py-3 xl:flex justify-between items-center gap-4 hidden px-4 ">
         <div className="flex justify-center items-center gap-2">
           <h3 className="text-xs font-light">Powered by Google Gemini AI</h3>
         </div>
@@ -79,7 +58,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
             </Link>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 };

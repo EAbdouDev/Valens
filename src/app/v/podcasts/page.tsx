@@ -1,4 +1,3 @@
-import PodcastsTabs from "@/components/podcasts/PodcastsTabs";
 import { UserPodcastsList } from "@/components/podcasts/UserPodcastsList";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -15,8 +14,7 @@ export const metadata: Metadata = {
 const PodcastsPage: FC<pageProps> = ({}) => {
   return (
     <div className="p-8 w-full h-full container">
-      <PodcastsTabs />
-      <header className="space-y-2 my-10">
+      <header className="space-y-2 my-6">
         <h1 className="text-2xl font-bold">My Podcasts</h1>
       </header>
       <UserPodcastsList />

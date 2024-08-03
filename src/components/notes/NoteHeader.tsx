@@ -119,7 +119,7 @@ const NoteHeader: FC<NoteHeaderProps> = ({ slug, note }) => {
   }, [title, note]);
 
   return (
-    <header className="h-[70px] w-full py-2 px-4 flex justify-between items-center border-b transition-all ease-soft-spring">
+    <header className="h-[70px] w-full py-2 px-2 flex justify-between items-center  transition-all ease-soft-spring ">
       <div className=" max-w-[40%] flex justify-start items-center gap-4">
         <Button
           onPress={() => router.back()}
@@ -135,7 +135,7 @@ const NoteHeader: FC<NoteHeaderProps> = ({ slug, note }) => {
         {!isEditing && (
           <button
             onClick={() => setIsEditing(true)}
-            className="w-full max-w-full truncate font-medium "
+            className="w-full max-w-full truncate font-medium text-lg "
           >
             {title}
           </button>
@@ -159,7 +159,7 @@ const NoteHeader: FC<NoteHeaderProps> = ({ slug, note }) => {
         <Button variant="solid" color="primary" onPress={handleSave}>
           Save
         </Button>
-        <NoteSettings note={note} />
+        {/* <NoteSettings note={note} /> */}
       </div>
     </header>
   );

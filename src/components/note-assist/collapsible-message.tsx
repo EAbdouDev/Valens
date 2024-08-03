@@ -49,15 +49,11 @@ export const CollapsibleMessage: React.FC<CollapsibleMessageProps> = ({
       <CollapsibleTrigger asChild>
         <div
           className={cn(
-            "w-full flex justify-end",
+            "w-full flex justify-end  ",
             !isCollapsed ? "hidden" : ""
           )}
         >
-          <Button
-            variant="ghost"
-            size={"icon"}
-            className={cn("-mt-3 rounded-full")}
-          >
+          <Button variant="ghost" size={"icon"} className={cn(" rounded-full")}>
             <ChevronDown
               size={14}
               className={cn(
@@ -70,7 +66,7 @@ export const CollapsibleMessage: React.FC<CollapsibleMessageProps> = ({
         </div>
       </CollapsibleTrigger>
       <CollapsibleContent>{message.component}</CollapsibleContent>
-      {!open && <Separator className="my-2 bg-muted" />}
+      {!open && <Separator className=" bg-muted" />}
     </Collapsible>
   );
 };

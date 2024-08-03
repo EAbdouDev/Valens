@@ -6,6 +6,7 @@ import New from "./New";
 import UserNoteCard from "./UserNoteCard";
 import { useAuth } from "../auth/auth-provider";
 import NewButton from "./NewButton";
+import { Loader2 } from "lucide-react";
 
 interface NotesListProps {}
 
@@ -14,13 +15,11 @@ const NotesList: FC<NotesListProps> = ({}) => {
   const [isLoading, setIsLoading] = useState(true);
   const auth = useAuth();
 
-  const showEmptyState = notes.length === 0 && !isLoading;
-
   useEffect(() => {
     const fetchNotes = async () => {
+      if (!auth?.currentUser) return;
       setIsLoading(true);
       try {
-        if (!auth?.currentUser) return;
         const fetchedNotes = await getAllUserNotes(auth.currentUser.uid);
         setNotes(fetchedNotes);
       } catch (e) {
@@ -35,14 +34,13 @@ const NotesList: FC<NotesListProps> = ({}) => {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full h-full">
-        <div className="p-4 rounded-lg font-semibold min-h-[100px] animate-pulse bg-gray-200" />
-        <div className="p-4 rounded-lg font-semibold min-h-[100px] animate-pulse bg-gray-200" />
-        <div className="p-4 rounded-lg font-semibold min-h-[100px] animate-pulse bg-gray-200" />
-        <div className="p-4 rounded-lg font-semibold min-h-[100px] animate-pulse bg-gray-200" />
+      <div className="flex justify-center items-center flex-grow w-full h-full">
+        <Loader2 className="w-8 h-8 animate-spin" />
       </div>
     );
   }
+
+  const showEmptyState = notes.length === 0 && !isLoading;
 
   return (
     <>
@@ -73,7 +71,6 @@ const NotesList: FC<NotesListProps> = ({}) => {
             <div className="w-fit mt-6">
               <NewButton />
             </div>
-            {/* <New /> */}
           </div>
         </div>
       )}

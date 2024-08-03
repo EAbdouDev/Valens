@@ -15,26 +15,31 @@ import {
 } from "@/components/ui/drawer";
 import CreateFlashcards from "./agents/CreateFlashcards";
 import PdfChat from "./agents/pdfChat";
+import Slides from "./agents/slides/Slide";
 
-interface EditorAgentsTabsProps {}
+interface EditorAgentsTabsProps {
+  noteSlug: string;
+}
 
-const EditorAgentsTabs: FC<EditorAgentsTabsProps> = ({}) => {
+const EditorAgentsTabs: FC<EditorAgentsTabsProps> = ({ noteSlug }) => {
   const { sideBarTab, sideBarTabMobile, setSideBarTabMobile } = useNote();
 
   return (
     <div className=" h-full   ">
       {sideBarTab === 0 && (
-        <aside className="w-full h-full overflow-y-auto p-4 flex-1">
-          <h1 className="text-2xl font-bold mb-10 p-2   ">Search & Chat</h1>
+        <aside className="w-full h-full overflow-y-auto p-2 flex-1">
+          <h1 className="text-2xl font-bold mb-10 border-b pb-2  ">
+            Search & Chat
+          </h1>
 
           <Chat id={"sdds"} query={""} />
         </aside>
       )}
 
       {sideBarTab === 1 && (
-        <aside className="w-full h-full overflow-y-auto p-4 flex-1">
-          <h1 className="text-2xl font-bold mb-10 p-2">Create Flashcards</h1>
-          <CreateFlashcards />
+        <aside className="w-full h-full overflow-y-auto p-2 flex-1">
+          <h1 className="text-2xl font-bold mb-8 pb-2  ">Flashcards</h1>
+          <CreateFlashcards noteSlug={noteSlug} />
         </aside>
       )}
 
@@ -42,6 +47,14 @@ const EditorAgentsTabs: FC<EditorAgentsTabsProps> = ({}) => {
         <aside className="w-full h-full overflow-y-auto p-4 flex-1">
           <h1 className="text-2xl font-bold mb-10 p-2">PDF </h1>
           ss
+          {/* <PdfChat /> */}
+        </aside>
+      )}
+
+      {sideBarTab === 4 && (
+        <aside className="w-full h-full overflow-y-auto p-4 flex-1">
+          <h1 className="text-2xl font-bold mb-6 p-2">Slides </h1>
+          <Slides />
           {/* <PdfChat /> */}
         </aside>
       )}

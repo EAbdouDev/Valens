@@ -1,4 +1,3 @@
-import Header from "@/components/note-assist/header";
 import { AppStateProvider } from "@/lib/utils/app-state";
 import { FC, ReactNode } from "react";
 

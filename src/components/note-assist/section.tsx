@@ -42,7 +42,7 @@ export const Section: React.FC<SectionProps> = ({
     case "Sources":
       icon = <Newspaper size={iconSize} className={iconClassName} />;
       break;
-    case "Answer":
+    case "Gemini Answer":
       icon = <BookCheck size={iconSize} className={iconClassName} />;
       break;
     case "Related":

@@ -196,11 +196,11 @@ const NoteEditor: FC<NoteEditorProps> = ({ content }) => {
   }
 
   return (
-    <div className="w-full overflow-y-hidden">
-      <div className="border-b px-2">
+    <div className="w-full h-full flex flex-col">
+      <div className=" px-2 sticky top-0 z-10 bg-muted rounded-lg m-1">
         <NoteToolbar editor={editor} />
       </div>
-      <div className="px-2 overflow-y-auto">
+      <div className="px-2 overflow-y-auto flex-1">
         <EditorContent editor={editor} />
       </div>
     </div>

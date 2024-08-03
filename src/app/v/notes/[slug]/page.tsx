@@ -69,19 +69,18 @@ const NewNotePage: FC<PageProps> = async ({ params }) => {
   return (
     <AI initialAIState={{ chatId: id, messages: [] }}>
       <div className="min-h-full flex flex-col h-full">
-        <NoteHeader slug={params.slug} note={note} />
+        {/* <NoteHeader slug={params.slug} note={note} /> */}
 
         {/* <!-- main container --> */}
         <div className="flex-1 flex flex-row overflow-hidden">
           <ResizablePanelGroup direction="horizontal">
             <ResizablePanel defaultSize={70}>
-              <div className="w-full h-full overflow-auto">
-                <nav className="lg:hidden flex border-l h-fit w-full  border-b">
+              <div className="w-full h-full overflow-hidden">
+                <nav className="lg:hidden flex border-l h-fit w-full border-b">
                   <EditorSidebarTabs />
                 </nav>
 
-                <div className="">
-                  {" "}
+                <div className="h-full">
                   <NoteEditor
                     //@ts-expect-error
                     content={note.content}
@@ -91,18 +90,18 @@ const NewNotePage: FC<PageProps> = async ({ params }) => {
             </ResizablePanel>
             <ResizableHandle />
             <ResizablePanel
-              className=" hidden lg:flex h-full "
+              className="hidden lg:flex h-full m-1 rounded-lg"
               maxSize={35}
               minSize={30}
               defaultSize={30}
             >
               <div className="w-full h-full overflow-auto">
-                <EditorAgentsTabs />
+                <EditorAgentsTabs noteSlug={params.slug} />
               </div>
             </ResizablePanel>
           </ResizablePanelGroup>
 
-          <nav className="hidden lg:flex border-l h-full w-fit ">
+          <nav className="hidden lg:flex  h-full w-fit bg-muted rounded-lg">
             <EditorSidebarTabs />
           </nav>
         </div>

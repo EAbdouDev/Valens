@@ -45,7 +45,7 @@ const UserMenu: FC<UserMenuProps> = ({}) => {
           <PopoverContent
             align="center"
             alignOffset={60}
-            className="  mr-6 p-4 max-w-[250px] bg-transparent backdrop-blur-3xl"
+            className="  ml-6 p-4 max-w-[250px]  backdrop-blur-3xl dark:bg-[#111111]"
           >
             <ul className="w-full">
               <div className="flex justify-start items-start gap-4 mb-4 border-b pb-2">

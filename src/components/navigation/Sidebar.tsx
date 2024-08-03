@@ -1,5 +1,13 @@
 "use client";
-import { BookAudio, Files, Hospital, House, Network, Zap } from "lucide-react";
+import {
+  BookAudio,
+  Files,
+  FileText,
+  Hospital,
+  House,
+  Network,
+  Zap,
+} from "lucide-react";
 import { FC, useEffect, useState } from "react";
 import UserMenu from "./UserMenu";
 import { usePathname } from "next/navigation";
@@ -8,7 +16,6 @@ import { useTheme } from "next-themes";
 import { Tooltip } from "@nextui-org/react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
 import ThemeSwitcher from "./ThemeSwitcher";
 
 interface SidebarProps {}
@@ -32,7 +39,7 @@ const MainSidebar: FC<SidebarProps> = ({}) => {
       name: "Notes",
       href: "/v/notes",
       active: pathname.includes("notes"),
-      icon: <Files className="w-5 h-5" />,
+      icon: <FileText className="w-5 h-5" />,
     },
     {
       name: "Flashcards",
@@ -67,7 +74,7 @@ const MainSidebar: FC<SidebarProps> = ({}) => {
       <div className="flex justify-center items-center mb-2 pb-2 pt-4 !px-0 w-full">
         <Tooltip content="Valens" placement="right-start" color="primary">
           <Link href={"/v/notes"}>
-            <Image src={logoVar} alt="logo_dark_icon" width={40} height={40} />
+            <Image src={logoVar} alt="logo_dark_icon" width={35} height={35} />
           </Link>
         </Tooltip>
       </div>
@@ -85,8 +92,8 @@ const MainSidebar: FC<SidebarProps> = ({}) => {
                   href={link.href}
                   className={`flex items-center gap-3 py-2 px-4 rounded-lg w-full font-medium transition-all ease-in-out ${
                     link.active
-                      ? `bg-[#e8e8e8] dark:bg-[#202020] dark:text-white opacity-100 font-semibold`
-                      : `hover:bg-gray-200 dark:hover:bg-[#1c1c1c] opacity-50`
+                      ? `bg-black text-white dark:bg-white dark:text-black opacity-100 font-semibold`
+                      : `hover:bg-gray-300 dark:hover:bg-[#565656] opacity-80`
                   }`}
                 >
                   {link.icon}

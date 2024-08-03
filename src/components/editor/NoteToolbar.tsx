@@ -1,6 +1,14 @@
 "use clinet";
 
 import { Toggle } from "@/components/ui/toggle";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Editor } from "@tiptap/react";
 import {
   AlignCenter,
@@ -170,25 +178,83 @@ const NoteToolbar: FC<ToolbarProps> = ({ editor }) => {
 
   return (
     <div className=" flex justify-between items-center w-full ">
-      <div className=" transition-all ease-soft-spring   rounded-lg flex flex-wrap p-4  justify-start items-center gap-4 ">
-        <div className="  flex gap-4">
+      <div className=" transition-all ease-soft-spring   rounded-lg flex flex-wrap p-2  justify-start items-center gap-4 ">
+        <div className="  flex ">
           <button
             type="button"
             onClick={() => editor.commands.undo()}
-            className=" hover:scale-105 transition-all ease-soft-spring"
+            className=" hover:bg-[#cacaca] dark:hover:bg-[#393939] rounded-lg p-2 transition-all ease-soft-spring"
           >
             <Undo2 className=" w-5 h-5" />
           </button>
           <button
             type="button"
             onClick={() => editor.commands.redo()}
-            className=" hover:scale-105 transition-all ease-soft-spring"
+            className=" hover:bg-[#cacaca] dark:hover:bg-[#393939] rounded-lg p-2 transition-all ease-soft-spring"
           >
             <Redo2 className=" w-5 h-5" />
           </button>
         </div>
-
-        <div className="">
+        <div>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="w-full hover:opacity-60 flex justify-center items-center">
+              <Heading className=" w-5 h-5" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className=" z-[2000]">
+              <DropdownMenuLabel>Headings</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Toggle
+                  className="w-full flex justify-start items-center gap-2 text-2xl"
+                  size={"sm"}
+                  pressed={editor.isActive("heading", { level: 1 })}
+                  onPressedChange={() =>
+                    editor.chain().focus().toggleHeading({ level: 1 }).run()
+                  }
+                >
+                  Heading 1
+                </Toggle>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Toggle
+                  className="w-full flex justify-start items-center gap-2 text-xl "
+                  size={"sm"}
+                  pressed={editor.isActive("heading", { level: 2 })}
+                  onPressedChange={() =>
+                    editor.chain().focus().toggleHeading({ level: 2 }).run()
+                  }
+                >
+                  Heading 2
+                </Toggle>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Toggle
+                  className="w-full flex justify-start items-center gap-2 text-lg "
+                  size={"sm"}
+                  pressed={editor.isActive("heading", { level: 3 })}
+                  onPressedChange={() =>
+                    editor.chain().focus().toggleHeading({ level: 3 }).run()
+                  }
+                >
+                  Heading 3
+                </Toggle>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Toggle
+                  className="w-full flex justify-start items-center gap-2 text-lg "
+                  size={"sm"}
+                  pressed={editor.isActive("heading", { level: 4 })}
+                  onPressedChange={() =>
+                    editor.chain().focus().toggleHeading({ level: 4 }).run()
+                  }
+                >
+                  Heading 4
+                </Toggle>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <div className="flex gap-1">
           <Toggle
             size={"sm"}
             pressed={editor.isActive("bold")}
@@ -214,7 +280,7 @@ const NoteToolbar: FC<ToolbarProps> = ({ editor }) => {
           </Toggle>
         </div>
 
-        <div className="">
+        <div className="flex gap-1">
           <Toggle
             size={"sm"}
             pressed={editor.isActive({ textAlign: "left" })}
@@ -254,7 +320,7 @@ const NoteToolbar: FC<ToolbarProps> = ({ editor }) => {
           </Toggle>
         </div>
 
-        <div className=" ">
+        <div className="flex gap-1 ">
           <Toggle
             size={"sm"}
             pressed={editor.isActive("highlight")}
@@ -302,69 +368,6 @@ const NoteToolbar: FC<ToolbarProps> = ({ editor }) => {
                   onChange={(e) => setImageURL(e.target.value)}
                 />
 
-                <label
-                  htmlFor="file-upload"
-                  className="cursor-pointer  w-full p-2 rounded-md border-2 flex justify-center items-center "
-                >
-                  Upload from my PC
-                </label>
-                <input
-                  id="file-upload"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const files = Array.from(e.target.files || []);
-                    setSelectedImages(files);
-                    const previews: string[] = [];
-                    files.forEach((file) => {
-                      const reader = new FileReader();
-                      reader.onload = () => {
-                        previews.push(reader.result as string);
-                        if (previews.length === files.length) {
-                          setImagePreviews(previews);
-                        }
-                      };
-                      reader.readAsDataURL(file);
-                    });
-                  }}
-                  style={{ display: "none" }}
-                />
-
-                <div className="flex justify-start items-center flex-wrap gap-2">
-                  {imagePreviews.map((preview, index) => (
-                    <div
-                      key={index}
-                      className="mt-4 flex items-center relative"
-                    >
-                      <Tooltip content={selectedImages[index].name}>
-                        <img
-                          src={preview}
-                          alt={`Preview ${index}`}
-                          className="w-[80px] h-[80px] rounded-lg mr-2 bg-white object-contain cursor-pointer"
-                        />
-                      </Tooltip>
-                      {/* 
-                    <span className="truncate">
-                      {selectedImages[index].name}
-                    </span> */}
-
-                      <button
-                        onClick={() => {
-                          const newImages = [...selectedImages];
-                          newImages.splice(index, 1);
-                          setSelectedImages(newImages);
-
-                          const newPreviews = [...imagePreviews];
-                          newPreviews.splice(index, 1);
-                          setImagePreviews(newPreviews);
-                        }}
-                        className="ml-auto text-sm text-white cursor-pointer absolute -top-2 right-0 bg-black/80 backdrop-blur-md p-1 rounded-md"
-                      >
-                        <X className=" w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
                 <div className=" flex justify-end mt-6">
                   <Button onClick={addImage} color="secondary">
                     Insert Image

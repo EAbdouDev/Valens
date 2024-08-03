@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/lib/hooks/use-outside-click";
-import { AudioLinesIcon } from "lucide-react";
+import { AudioLinesIcon, Loader, Loader2 } from "lucide-react";
 import { useAuth } from "../auth/auth-provider";
 import { getAllUserPodcasts } from "./actions";
 import ReactAudioPlayer from "react-audio-player";
@@ -157,36 +157,45 @@ export function UserPodcastsList() {
           </div>
         ) : null}
       </AnimatePresence>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
-        <New />
-        {podcasts.map((card, index) => (
-          <motion.div
-            layoutId={`card-${card.title}-${id}`}
-            key={card.title}
-            onClick={() => setActive(card)}
-            className="p-4 flex flex-col hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer shadow-[rgba(99,99,99,0.2)_0px_2px_8px_0px]"
-          >
-            <div className="flex gap-4 flex-col w-full">
-              <div className="flex justify-start items-start flex-col">
-                <AudioLinesIcon className="w-5 h-5 mb-2" />
-                <motion.h3
-                  layoutId={`title-${card.title}-${id}`}
-                  className="line-clamp-1 font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left text-base"
-                >
-                  {card.title}
-                </motion.h3>
-                <motion.p className="text-neutral-600 dark:text-neutral-400 text-center md:text-left text-sm mt-2">
-                  {new Date(card.createdAt).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </motion.p>
+      {podcasts.length > 0 && (
+        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
+          <New />
+          {podcasts.map((card, index) => (
+            <motion.div
+              layoutId={`card-${card.title}-${id}`}
+              key={card.title}
+              onClick={() => setActive(card)}
+              className="p-4 flex flex-col hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer shadow-[rgba(99,99,99,0.2)_0px_2px_8px_0px] dark:shadow-none dark:border"
+            >
+              <div className="flex gap-4 flex-col w-full">
+                <div className="flex justify-start items-start flex-col">
+                  <AudioLinesIcon className="w-5 h-5 mb-2" />
+                  <motion.h3
+                    layoutId={`title-${card.title}-${id}`}
+                    className="line-clamp-1 font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left text-base"
+                  >
+                    {card.title}
+                  </motion.h3>
+                  <motion.p className="text-neutral-600 dark:text-neutral-400 text-center md:text-left text-sm mt-2">
+                    {new Date(card.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </motion.p>
+                </div>
               </div>
-            </div>
-          </motion.div>
-        ))}
-      </ul>
+            </motion.div>
+          ))}
+        </ul>
+      )}
+
+      {isLoading && (
+        <div className="flex justify-center items-center flex-grow w-full h-full">
+          <Loader2 className="w-8 h-8 animate-spin" />
+        </div>
+      )}
+      {podcasts.length === 0 && !isLoading && <div>No podcasts</div>}
     </>
   );
 }

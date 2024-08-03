@@ -1,32 +1,32 @@
-'use client'
+"use client";
 
-import { Skeleton } from '@/components/ui/skeleton'
-import { Section } from './section'
-import { StreamableValue, useStreamableValue } from 'ai/rsc'
-import { BotMessage } from './message'
-import { useEffect, useState } from 'react'
+import { Skeleton } from "@/components/ui/skeleton";
+import { Section } from "./section";
+import { StreamableValue, useStreamableValue } from "ai/rsc";
+import { BotMessage } from "./message";
+import { useEffect, useState } from "react";
 
 export type AnswerSectionProps = {
-  result?: StreamableValue<string>
-  hasHeader?: boolean
-}
+  result?: StreamableValue<string>;
+  hasHeader?: boolean;
+};
 
 export function AnswerSection({
   result,
-  hasHeader = true
+  hasHeader = true,
 }: AnswerSectionProps) {
-  const [data, error, pending] = useStreamableValue(result)
-  const [content, setContent] = useState<string>('')
+  const [data, error, pending] = useStreamableValue(result);
+  const [content, setContent] = useState<string>("");
 
   useEffect(() => {
-    if (!data) return
-    setContent(data)
-  }, [data])
+    if (!data) return;
+    setContent(data);
+  }, [data]);
 
   return (
     <div>
       {content.length > 0 ? (
-        <Section title={hasHeader ? 'Answer' : undefined}>
+        <Section title={hasHeader ? "Gemini Answer" : undefined}>
           <BotMessage content={content} />
         </Section>
       ) : (
@@ -36,5 +36,5 @@ export function AnswerSection({
         </div>
       )}
     </div>
-  )
+  );
 }

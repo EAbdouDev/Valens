@@ -2,7 +2,13 @@
 
 import useNote from "@/zuztand/notesState";
 import { Tooltip } from "@nextui-org/react";
-import { AudioLinesIcon, BookAudio, ScanSearch, Zap } from "lucide-react";
+import {
+  AudioLinesIcon,
+  BookAudio,
+  GalleryHorizontalEnd,
+  ScanSearch,
+  Zap,
+} from "lucide-react";
 import { FC } from "react";
 import Cookies from "js-cookie";
 import { IconPdf } from "@tabler/icons-react";
@@ -29,6 +35,10 @@ const EditorSidebarTabs: FC<NotesSidebarProps> = ({}) => {
     {
       name: "PDF Tools",
       icon: <IconPdf className="w-6 h-6" />,
+    },
+    {
+      name: "Covert to slides",
+      icon: <GalleryHorizontalEnd className="w-6 h-6" />,
     },
   ];
 
