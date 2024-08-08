@@ -3,7 +3,7 @@
 import { Case } from "@/lib/types";
 import { getVoiceModelId, mapGender } from "@/lib/voices";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { ElevenLabsClient } from "elevenlabs";
+import { ElevenLabsClient, play } from "elevenlabs";
 import axios, { ResponseType } from "axios";
 import { Readable } from "stream";
 
@@ -131,7 +131,7 @@ export const generateResponse = async (
     ],
   });
   const result = await chatSession.sendMessage(textInput);
-  console.log(result);
+
   const jsonResponseAI = result.response.candidates?.[0].content.parts[0].text;
 
   try {
@@ -146,26 +146,31 @@ export const generateResponse = async (
 export const createAudio = async (
   text: string,
   role: string,
-  caseDetails: Case
+  caseDetails: any
 ) => {
-  const voiceId = getVoiceModelId(
-    caseDetails.formData.age,
-    mapGender(caseDetails.formData.gender)
-  );
+  const formData = JSON.parse(caseDetails.formData);
+  const voiceId = getVoiceModelId(formData.age, mapGender(formData.gender));
 
   const voice = role === "teacher" ? "KEHPj99efKrKJBifQUVf" : voiceId;
 
-  const audioStream: Readable = await elevenlabs.generate({
-    voice: voice,
-    model_id: "eleven_turbo_v2",
-    text: ` ${text}`,
-  });
+  const options: any = {
+    method: "POST",
+    url: `https://api.elevenlabs.io/v1/text-to-speech/${voice}`,
+    headers: {
+      accept: "audio/mpeg",
+      "content-type": "application/json",
+      "xi-api-key": `${process.env.ELEVENLABS_API_KEY}`,
+    },
+    data: {
+      text: text,
+    },
+    responseType: "arraybuffer",
+  };
 
-  const chunks: Buffer[] = [];
-  for await (const chunk of audioStream) {
-    chunks.push(Buffer.from(chunk));
-  }
+  const speechDetails = await axios.request(options);
+  const base64Audio = Buffer.from(speechDetails.data, "binary").toString(
+    "base64"
+  );
 
-  const content = Buffer.concat(chunks);
-  return content;
+  return base64Audio;
 };

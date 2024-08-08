@@ -6,12 +6,15 @@ import { useAuth } from "../auth/auth-provider";
 import { getAllUserCases } from "./actions";
 import UserCaseCard from "./UserCaseCard";
 import New from "./New";
+import { Input } from "@nextui-org/react";
+import { Search } from "lucide-react";
 
 interface UserCasesListProps {}
 
 const UserCasesList: FC<UserCasesListProps> = ({}) => {
   const [cases, setCases] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
   const auth = useAuth();
 
   const showEmptyState = cases.length === 0 && !isLoading;
@@ -33,6 +36,10 @@ const UserCasesList: FC<UserCasesListProps> = ({}) => {
     fetchCases();
   }, [auth?.currentUser]);
 
+  const filteredCases = cases.filter((caseDetails) =>
+    caseDetails.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full h-full">
@@ -45,12 +52,23 @@ const UserCasesList: FC<UserCasesListProps> = ({}) => {
   }
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 w-full h-full">
-        {cases.length > 0 && (
+      <header className=" mb-8 flex justify-between items-center gap-x-4 ">
+        <h1 className="text-2xl 2xl:text-3xl font-bold">My Cases</h1>
+        <Input
+          placeholder="Search..."
+          startContent={<Search className="w-4 h-5 opacity-70" />}
+          className="max-w-[30%]  "
+          variant="bordered"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </header>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full h-full">
+        {filteredCases.length > 0 && (
           <>
             <New />
-            {cases.map((caseData) => (
-              <UserCaseCard caseData={caseData} />
+            {filteredCases.map((caseData) => (
+              <UserCaseCard caseDetails={caseData} />
             ))}
           </>
         )}
@@ -63,16 +81,21 @@ const UserCasesList: FC<UserCasesListProps> = ({}) => {
               alt="empty_state"
               className="w-[20%] h-auto"
             />
-            <div className="opacity-60 text-center mt-4">
-              <p>There're no cases for you to see yet.</p>
-              <p>
-                Start creating new cases, or you can browse the community cases.
-              </p>
+            <div className="opacity-60 text-center">
+              {searchQuery ? (
+                <p>No cases match your search criteria.</p>
+              ) : (
+                <>
+                  <p>There're no notes for you to see yet.</p>
+                  <p>Start creating your first case.</p>
+                </>
+              )}
             </div>
-            <div className="w-fit mt-6">
-              <NewButton />
-            </div>
-            {/* <New /> */}
+            {!searchQuery && (
+              <div className="w-fit mt-6">
+                <NewButton />
+              </div>
+            )}
           </div>
         </div>
       )}

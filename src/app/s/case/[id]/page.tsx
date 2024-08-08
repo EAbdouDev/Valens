@@ -18,8 +18,8 @@ const CasePage: FC<pageProps> = async ({ params }) => {
     return <div>loading...</div>;
   }
 
-  const caseDetails = caseDetailsDoc as Case;
-  console.log(caseDetails);
+  const caseDetails = caseDetailsDoc;
+
   const genAI = new GoogleGenerativeAI(
     process.env.GOOGLE_GENERATIVE_AI_API_KEY!
   );

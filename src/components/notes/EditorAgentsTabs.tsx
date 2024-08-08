@@ -16,6 +16,7 @@ import {
 import CreateFlashcards from "./agents/CreateFlashcards";
 import PdfSum from "./agents/pdfSum";
 import Slides from "./agents/slides/Slide";
+import AudioNotes from "./agents/AudioNotes";
 
 interface EditorAgentsTabsProps {
   noteSlug: string;
@@ -41,19 +42,18 @@ const EditorAgentsTabs: FC<EditorAgentsTabsProps> = ({ noteSlug }) => {
         </aside>
       )}
 
+      {sideBarTab === 2 && (
+        <aside className="w-full h-full overflow-y-auto p-4 flex-1">
+          <h1 className="text-2xl font-bold mb-10 p-2">Note to podcast</h1>
+          <AudioNotes noteSlug={noteSlug} />
+        </aside>
+      )}
+
       {sideBarTab === 3 && (
         <aside className="w-full h-full overflow-y-auto p-4 flex-1">
           <h1 className="text-2xl font-bold mb-10 p-2">PDF to notes </h1>
 
           <PdfSum />
-        </aside>
-      )}
-
-      {sideBarTab === 4 && (
-        <aside className="w-full h-full overflow-y-auto p-4 flex-1">
-          <h1 className="text-2xl font-bold mb-6 p-2">Slides </h1>
-          <Slides />
-          {/* <PdfChat /> */}
         </aside>
       )}
 

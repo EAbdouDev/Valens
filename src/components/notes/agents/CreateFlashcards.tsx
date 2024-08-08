@@ -123,7 +123,7 @@ const CreateFlashcards: FC<CreateFlashcardsProps> = ({ noteSlug }) => {
                         View Flashcards
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-h-[90%] 2xl:min-w-[50%] overflow-y-auto">
+                    <DialogContent className="max-h-[90%] lg:min-w-[50%] overflow-y-auto">
                       <DialogHeader className="mb-2">
                         <DialogTitle className="text-2xl">
                           {groups[selectedGroup!]?.name} #{index + 1}

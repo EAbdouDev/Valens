@@ -33,6 +33,7 @@ import {
   Underline,
   Undo2,
   Video,
+  WandSparkles,
   X,
 } from "lucide-react";
 import { FC, useCallback, useEffect, useRef, useState } from "react";
@@ -54,6 +55,8 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/react";
+import useNote from "@/zuztand/notesState";
+import { tidyNote } from "../notes/agents/actions";
 
 interface ToolbarProps {
   editor: Editor | null;
@@ -75,53 +78,7 @@ const NoteToolbar: FC<ToolbarProps> = ({ editor }) => {
   const [isLoadingContent, setisLoadingContent] = useState(false);
   const [selectedHtml, setSelectedHtml] = useState<string>("");
   const [imageSrc, setImageSrc] = useState<any>();
-
-  // useEffect(() => {
-  //   const fetchNotes = async () => {
-  //     const { data: teamId, error: teamIdError } = await supabase
-  //       .from("teams")
-  //       .select("id")
-  //       .eq("name", userProfile.selected_team);
-  //     if (teamIdError) {
-  //       toast.error(teamIdError.message);
-  //       console.log(teamIdError.message);
-  //       return;
-  //     }
-
-  //     const { data: courses, error: coursesError } = await supabase
-  //       .from("courses_team")
-  //       .select("*, courses:course_id(slug)")
-  //       .eq("team_id", teamId[0].id);
-  //     if (coursesError) {
-  //       toast.error(coursesError.message);
-  //       console.log(coursesError.message);
-  //       return;
-  //     }
-
-  //     const coursesSlugs = courses.map((course: any) => course.courses.slug);
-
-  //     const { data: notes, error: notesError } = await supabase
-  //       .from("notes")
-  //       .select("*")
-  //       .in("course_slug", coursesSlugs);
-  //     if (notesError) {
-  //       toast.error(notesError.message);
-  //       console.log(notesError.message);
-  //       return;
-  //     }
-
-  //     setNotes(notes);
-  //   };
-
-  //   fetchNotes();
-  // }, []);
-
-  // const handleEdit = () => {
-  //   if (editor && editor.chain && isSelected) {
-  //     editor.chain().focus().updateAttributes("internalLink", attributes).run();
-  //     setOpen(false);
-  //   }
-  // };
+  const { isTidy, setIsTidy, setTidyText, editorObj } = useNote();
 
   const addImage = useCallback(() => {
     // const url = window.prompt("URL");
@@ -172,6 +129,14 @@ const NoteToolbar: FC<ToolbarProps> = ({ editor }) => {
     }
   };
 
+  const handleTidy = async () => {
+    setIsTidy(true);
+    const res = await tidyNote(editorObj);
+    if (res) {
+      setTidyText(res);
+      setIsTidy(false);
+    }
+  };
   if (!editor) {
     return null;
   }
@@ -377,6 +342,23 @@ const NoteToolbar: FC<ToolbarProps> = ({ editor }) => {
             </DialogContent>
           </Dialog>
         </div>
+        <button
+          className="ml-6 px-4 py-2 rounded-lg flex justify-start items-center gap-2 hover:bg-[#ededed] dark:hover:bg-[#4e4e4e]  "
+          onClick={handleTidy}
+          disabled={isTidy}
+        >
+          {isTidy ? (
+            <>
+              <WandSparkles className="w-5 h-5" />
+              <p>Tidying...</p>
+            </>
+          ) : (
+            <>
+              <WandSparkles className="w-5 h-5" />
+              <p>Tidy</p>
+            </>
+          )}
+        </button>
       </div>
     </div>
   );

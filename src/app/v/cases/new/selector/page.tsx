@@ -53,7 +53,6 @@ const SelectorPage: FC<pageProps> = ({}) => {
             Create Case from Scratch
           </CustomRadio>
           <CustomRadio
-            isDisabled
             className="opacity-50"
             description="Tell Gemini the disease name and let him create the case for you. "
             value="ai/disease-name"

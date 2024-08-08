@@ -30,6 +30,7 @@ const Header: FC<HeaderProps> = ({}) => {
   const router = useRouter();
   const { text, setIsGenerating, setAiText, aiText, isGenerating } =
     useTextPod();
+
   useEffect(() => {
     setAiText("");
     setIsGenerating(false);
@@ -103,7 +104,6 @@ const Header: FC<HeaderProps> = ({}) => {
 
     const res = await generatePodcastScript(text);
     if (res) {
-      console.log(res);
       setAiText(res.podcastScript);
       setTitle(res.title);
     }
@@ -183,7 +183,10 @@ const Header: FC<HeaderProps> = ({}) => {
             isPublic: false, // Or set this based on your requirements
           };
 
-          await addDoc(collection(firestore!, "podcasts"), podcastData);
+          const data = await addDoc(
+            collection(firestore!, "podcasts"),
+            podcastData
+          );
 
           const link = document.createElement("a");
           link.href = url;
@@ -191,11 +194,7 @@ const Header: FC<HeaderProps> = ({}) => {
           document.body.appendChild(link);
           // link.click();
           document.body.removeChild(link);
-          router.push(
-            `/v/podcasts/play?title=${title}&audioUrl=${encodeURIComponent(
-              url
-            )}`
-          );
+          router.push(`/v/podcasts/play/${data.id}`);
 
           setIsDone(false);
         }

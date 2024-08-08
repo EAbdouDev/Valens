@@ -67,7 +67,7 @@ const Header: FC<HeaderProps> = ({ caseId }) => {
       createdBy: auth?.currentUser!.uid,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      formData: formValues,
+      formData: JSON.stringify(formValues),
     };
     if (caseId) {
       // Update existing case
@@ -90,7 +90,7 @@ const Header: FC<HeaderProps> = ({ caseId }) => {
 
   return (
     <>
-      <header className="h-[60px] w-full py-2 px-6 flex justify-between items-center border-b transition-all ease-soft-spring">
+      <header className="h-[60px] w-full py-2 px-4 flex justify-between items-center transition-all ease-soft-spring">
         <div className="w-[30%]">
           {!isEditing && (
             <button onClick={() => setIsEditing(true)}>{title}</button>

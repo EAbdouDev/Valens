@@ -25,6 +25,8 @@ const ChatContainer: FC<ChatContainerProps> = ({
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [responses]);
+
+  const formData = JSON.parse(caseDetails.formData);
   return (
     <div
       id="chat-container"
@@ -44,7 +46,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
                 <div className="flex justify-start items-center gap-2">
                   {response.role === "patient" && (
                     <img
-                      src={caseDetails.formData.image}
+                      src={formData.image}
                       alt="patientpic"
                       className="w-8 h-8 object-cover rounded-full border"
                     />

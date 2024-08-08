@@ -13,8 +13,9 @@ import EditorAgentsTabs from "@/components/notes/EditorAgentsTabs";
 import NoteEditor from "@/components/editor/NoteEditor";
 import { firestore } from "../../../../../firebase/server";
 import { Metadata } from "next";
+import { unstable_noStore as noStore } from "next/cache";
 
-export const revalidate = 0;
+// export const revalidate = 0;
 // export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
@@ -46,7 +47,7 @@ export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
     }
 
     const note = notesSnapshot.docs[0].data();
-    const title = note?.title || "Untitled Note"; // Use the title field from your document or a default value
+    const title = `${note?.title} - Notes` || "Untitled Note - Notes"; // Use the title field from your document or a default value
 
     return {
       title,
@@ -59,6 +60,7 @@ export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
   }
 };
 const NewNotePage: FC<PageProps> = async ({ params }) => {
+  noStore();
   const id = generateId();
   const note = await getNoteDetails(params.slug);
 
@@ -75,7 +77,7 @@ const NewNotePage: FC<PageProps> = async ({ params }) => {
         {/* <!-- main container --> */}
         <div className="flex-1 flex flex-row overflow-hidden">
           <ResizablePanelGroup direction="horizontal">
-            <ResizablePanel defaultSize={70}>
+            <ResizablePanel defaultSize={65}>
               <div className="w-full h-full overflow-hidden">
                 <nav className="lg:hidden flex border-l h-fit w-full border-b">
                   <EditorSidebarTabs />
@@ -93,8 +95,8 @@ const NewNotePage: FC<PageProps> = async ({ params }) => {
             <ResizablePanel
               className="hidden lg:flex h-full  border rounded-l-lg"
               maxSize={35}
-              minSize={30}
-              defaultSize={30}
+              minSize={35}
+              defaultSize={35}
             >
               <div className="w-full h-full overflow-auto">
                 <EditorAgentsTabs noteSlug={params.slug} />

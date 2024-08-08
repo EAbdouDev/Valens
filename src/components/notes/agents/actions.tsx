@@ -4,6 +4,8 @@ import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateObject, generateText } from "ai";
 import { z } from "zod";
 import { firestore } from "../../../../firebase/server";
+import { GoogleAIFileManager } from "@google/generative-ai/server";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const google = createGoogleGenerativeAI({
   apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
@@ -162,3 +164,90 @@ here is the text: ${textPdf}
 
   return text;
 }
+
+export const uploadToGemini = async () => {
+  console.log("start");
+
+  const genAI = new GoogleGenerativeAI(
+    process.env.GOOGLE_GENERATIVE_AI_API_KEY!
+  );
+
+  // Initialize a Gemini model appropriate for your use case.
+  const model = genAI.getGenerativeModel({
+    model: "gemini-1.5-pro",
+  });
+
+  const result = await model.generateContent([
+    {
+      fileData: {
+        fileUri:
+          "https://firebasestorage.googleapis.com/v0/b/valensai.appspot.com/o/podcast%2FpxLOWxOHxwYqmbosvimAIF5A4Sh1%2FHormone%20Axes%3A%20A%20Balancing%20Act_1722586610955.mp3",
+        mimeType: "audio/mpeg",
+      },
+    },
+    {
+      text: ` Please provide a summary for the audio.
+    Provide chapter titles with timestamps, be concise and short, no need to provide chapter summaries.
+    Do not make up any information that is not part of the audio and do not be verbose.`,
+    },
+  ]);
+
+  return result.response.text();
+};
+
+export const tidyNote = async (noteText: any) => {
+  const prompt = `
+   You are an AI assistant specializing in optimizing written content while preserving the original meaning and medical terminology. Your task is to tidy up the provided notes by enhancing headings, subheadings, vocabulary, spelling, and grammar without changing the meaning or deleting any information. 
+
+Follow these Instructions:
+
+Headings and Subheadings:
+- Improve the clarity and structure of headings and subheadings.
+- Ensure that headings are appropriately formatted (e.g., <h1>, <h2>, <h3>, etc.).
+- Split the text into sections with clear headings and subheadings for easy understanding.
+- use <strong> tag for bold text.
+
+Vocabulary:
+- Enhance vocabulary to make the text clearer and more concise.
+- Do not change any medical terms or their meanings.
+- Avoid deleting any information from the notes.
+- Ensure the content remains accurate and professional.
+
+Spelling and Grammar:
+- Correct any spelling errors.
+- Fix any grammatical mistakes.
+- Ensure that the text reads smoothly and professionally.
+
+Simplified Explanations:
+- If the concepts are complex, add a better, simpler, and fun explanation under each section.
+- Prefix each explanation with "<mark>From Gemini:</mark>".
+- Add a line before and after each explanation from Gemini using <hr /> and add spaces after and before the section.
+- add background red to this div using tailwindcss
+
+Medical Term Explanations:
+- Provide explanations for medical terms under the relevant sections.
+- Prefix each explanation with "<mark>From Gemini:</mark>".
+- Add a line before and after each explanation from Gemini using <hr /> and add spaces after and before the section.
+- add background red to this div using tailwindcss
+
+Formatting and Spacing:
+- Ensure good formatting and spacing for readability.
+- Maintain the original HTML structure.
+- Ensure that the optimized text is returned in the same HTML format.
+- Do not remove any existing HTML tags unless necessary for clarity.
+- use good spacing, you can use &nbsp; or <br/>.
+- add spaces before and after each section.
+
+add a Summary section at the end.
+return the html directly without specifiying that this html and don't forget about the spacing.
+
+here is the note text: ${noteText}
+  `;
+
+  const { text } = await generateText({
+    model: google("models/gemini-1.5-pro-latest"),
+    prompt,
+  });
+
+  return text;
+};

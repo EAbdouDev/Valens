@@ -24,7 +24,7 @@ export function BotMessage({ content }: { content: string }) {
           rehypeKatex,
         ]}
         remarkPlugins={[remarkGfm, remarkMath]}
-        className="prose prose-lg text-gray-800 leading-relaxed space-y-4"
+        className="prose prose-lg text-gray-800 dark:text-white leading-relaxed space-y-4"
       >
         {processedData}
       </MemoizedReactMarkdown>
@@ -35,7 +35,7 @@ export function BotMessage({ content }: { content: string }) {
     <MemoizedReactMarkdown
       rehypePlugins={[[rehypeExternalLinks, { target: "_blank" }]]}
       remarkPlugins={[remarkGfm]}
-      className="prose prose-lg text-gray-800 leading-relaxed space-y-4"
+      className="prose prose-lg text-gray-800 dark:text-white leading-relaxed space-y-4"
     >
       {content}
     </MemoizedReactMarkdown>

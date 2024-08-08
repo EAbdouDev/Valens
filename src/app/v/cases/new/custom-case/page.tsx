@@ -13,12 +13,12 @@ const NewCasePage: FC<pageProps> = ({}) => {
     <div className="min-h-full flex flex-col h-full">
       <Header caseId={null} />
       <div className="flex-1 flex flex-row overflow-y-hidden">
-        <main className="flex-1  overflow-y-auto py-6 px-10 ">
+        <main className="flex-1  overflow-y-auto py-6 px-10  mx-2 rounded-lg">
           {" "}
           <CaseForm />
         </main>
 
-        <nav className="order-first sm:w-[25%]  overflow-y-auto p-2 border-r ">
+        <nav className="order-first sm:w-[25%]  overflow-y-auto   rounded-lg">
           {" "}
           <StepperSidebar />
         </nav>

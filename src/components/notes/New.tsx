@@ -69,11 +69,6 @@ const New: FC<NewProps> = ({}) => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1 !p-0">
-                <img
-                  src="/gbg.jpg"
-                  alt=""
-                  className="w-full h-auto rounded-t-lg"
-                />
                 <h1 className="m-4 text-2xl">Create New Note</h1>
               </ModalHeader>
               <ModalBody>
@@ -89,6 +84,9 @@ const New: FC<NewProps> = ({}) => {
                       Title
                     </label>
                     <Input
+                      isDisabled={isCreating || isRedirecting}
+                      isClearable
+                      isRequired
                       variant="bordered"
                       id="title"
                       type="text"
@@ -103,8 +101,8 @@ const New: FC<NewProps> = ({}) => {
                   </div>
 
                   <Button
-                    isDisabled={isCreating}
-                    isLoading={isCreating}
+                    isDisabled={isCreating || isRedirecting}
+                    isLoading={isCreating || isRedirecting}
                     type="submit"
                     color="primary"
                     className="font-semibold"

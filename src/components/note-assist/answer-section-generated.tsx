@@ -1,18 +1,18 @@
-'use client'
+"use client";
 
-import { Section } from './section'
-import { BotMessage } from './message'
+import { Section } from "./section";
+import { BotMessage } from "./message";
 
 export type AnswerSectionProps = {
-  result: string
-}
+  result: string;
+};
 
 export function AnswerSectionGenerated({ result }: AnswerSectionProps) {
   return (
     <div>
-      <Section title="Answer">
+      <Section title="Gemini Answer">
         <BotMessage content={result} />
       </Section>
     </div>
-  )
+  );
 }

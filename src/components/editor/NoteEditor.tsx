@@ -39,7 +39,7 @@ interface NoteEditorProps {
 
 const NoteEditor: FC<NoteEditorProps> = ({ content }) => {
   const [imageSrc, setImageSrc] = useState("");
-  const { setText, setEditorObj } = useNote();
+  const { setText, setEditorObj, isTidy, editorObj, tidyText } = useNote();
 
   const editor = useEditor({
     extensions: [
@@ -168,7 +168,7 @@ const NoteEditor: FC<NoteEditorProps> = ({ content }) => {
     editorProps: {
       attributes: {
         class:
-          "leading-loose rounded-md min-h-screen flex flex-col flex-grow min-w-full p-6 outline-none",
+          "leading-loose rounded-md min-h-screen flex flex-col flex-grow min-w-full p-2 outline-none",
       },
       handleClickOn: (view, pos, node) => {
         if (node.type.name === "image") {
@@ -187,6 +187,14 @@ const NoteEditor: FC<NoteEditorProps> = ({ content }) => {
     }
   }, [editor, content]);
 
+  useEffect(() => {
+    if (editor && tidyText) {
+      editor.commands.setContent(tidyText);
+      const textFromEditor = editor.getText();
+      setText(textFromEditor);
+    }
+  }, [editor, tidyText]);
+
   if (!editor) {
     return (
       <div className="p-6 flex flex-col flex-grow w-full  justify-center items-center lg:mt-20">
@@ -197,11 +205,19 @@ const NoteEditor: FC<NoteEditorProps> = ({ content }) => {
 
   return (
     <div className="w-full h-full flex flex-col">
-      <div className=" px-2 sticky top-0 z-10 bg-muted rounded-lg mx-2">
+      <div className="px-2 sticky top-0 z-10 bg-muted rounded-lg mx-2">
         <NoteToolbar editor={editor} />
       </div>
-      <div className="px-2 overflow-y-auto flex-1">
-        <EditorContent editor={editor} />
+      <div className="px-2 mt-4 overflow-y-auto flex-1">
+        <div
+          className={`${
+            isTidy && "gradient-border"
+          } transition-all ease-soft-spring`}
+        >
+          <div className="editor-content-wrapper">
+            <EditorContent editor={editor} />
+          </div>
+        </div>
       </div>
     </div>
   );

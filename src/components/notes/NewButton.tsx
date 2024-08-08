@@ -69,11 +69,6 @@ const NewButton: FC<NewProps> = ({}) => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1 !p-0">
-                <img
-                  src="/gbg.jpg"
-                  alt=""
-                  className="w-full h-auto rounded-t-lg"
-                />
                 <h1 className="m-4 text-2xl">Create New Note</h1>
               </ModalHeader>
               <ModalBody>

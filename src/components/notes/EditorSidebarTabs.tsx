@@ -36,10 +36,6 @@ const EditorSidebarTabs: FC<NotesSidebarProps> = ({}) => {
       name: "PDF to notes",
       icon: <IconPdf className="w-6 h-6" />,
     },
-    {
-      name: "Covert to slides",
-      icon: <GalleryHorizontalEnd className="w-6 h-6" />,
-    },
   ];
 
   return (
@@ -59,7 +55,7 @@ const EditorSidebarTabs: FC<NotesSidebarProps> = ({}) => {
             }}
             className={` ${
               index === sideBarTab
-                ? "lg:bg-gray-200 dark:bg-secondary dark:text-secondary-foreground"
+                ? "lg:bg-gray-200 dark:bg-[#4a4a4a] dark:text-secondary-foreground"
                 : "lg:hover:bg-gray-200 dark:hover:bg-secondary dark:text-secondary-foreground"
             } p-2 rounded-md`}
           >

@@ -3,6 +3,7 @@
 import { nanoid } from "nanoid";
 import slugify from "slugify";
 import { firestore } from "../../../firebase/server";
+import { cookies } from "next/headers";
 
 interface Note {
   title: string;
@@ -18,7 +19,7 @@ export const createNote = async (data: Note, userId: string) => {
       slug,
       createdAt: new Date().toISOString(),
       createdBy: userId,
-      isPublic: false,
+      studied: false,
     });
     return { id: docRef.id, slug };
   } catch (e) {
@@ -126,6 +127,7 @@ export const updateTitle = async (noteId: string, newTitle: string) => {
 };
 
 export const getNoteDetails = async (noteSlug: string) => {
+  const _cookies = cookies();
   if (!noteSlug) return;
   try {
     const notesSnapshot = await firestore!

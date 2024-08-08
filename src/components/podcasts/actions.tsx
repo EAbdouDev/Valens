@@ -13,7 +13,7 @@ interface Podcast {
   id: string;
   createdBy: string;
   createdAt: Date;
-  isPublic: boolean;
+  noteSlug: string;
   script: Array<{ speaker: string; text: string }>;
   title: string;
   url: string;
@@ -111,7 +111,7 @@ export const getAllUserPodcasts = async (
         id: doc.id,
         createdBy: data.createdBy,
         createdAt: (data.createdAt as Timestamp).toDate(), // Convert Firestore Timestamp to JS Date
-        isPublic: data.isPublic,
+
         script: data.script,
         title: data.title,
         url: data.url,
@@ -122,5 +122,22 @@ export const getAllUserPodcasts = async (
   } catch (e) {
     console.error("Error fetching podcasts: ", e);
     throw new Error("Error fetching podcasts");
+  }
+};
+
+export const getPodcastDetails = async (id: string) => {
+  if (!id) return;
+  try {
+    const podcastDoc = await firestore!.collection("podcasts").doc(id).get();
+
+    if (!podcastDoc.exists) {
+      throw new Error("No podcast found with the given ID");
+    }
+
+    const podcast = podcastDoc.data();
+    return JSON.stringify({ id: podcastDoc.id, ...podcast });
+  } catch (e) {
+    console.error("Error fetching podcast details: ", e);
+    throw new Error("Error fetching podcast details");
   }
 };

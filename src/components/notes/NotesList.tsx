@@ -6,13 +6,15 @@ import New from "./New";
 import UserNoteCard from "./UserNoteCard";
 import { useAuth } from "../auth/auth-provider";
 import NewButton from "./NewButton";
-import { Loader2 } from "lucide-react";
+import { Loader2, Search } from "lucide-react";
+import { Input } from "@nextui-org/react";
 
 interface NotesListProps {}
 
 const NotesList: FC<NotesListProps> = ({}) => {
   const [notes, setNotes] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
   const auth = useAuth();
 
   useEffect(() => {
@@ -32,6 +34,14 @@ const NotesList: FC<NotesListProps> = ({}) => {
     fetchNotes();
   }, [auth?.currentUser]);
 
+  useEffect(() => {
+    setSearchQuery("");
+  }, [auth?.currentUser]);
+
+  const filteredNotes = notes.filter((note) =>
+    note.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center flex-grow w-full h-full">
@@ -40,15 +50,27 @@ const NotesList: FC<NotesListProps> = ({}) => {
     );
   }
 
-  const showEmptyState = notes.length === 0 && !isLoading;
+  const showEmptyState = filteredNotes.length === 0 && !isLoading;
 
   return (
     <>
+      <header className=" mb-8 flex justify-between items-center gap-x-4 ">
+        <h1 className="text-2xl 2xl:text-3xl font-bold">My Notes</h1>
+        <Input
+          placeholder="Search..."
+          startContent={<Search className="w-4 h-5 opacity-70" />}
+          className="max-w-[30%]  "
+          variant="bordered"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </header>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full h-full">
-        {notes.length > 0 && (
+        {filteredNotes.length > 0 && (
           <>
             <New />
-            {notes.map((note) => (
+            {filteredNotes.map((note) => (
               <UserNoteCard note={note} key={note.slug} />
             ))}
           </>
@@ -63,12 +85,20 @@ const NotesList: FC<NotesListProps> = ({}) => {
               className="w-[20%] h-auto"
             />
             <div className="opacity-60 text-center">
-              <p>There're no notes for you to see yet.</p>
-              <p>Start creating your first note.</p>
+              {searchQuery ? (
+                <p>No notes match your search criteria.</p>
+              ) : (
+                <>
+                  <p>There're no notes for you to see yet.</p>
+                  <p>Start creating your first note.</p>
+                </>
+              )}
             </div>
-            <div className="w-fit mt-6">
-              <NewButton />
-            </div>
+            {!searchQuery && (
+              <div className="w-fit mt-6">
+                <NewButton />
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -1,5 +1,4 @@
 import {
-  ClipboardPlus,
   Earth,
   EarthLock,
   EllipsisVertical,
@@ -13,7 +12,7 @@ import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/popover";
 import { Button, Tooltip } from "@nextui-org/react";
 
 interface NoteCardProps {
-  caseData: any;
+  caseDetails: any;
 }
 
 const getTimeDifference = (date: Date) => {
@@ -41,69 +40,52 @@ const getTimeDifference = (date: Date) => {
   return "Just now";
 };
 
-const UserCaseCard: FC<NoteCardProps> = ({ caseData }) => {
-  const [timeAgo, setTimeAgo] = useState(getTimeDifference(caseData.updatedAt));
+const UserCaseCard: FC<NoteCardProps> = ({ caseDetails }) => {
+  const [timeAgo, setTimeAgo] = useState(
+    getTimeDifference(caseDetails.createdAt)
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeAgo(getTimeDifference(caseData.updatedAt));
+      setTimeAgo(getTimeDifference(caseDetails.createdAt));
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [caseData.updatedAt]);
+  }, [caseDetails.createdAt]);
 
   return (
-    <div className="shadow-[rgba(99,99,99,0.2)_0px_2px_8px_0px] dark:border rounded-lg  flex flex-col justify-start items-start gap-2">
+    <Link
+      prefetch={false}
+      href={`/s/case/${caseDetails.id}/pre`}
+      className="bg-white dark:bg-[#1a1a1a] hover:scale-105 transition-all ease-soft-spring shadow-[rgba(99,99,99,0.2)_0px_2px_8px_0px] dark:shadow-none dark:border rounded-2xl p-4 flex flex-col justify-start items-start gap-2"
+    >
       <div className="w-full flex justify-between items-center gap-x-4 mb-2">
-        <ClipboardPlus className="w-5 h-5" />
-        <Popover placement="bottom" showArrow={true}>
-          <PopoverTrigger>
-            <Button isIconOnly variant="light" size="sm">
-              <EllipsisVertical className="w-5 h-5" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent>
-            <div className="">
-              <Button variant="light" color="danger">
-                Delete
-              </Button>
-            </div>
-          </PopoverContent>
-        </Popover>
+        <FileText className="w-6 h-6" />
       </div>
       <Tooltip
-        content={caseData.title}
+        content={caseDetails.title}
         placement="top"
         color="primary"
         delay={1000}
       >
-        <Link
-          prefetch={false}
-          href={`/s/case/${caseData.id}/pre`}
-          className="text-lg font-semibold hover:underline max-w-full truncate p-4"
-        >
-          {caseData.title}
-        </Link>
+        <h1 className="text-lg font-semibold max-w-full truncate">
+          {caseDetails.title}
+        </h1>
       </Tooltip>
 
       <div className="w-full flex justify-between items-center gap-x-4 mt-2">
-        {/* {note.isPublic && (
-            <div className="flex justify-center items-center gap-2 text-xs px-2 py-1 bg-green-200 rounded-lg">
-              <Earth className="w-4 h-4" />
-              <p>Public</p>
-            </div>
-          )}
-  
-          {!note.isPublic && (
-            <div className="flex justify-center items-center gap-2 text-xs px-2 py-1 bg-yellow-200 rounded-lg">
-              <EarthLock className="w-4 h-4" />
-              <p>Private</p>
-            </div>
-          )} */}
-
-        <p className="text-xs text-gray-500 p-4">{timeAgo}</p>
+        {/* <p
+          className={`text-xs font-medium ${
+            note.studied
+              ? "text-green-600 dark:text-green-500"
+              : "text-red-600 dark:text-red-500"
+          }`}
+        >
+          {note.studied ? "Studied" : "Not Studied"}
+        </p> */}
+        <p className="text-xs text-gray-500">{timeAgo}</p>
       </div>
-    </div>
+    </Link>
   );
 };
 

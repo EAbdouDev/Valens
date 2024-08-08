@@ -14,9 +14,11 @@ import { Case } from "@/lib/types";
 import Header from "./Header";
 import ChatContainer from "./ChatContainer";
 import Footer from "./Footer";
+import { ElevenLabsClient, play } from "elevenlabs";
+import { Readable } from "stream";
 
 interface CaseSimProps {
-  caseDetails: Case;
+  caseDetails: any;
 }
 
 const CaseSim: FC<CaseSimProps> = ({ caseDetails }) => {
@@ -41,12 +43,11 @@ const CaseSim: FC<CaseSimProps> = ({ caseDetails }) => {
     ]);
     try {
       const jsonResponse = await generateResponse(textInput, caseDetails);
-      console.log(jsonResponse);
 
       const res = jsonResponse.response.response;
       const role = jsonResponse.role;
 
-      await createAudioStreamFromText(res, role);
+      await createAudioStreamFromText(res, role, caseDetails);
       setResponses((prevResponses) => [
         ...prevResponses,
         { role, response: res },
@@ -59,47 +60,40 @@ const CaseSim: FC<CaseSimProps> = ({ caseDetails }) => {
     }
   };
 
-  const createAudioStreamFromText = async (text: string, role: string) => {
-    const content = await createAudio(text, role, caseDetails);
+  const createAudioStreamFromText = async (
+    text: string,
+    role: string,
+    caseDetails: any
+  ) => {
+    try {
+      const content = await createAudio(text, role, caseDetails);
 
-    const prefix =
-      role === "teacher" ? "Teacher:" : `${caseDetails.formData.name}:`;
+      const prefix =
+        role === "teacher" ? "Teacher:" : `${caseDetails.formData.name}:`;
 
-    const audioBlob = new Blob([content], { type: "audio/mpeg" });
-    const audioUrl = URL.createObjectURL(audioBlob);
-    const sound = new Howl({
-      src: [audioUrl],
-      format: ["mp3"],
-      onload: () => {
-        const duration = sound.duration();
-        animateText(`${prefix} ${text}`, duration);
-        sound.play();
-      },
-      onend: () => URL.revokeObjectURL(audioUrl),
-    });
-  };
+      const audioBuffer = Uint8Array.from(atob(content), (c) =>
+        c.charCodeAt(0)
+      );
 
-  const animateText = (text: string, duration: number) => {
-    const words = text.split(" ");
-    const wordDuration = duration / words.length;
-    let animatedText = "";
+      // Create a Blob from the audio buffer
+      const blob = new Blob([audioBuffer], { type: "audio/mpeg" });
 
-    words.forEach((word, index) => {
-      setTimeout(() => {
-        animatedText += ` ${word}`;
-        setResponses((prevResponses) => {
-          const lastResponse = prevResponses[prevResponses.length - 1];
-          if (lastResponse && lastResponse.role === "animation") {
-            lastResponse.response = animatedText;
-            return [...prevResponses.slice(0, -1), lastResponse];
-          }
-          return [
-            ...prevResponses,
-            { role: "animation", response: animatedText },
-          ];
-        });
-      }, index * wordDuration * 1000);
-    });
+      // Create a URL from the Blob
+      const url = URL.createObjectURL(blob);
+
+      const sound = new Howl({
+        src: [url],
+        format: ["mp3"],
+        onload: () => {
+          const duration = sound.duration();
+          // animateText(`${prefix} ${text}`, duration);
+          sound.play();
+        },
+        onend: () => URL.revokeObjectURL(url),
+      });
+    } catch (error) {
+      console.error("Error creating audio stream from text:", error);
+    }
   };
 
   useEffect(() => {
@@ -156,9 +150,16 @@ const CaseSim: FC<CaseSimProps> = ({ caseDetails }) => {
     );
   };
 
+  const formData = JSON.parse(caseDetails.formData);
+
   return (
     <div className="min-h-screen flex flex-col h-screen">
-      <Header caseTitle={caseDetails.title} elapsedTime={elapsedTime} />
+      <Header
+        caseTitle={caseDetails.title}
+        elapsedTime={elapsedTime}
+        responses={responses}
+        caseDetails={caseDetails}
+      />
       <div className="flex-1 flex flex-row overflow-y-hidden">
         <main className="flex-1 overflow-y-auto  m-2 rounded-xl">
           <div className="p-6 w-full h-full container max-w-3xl mx-auto">
@@ -169,7 +170,7 @@ const CaseSim: FC<CaseSimProps> = ({ caseDetails }) => {
                   simulation?
                 </h1>
                 <p className="opacity-70 font-light text-lg">
-                  Start talking to the patient, and the timer will start.
+                  Start talking to the patient, when you are done click Submit.
                 </p>
               </div>
             )}
@@ -183,10 +184,7 @@ const CaseSim: FC<CaseSimProps> = ({ caseDetails }) => {
           </div>
         </main>
       </div>
-      <Footer
-        patientName={caseDetails.formData.name}
-        onSubmit={handleGenerateResponse}
-      />
+      <Footer patientName={formData.name} onSubmit={handleGenerateResponse} />
     </div>
   );
 };

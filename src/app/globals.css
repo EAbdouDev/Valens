@@ -66,6 +66,22 @@
   }
 }
 
+:root {
+  --color-green: #4caf50;
+  --color-yellow: #d6c104;
+  --color-red: #f44336;
+  --color-text-light: #000000;
+  --color-text-dark: #ffffff;
+}
+
+[data-theme="dark"] {
+  --color-green: #81c784;
+  --color-yellow: #fff176;
+  --color-red: #e57373;
+  --color-text-light: #ffffff;
+  --color-text-dark: #000000;
+}
+
 @layer base {
   :root {
     --chart-1: 12 76% 61%;
@@ -100,6 +116,30 @@ body {
 
 body {
   height: 100%;
+}
+
+.gradient-border {
+  padding: 3px; /* Adjust the padding to control border thickness */
+  background: linear-gradient(45deg, #fa851f, #7873f5, #ff236c, #52fa5a);
+  background-size: 600% 600%;
+  border-radius: 8px;
+  animation: gradientAnimation 1s ease infinite;
+}
+
+.editor-content-wrapper {
+  @apply bg-background rounded-lg;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 #gradient-background {

@@ -4,8 +4,7 @@ import { useDropzone } from "react-dropzone";
 //@ts-ignore
 import * as pdfjsLib from "pdfjs-dist/webpack.mjs";
 import { generateSummary } from "./actions";
-import useNote from "@/zuztand/notesState";
-import NoteEditor from "@/components/editor/NoteEditor";
+
 import TextEditor from "@/components/editor/TextEditor";
 import { File, Loader2, Sparkle, Sparkles, X } from "lucide-react";
 import { Button } from "@nextui-org/react";
@@ -53,6 +52,7 @@ const PdfSum: FC<PdfChatProps> = ({}) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const generate = async () => {
+    setAi(null);
     if (pdfText) {
       setIsGenerating(true);
       const res = await generateSummary(pdfText);
@@ -96,7 +96,18 @@ const PdfSum: FC<PdfChatProps> = ({}) => {
           </button>
         </div>
       )}
-
+      {uploadedFile && pdfText && (
+        <Button
+          onClick={generate}
+          variant="shadow"
+          color="primary"
+          className="flex justify-center items-center gap-2 my-6"
+          isDisabled={isGenerating}
+        >
+          <Sparkles className="w-5 h-5 " />
+          Generate
+        </Button>
+      )}
       {isGenerating && (
         <div className="flex-1 h-full  w-full my-6">
           <div className="icon">
@@ -112,18 +123,6 @@ const PdfSum: FC<PdfChatProps> = ({}) => {
             <p>Gemini is working on it...</p>
           </div>
         </div>
-      )}
-      {uploadedFile && pdfText && (
-        <Button
-          onClick={generate}
-          variant="shadow"
-          color="primary"
-          className="flex justify-center items-center gap-2 my-6"
-          isDisabled={isGenerating}
-        >
-          <Sparkles className="w-5 h-5 " />
-          Generate
-        </Button>
       )}
 
       {ai && (

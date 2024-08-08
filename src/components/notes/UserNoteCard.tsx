@@ -72,6 +72,15 @@ const UserNoteCard: FC<NoteCardProps> = ({ note }) => {
       </Tooltip>
 
       <div className="w-full flex justify-between items-center gap-x-4 mt-2">
+        <p
+          className={`text-xs font-medium ${
+            note.studied
+              ? "text-green-600 dark:text-green-500"
+              : "text-red-600 dark:text-red-500"
+          }`}
+        >
+          {note.studied ? "Studied" : "Not Studied"}
+        </p>
         <p className="text-xs text-gray-500">{timeAgo}</p>
       </div>
     </Link>

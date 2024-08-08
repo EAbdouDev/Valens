@@ -39,7 +39,7 @@ interface NoteEditorProps {
 
 const TextEditor: FC<NoteEditorProps> = ({ content }) => {
   const [imageSrc, setImageSrc] = useState("");
-  const { setText, setEditorObj } = useNote();
+  const { setText } = useTextPod();
 
   const editor = useEditor({
     extensions: [
@@ -161,7 +161,6 @@ const TextEditor: FC<NoteEditorProps> = ({ content }) => {
       }),
     ],
     onUpdate: ({ editor }) => {
-      setEditorObj(editor.getHTML());
       const textContent = editor.getText();
       setText(textContent);
     },
@@ -183,7 +182,6 @@ const TextEditor: FC<NoteEditorProps> = ({ content }) => {
       editor.commands.setContent(content);
       const textFromEditor = editor.getText();
       setText(textFromEditor);
-      setEditorObj(content);
     }
   }, [editor, content]);
 
