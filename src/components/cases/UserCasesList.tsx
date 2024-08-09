@@ -86,7 +86,7 @@ const UserCasesList: FC<UserCasesListProps> = ({}) => {
                 <p>No cases match your search criteria.</p>
               ) : (
                 <>
-                  <p>There're no notes for you to see yet.</p>
+                  <p>There're no cases for you to see yet.</p>
                   <p>Start creating your first case.</p>
                 </>
               )}

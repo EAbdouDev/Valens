@@ -1,6 +1,6 @@
 "use client";
 import "regenerator-runtime/runtime";
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -9,7 +9,7 @@ import useCaseSim from "@/zuztand/CaseSimState";
 
 interface VoiceChatProps {}
 
-const VoiceChat: FC<VoiceChatProps> = ({}) => {
+const VoiceChat: FC<VoiceChatProps> = () => {
   const { setTextInput, isListening, setIsListening, textInput } = useCaseSim();
   const {
     transcript,
@@ -18,12 +18,16 @@ const VoiceChat: FC<VoiceChatProps> = ({}) => {
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
 
+  const prevTranscriptLength = useRef(0);
+
   useEffect(() => {
     if (!listening && transcript) {
-      setTextInput(transcript);
-      console.log(textInput);
+      const newTranscriptPart = transcript.slice(prevTranscriptLength.current);
+      setTextInput(textInput + " " + newTranscriptPart);
+      prevTranscriptLength.current = transcript.length;
+      resetTranscript(); // Clear the transcript after updating the input
     }
-  }, [listening, transcript, setTextInput]);
+  }, [listening, transcript, setTextInput, textInput, resetTranscript]);
 
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
@@ -35,6 +39,7 @@ const VoiceChat: FC<VoiceChatProps> = ({}) => {
       setIsListening(false);
     } else {
       resetTranscript();
+      prevTranscriptLength.current = 0; // Reset the previous transcript length when starting a new session
       SpeechRecognition.startListening({ continuous: true });
       setIsListening(true);
     }

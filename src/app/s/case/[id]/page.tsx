@@ -5,6 +5,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { getVoiceModelId, mapGender } from "@/lib/voices";
 import CaseSim from "@/components/cases/case-sim";
 
+export const maxDuration = 60;
+
 interface pageProps {
   params: {
     id: string;
@@ -25,7 +27,7 @@ const CasePage: FC<pageProps> = async ({ params }) => {
   );
 
   const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-flash",
+    model: "gemini-1.5-pro",
   });
 
   const generationConfig = {

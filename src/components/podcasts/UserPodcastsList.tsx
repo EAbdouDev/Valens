@@ -1,13 +1,11 @@
 "use client";
-import Image from "next/image";
 import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/lib/hooks/use-outside-click";
-import { AudioLinesIcon, Loader, Loader2 } from "lucide-react";
+import { AudioLinesIcon, Loader2 } from "lucide-react";
 import { useAuth } from "../auth/auth-provider";
 import { getAllUserPodcasts } from "./actions";
 import ReactAudioPlayer from "react-audio-player";
-import New from "./New";
 
 export function UserPodcastsList() {
   const [podcasts, setPodcasts] = useState<any[]>([]);
@@ -159,7 +157,6 @@ export function UserPodcastsList() {
       </AnimatePresence>
       {podcasts.length > 0 && (
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
-          <New />
           {podcasts.map((card, index) => (
             <motion.div
               layoutId={`card-${card.title}-${id}`}
@@ -195,7 +192,7 @@ export function UserPodcastsList() {
           <Loader2 className="w-8 h-8 animate-spin" />
         </div>
       )}
-      {podcasts.length === 0 && !isLoading && <div>No podcasts</div>}
+      {podcasts.length === 0 && !isLoading && <div>No podcasts yet.</div>}
     </>
   );
 }

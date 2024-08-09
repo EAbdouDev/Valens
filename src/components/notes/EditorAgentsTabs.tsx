@@ -17,6 +17,7 @@ import CreateFlashcards from "./agents/CreateFlashcards";
 import PdfSum from "./agents/pdfSum";
 import Slides from "./agents/slides/Slide";
 import AudioNotes from "./agents/AudioNotes";
+import Mindmaps from "./agents/Mindmaps";
 
 interface EditorAgentsTabsProps {
   noteSlug: string;
@@ -56,29 +57,6 @@ const EditorAgentsTabs: FC<EditorAgentsTabsProps> = ({ noteSlug }) => {
           <PdfSum />
         </aside>
       )}
-
-      {/* <div className="flex lg:hidden">
-        {sideBarTabMobile?.index === 0 && (
-          <Drawer
-            open
-            onOpenChange={(open) => {
-              if (!open) {
-                setSideBarTabMobile(null);
-              }
-            }}
-          >
-            <DrawerContent className="h-full ">
-              <DrawerHeader className="flex flex-col justify-start w-full text-left">
-                <DrawerTitle>Assistant</DrawerTitle>
-              </DrawerHeader>
-              <div className="overflow-y-auto overflow-x-hidden px-4">
-                {" "}
-                <Chat id={"no-id-for-now"} query={""} />
-              </div>
-            </DrawerContent>
-          </Drawer>
-        )}
-      </div> */}
     </div>
   );
 };

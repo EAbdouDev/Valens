@@ -251,3 +251,26 @@ here is the note text: ${noteText}
 
   return text;
 };
+
+export async function generateMermaid(text: string) {
+  const prompt = `
+    You are an AI that converts HTML notes to Mermaid diagrams. Your task is to take the HTML provided to you and create a Mermaid diagram. Here are the instructions and format you need to follow:
+
+Instructions:
+1. Convert the headings to diagram titles.
+2. Convert lists to flowchart nodes.
+3. Maintain the hierarchy and structure of the original HTML.
+
+Here is the HTML text: ${text}
+  `;
+
+  const { object } = await generateObject({
+    model: google("models/gemini-1.5-pro-latest"),
+    schema: z.object({
+      mermaidDiagram: z.string(),
+    }),
+    prompt,
+  });
+
+  return object.mermaidDiagram;
+}

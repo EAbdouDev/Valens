@@ -6,6 +6,7 @@ import {
   AudioLinesIcon,
   BookAudio,
   GalleryHorizontalEnd,
+  Network,
   ScanSearch,
   Zap,
 } from "lucide-react";
