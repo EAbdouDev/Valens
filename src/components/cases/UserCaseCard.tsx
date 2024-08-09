@@ -84,7 +84,7 @@ const UserCaseCard: FC<NoteCardProps> = ({ caseDetails }) => {
         >
           {note.studied ? "Studied" : "Not Studied"}
         </p> */}
-        <p className="text-xs text-gray-500">{timeAgo}</p>
+        {/* <p className="text-xs text-gray-500">{timeAgo}</p> */}
       </div>
     </Link>
   );
