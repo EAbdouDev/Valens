@@ -106,17 +106,6 @@ export function UserPodcastsList() {
                   </div>
 
                   <div className="flex justify-center items-center gap-2">
-                    <motion.a
-                      layout
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      href={`/p/play/${active.id}`}
-                      target="_blank"
-                      className="px-4 py-3 text-sm rounded-xl font-semibold border "
-                    >
-                      Edit
-                    </motion.a>
                     <motion.button
                       layout
                       initial={{ opacity: 0 }}
