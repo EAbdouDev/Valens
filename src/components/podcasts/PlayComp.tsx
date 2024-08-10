@@ -74,10 +74,6 @@ const PlayComp: FC<PlayCompProps> = ({ id }) => {
             <h1 className="text-2xl 2xl:text-3xl font-bold text-white">
               {podcast?.title}
             </h1>
-            <div className="flex justify-start items-center gap-4 text-white mt-4 text-sm">
-              <p>Aug 5 2024</p>
-              <p>@eslamabdou</p>
-            </div>
           </div>
         </header>
       </div>
